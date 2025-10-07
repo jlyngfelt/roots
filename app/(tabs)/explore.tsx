@@ -9,6 +9,8 @@ import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 
+
+//ersätt fil med eget innehåll
 export default function TabTwoScreen() {
   return (
     <ParallaxScrollView
