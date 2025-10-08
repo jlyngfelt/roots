@@ -1,0 +1,1 @@
+//Här registrerar man sig med email, lösen, postnummer och bild. flrslagsvis kan vi här använda push (router.push('/edit-profile')) då möjliggör vi att man kan gå tillbaka till register när man är i edit profile, vill vi detta? 
