@@ -1,17 +1,24 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, Text, Button } from 'react-native';
+import { useRouter } from 'expo-router';
+import TabLayout from './_layout';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
 
-//ersätt fil med eget innehåll
+export default function ProfileScreen() {
 
-export default function HomeScreen() {
+    const router = useRouter();
   return (
-    <></>
+    <>
+    <Text 
+    style={{fontSize: 50, padding: 40}}>PROFIL</Text>
+
+    <TabLayout/>
+          <Button
+            onPress={() => router.replace("/edit-profile")}
+            title="REDIGERA PROFIL"
+            color="#ce7ece"
+            accessibilityLabel="create account"
+          />
+    </>
   );
 }
 
