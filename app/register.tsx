@@ -32,9 +32,14 @@ export default function LoginScreen() {
     try {
       await signUp(email, password1);
       router.replace("/edit-profile");
-    } catch (err) {
-      setError("Kunde inte skapa konto");
-      console.error(err);
+    } catch (err: any) {
+    if (err.code === 'auth/email-already-in-use') {
+      setError('Email används redan');
+    } else if (err.code === 'auth/invalid-email') {
+      setError('Ogiltigt format på email');
+    } else {
+      setError('Något gick fel');
+    }
     } finally {
       setLoading(false);
     }
