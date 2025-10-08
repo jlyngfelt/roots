@@ -6,7 +6,7 @@ import { View } from "react-native";
 import { Button, Input, Text } from "tamagui";
 import { signUp } from "../auth";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
