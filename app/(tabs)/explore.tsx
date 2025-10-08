@@ -1,8 +1,18 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet, Text } from 'react-native';
+import { useRouter } from 'expo-router';
 
-//ersätt fil med eget innehåll
-export default function TabTwoScreen() {
-  return <></>;
+
+export default function ExploreScreen() {
+
+    const router = useRouter();
+  return (
+    <>
+    <Text 
+    style={{fontSize: 50, padding: 40}}>EXPLORE</Text>
+    </>
+  );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+});
