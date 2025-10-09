@@ -4,17 +4,28 @@ import { Link } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
+import { onAuthChange } from '@/auth'; 
+import { User } from 'firebase/auth';
+
 
 
 export default function StartScreen() {
+
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace('/welcome');
-    }, 2000);
+    const unsubscribe = onAuthChange((user: User | null) => {
+      setTimeout(() => {
+        if (user) {
+          router.replace('/(tabs)/explore');
+        } else {
 
-    return () => clearTimeout(timer);
+          router.replace('/welcome');
+        }
+      }, 1000); 
+    });
+        // Cleanup
+    return () => unsubscribe();
   }, []);
 
   return (
