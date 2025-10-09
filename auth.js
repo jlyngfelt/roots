@@ -3,6 +3,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 
@@ -13,6 +14,7 @@ export const signUp = async (email, password) => {
       email,
       password
     );
+    await sendEmailVerification(userCredential.user);
     return userCredential.user;
   } catch (error) {
     throw error;
@@ -26,6 +28,11 @@ export const signIn = async (email, password) => {
       email,
       password
     );
+    
+        if (!userCredential.user.emailVerified) {
+      await signOut(auth);
+      throw new Error('EMAIL_NOT_VERIFIED');
+    }
     return userCredential.user;
   } catch (error) {
     throw error;

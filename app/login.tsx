@@ -26,6 +26,8 @@ export default function LoginScreen() {
         setError("För många försök, försök igen senare");
       } else if (err.code === "auth/user-disabled") {
         setError("Kontot är inaktiverat");
+       } else if (err.message === 'EMAIL_NOT_VERIFIED') {
+      setError('Du måste verifiera din email först. Kolla din inkorg!');
       } else {
         setError("Kunde inte logga in");
         console.error(err.code); 
