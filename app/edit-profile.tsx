@@ -2,7 +2,8 @@
 
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
+import { Button, Text } from "tamagui";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function LoginScreen() {
         placeholder="email"
         keyboardType="email-address"
         autoCapitalize="none"
-        style={{height: 40, fontSize: 30, color: 'black'}}
+        style={{ height: 40, fontSize: 30, color: "black" }}
       />
       <TextInput
         value={password}
@@ -35,15 +36,25 @@ export default function LoginScreen() {
         placeholder="lösenord"
         secureTextEntry={true}
         autoCapitalize="none"
-        style={{height: 40, fontSize: 30, color: 'black'}}
+        style={{ height: 40, fontSize: 30, color: "black" }}
       />
 
       <Button
         onPress={() => router.replace("/(tabs)")}
-        title="SPARA PROFIL"
         color="#841584"
-        accessibilityLabel="create account"
-      />
+        size="$4"
+        marginVertical="10"
+      >
+        {"Skapa Profil"}
+      </Button>
+      <Button
+        onPress={() => router.replace("/settings")}
+        color="#841584"
+        size="$4"
+        marginVertical="10"
+      >
+        {"Inställningar"}
+      </Button>
     </View>
   );
 }
