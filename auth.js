@@ -12,7 +12,7 @@ export const signUp = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     await sendEmailVerification(userCredential.user);
     return userCredential.user;
@@ -26,12 +26,12 @@ export const signIn = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
-    
-        if (!userCredential.user.emailVerified) {
+
+    if (!userCredential.user.emailVerified) {
       await signOut(auth);
-      throw new Error('EMAIL_NOT_VERIFIED');
+      throw new Error("EMAIL_NOT_VERIFIED");
     }
     return userCredential.user;
   } catch (error) {
@@ -40,7 +40,7 @@ export const signIn = async (email, password) => {
 };
 
 export const logOut = async () => {
-  try {  
+  try {
     await signOut(auth);
   } catch (error) {
     throw error;

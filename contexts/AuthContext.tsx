@@ -1,7 +1,13 @@
 // contexts/AuthContext.tsx
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from 'firebase/auth';
-import { onAuthChange } from '../auth';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { User } from "firebase/auth";
+import { onAuthChange } from "../auth";
 
 interface AuthContextType {
   user: User | null;
@@ -10,7 +16,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: true
+  loading: true,
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {

@@ -9,7 +9,6 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
-
   return (
     <>
       <Text style={{ fontSize: 50, padding: 40 }}>PROFIL</Text>
@@ -20,8 +19,7 @@ export default function ProfileScreen() {
         {" "}
         Redigera profil
       </DefaultButton>
-      <DefaultSwitch/>
-
+      <DefaultSwitch />
     </>
   );
 }
