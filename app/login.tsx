@@ -20,17 +20,20 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace("/(tabs)/explore");
     } catch (err: any) {
-      if (err.code === "auth/invalid-credential" || err.code === "auth/invalid-email") {
+      if (
+        err.code === "auth/invalid-credential" ||
+        err.code === "auth/invalid-email"
+      ) {
         setError("Fel email eller lösenord");
       } else if (err.code === "auth/too-many-requests") {
         setError("För många försök, försök igen senare");
       } else if (err.code === "auth/user-disabled") {
         setError("Kontot är inaktiverat");
-       } else if (err.message === 'EMAIL_NOT_VERIFIED') {
-      setError('Du måste verifiera din email först. Kolla din inkorg!');
+      } else if (err.message === "EMAIL_NOT_VERIFIED") {
+        setError("Du måste verifiera din email först. Kolla din inkorg!");
       } else {
         setError("Kunde inte logga in");
-        console.error(err.code); 
+        console.error(err.code);
       }
     } finally {
       setLoading(false);
