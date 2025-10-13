@@ -1,8 +1,8 @@
 //Här skapar man sin profil, man blir hitskickad efter Register för att fylla i sin användarinformation och skickas sedan vidare till (tabs)explore
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { View } from "react-native";
-import { Button, Input, Text } from "tamagui";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { Button, Input, Text, TextArea } from "tamagui";
 import { useAuth } from "../contexts/AuthContext";
 import { createUserProfile } from "../services/userService";
 
@@ -49,65 +49,70 @@ export default function CreateProfileScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "blue",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <Text style={{ fontSize: 20, color: "green", marginBottom: 20 }}>
-        Skapa din profil
-      </Text>
-
-      <Input
-        value={username}
-        onChangeText={setUsername}
-        placeholder="Användarnamn"
-        autoCapitalize="none"
-        size="$4"
-        marginVertical="10"
-        width="80%"
-      />
-
-      <Input
-        value={postalCode}
-        onChangeText={setPostalCode}
-        placeholder="Postnummer"
-        autoCapitalize="characters"
-        size="$4"
-        marginVertical="10"
-        width="80%"
-      />
-
-      <Input
-        value={bio}
-        onChangeText={setBio}
-        placeholder="Beskrivning..."
-        multiline
-        numberOfLines={3}
-        size="$4"
-        marginVertical="10"
-        width="80%"
-      />
-
-      {error ? (
-        <Text fontSize="$3" color="red" marginVertical="10">
-          {error}
-        </Text>
-      ) : null}
-
-      <Button
-        onPress={handleCreateProfile}
-        color="#841584"
-        size="$4"
-        marginVertical="10"
-        disabled={loading}
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+          backgroundColor: "blue",
+        }}
       >
-        {loading ? "Sparar..." : "Spara"}
-      </Button>
-    </View>
+        <Text style={{ fontSize: 20, color: "green", marginBottom: 20 }}>
+          Skapa din profil
+        </Text>
+
+        <Input
+          value={username}
+          onChangeText={setUsername}
+          placeholder="Användarnamn"
+          autoCapitalize="none"
+          size="$4"
+          marginVertical="10"
+          width="80%"
+        />
+
+        <Input
+          value={postalCode}
+          onChangeText={setPostalCode}
+          placeholder="Postnummer"
+          autoCapitalize="characters"
+          size="$4"
+          marginVertical="10"
+          width="80%"
+        />
+
+        <TextArea
+          value={bio}
+          onChangeText={setBio}
+          placeholder="Beskrivning..."
+          multiline
+          numberOfLines={3}
+          size="$4"
+          marginVertical="10"
+          width="80%"
+        />
+
+        {error ? (
+          <Text fontSize="$3" color="red" marginVertical="10">
+            {error}
+          </Text>
+        ) : null}
+
+        <Button
+          onPress={handleCreateProfile}
+          color="#841584"
+          size="$4"
+          marginVertical="10"
+          disabled={loading}
+        >
+          {loading ? "Sparar..." : "Spara"}
+        </Button>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
