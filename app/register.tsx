@@ -31,6 +31,7 @@ export default function RegisterScreen() {
     setLoading(true);
     try {
       await signUp(email, password1);
+      router.replace("/create-profile");
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
         setError("Email används redan");
