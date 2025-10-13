@@ -2,6 +2,7 @@ import { Platform, StyleSheet, Text, Button } from 'react-native';
 import { useRouter } from 'expo-router';
 import TabLayout from './_layout';
 import { useAuth } from '../../contexts/AuthContext';
+import { DefaultButton } from '@/components/ui/buttons/DefaultButton';
 
 
 export default function ProfileScreen() {
@@ -15,12 +16,12 @@ export default function ProfileScreen() {
     <Text style={{fontSize: 50, padding: 40}} >Email: {user?.email}</Text>
 
     <TabLayout/>
-          <Button
+          <DefaultButton
             onPress={() => router.replace("/edit-profile")}
-            title="REDIGERA PROFIL"
-            color="#ce7ece"
-            accessibilityLabel="create account"
-          />
+            variant="primary"
+          > Redigera profil</DefaultButton>
+
+
     </>
   );
 }
