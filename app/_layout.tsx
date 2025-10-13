@@ -7,11 +7,10 @@ import {
 import { defaultConfig } from "@tamagui/config/v4";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { User } from "firebase/auth";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { createTamagui, TamaguiProvider } from "tamagui";
-import { onAuthChange } from "../auth";
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -23,36 +22,39 @@ const config = createTamagui(defaultConfig);
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  
+  return (
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <TamaguiProvider config={config}>
+        <AuthProvider>
+          <NavigationHandler />
+        </AuthProvider>
+        <StatusBar style="auto" />
+      </TamaguiProvider>
+    </ThemeProvider>
+  );
+}
+
+function NavigationHandler() {
+  const { user } = useAuth();
+
   const router = useRouter();
   const segments = useSegments();
 
   useEffect(() => {
-    const unsubscribe = onAuthChange((user: User | null) => {
-
-      if (!user && (segments[0] === 'settings')) {
-        router.replace("/welcome");
-      } 
-    });
-
-    return () => unsubscribe();
-  }, [segments]);
+    if (!user && segments[0] === "settings") {
+      router.replace("/welcome");
+    }
+  }, [user, segments]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <TamaguiProvider config={config}>
-
-
-        <Stack >
-          <Stack.Screen name="index" options={{ headerShown: false }}/> 
-          <Stack.Screen name="welcome" />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="signup" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        </Stack>
-        
-        <StatusBar style="auto" />
-      </TamaguiProvider>
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="welcome" />
+      <Stack.Screen name="login" />
+      <Stack.Screen name="signup" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+    </Stack>
   );
 }
