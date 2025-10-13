@@ -1,10 +1,10 @@
-import { Input, InputProps } from "tamagui";
+import { TextArea, TextAreaProps } from "tamagui";
 import { useState } from 'react'
 
-export const DefualtInput = (props: InputProps) => {
+export const DefualtTextArea = (props: TextAreaProps) => {
     const [text, setText] = useState('')
   return (
-    <Input
+    <TextArea
       size="$4"
       borderWidth={1}
       value={text}
