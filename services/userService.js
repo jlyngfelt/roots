@@ -5,7 +5,7 @@ import {
 	setDoc,
 	updateDoc
 } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from '../firebaseConfig'
 
 export async function createUserProfile(uid, userData) {
 	try {
