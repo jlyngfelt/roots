@@ -10,7 +10,7 @@ import {
 	updateDoc,
 	where
 } from 'firebase/firestore'
-import { db } from '../firebase'
+import { db } from '../firebaseConfig'
 
 export async function createPlant(userId, plantData) {
 	try {
