@@ -1,9 +1,9 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
+import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { ScrollView, Image, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import TabLayout from "./_layout";
 
@@ -13,6 +13,17 @@ export default function ProfileScreen() {
   const [userProfile, setUserProfile] = useState<Partial<UserProfile> | null>(
     null
   );
+  const [plants, setPlants] = useState<Plant[]>([]);
+
+  useEffect(() => {
+    if (user?.uid) {
+      async function fetchPlants() {
+        const userPlants = await getUserPlants(user?.uid);
+        setPlants(userPlants);
+      }
+      fetchPlants();
+    }
+  }, [user?.uid]);
 
   interface UserProfile {
     id: string;
@@ -22,6 +33,15 @@ export default function ProfileScreen() {
     profileImageUrl: string;
     credits: number;
     createdAt: any;
+  }
+  interface Plant {
+    id: string;
+    name: string;
+    description: string;
+    readyToAdopt: boolean;
+    userId: string;
+    categoryId: string;
+    imageUrl: string;
   }
 
   useEffect(() => {
@@ -38,6 +58,7 @@ export default function ProfileScreen() {
 
   return (
     <>
+   <ScrollView>
       <Text style={{ fontSize: 20, padding: 10 }}>PROFIL</Text>
 
       {/* Profile Image */}
@@ -81,13 +102,12 @@ export default function ProfileScreen() {
       <Text style={{ fontSize: 20, padding: 10 }}>
         credits: {userProfile?.credits}
       </Text>
-
-      <TabLayout />
-      <DefaultButton onPress={() => router.replace("/settings")}>
-        {" "}
-        Inställningar
-      </DefaultButton>
-      <DefaultSwitch />
+        <TabLayout />
+        <DefaultButton onPress={() => router.replace("/settings")}>
+          {" "}
+          Inställningar
+        </DefaultButton>
+      </ScrollView>
     </>
   );
 }
