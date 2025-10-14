@@ -1,8 +1,9 @@
 //Här ska man logga in med email och lösen (skickas sen vidare till tabs)
+import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { Button, Input, Text } from "tamagui";
+import { Input, Text } from "tamagui";
 import { signIn } from "../auth";
 
 export default function LoginScreen() {
@@ -77,15 +78,16 @@ export default function LoginScreen() {
 
       <Text fontSize="$3">{error}</Text>
 
-      <Button
-        onPress={handleSignIn}
-        color="#841584"
-        size="$4"
-        marginVertical="10"
-        disabled={loading}
+      <DefaultButton onPress={handleSignIn} disabled={loading}>
+        {loading ? "Loggar in.." : "Logga in"}
+      </DefaultButton>
+
+      <DefaultButton
+        onPress={() => router.replace("/welcome")}
+        variant="tertiary"
       >
-        {loading ? "Loading.." : "Logga in"}
-      </Button>
+        Tillbaka
+      </DefaultButton>
     </View>
   );
 }
