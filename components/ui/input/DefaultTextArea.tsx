@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { TextArea, TextAreaProps } from "tamagui";
-import { useState } from 'react'
 
-export const DefualtTextArea = (props: TextAreaProps) => {
-    const [text, setText] = useState('')
+export const DefaultTextArea = (props: TextAreaProps) => {
+  const [text, setText] = useState("");
   return (
     <TextArea
       size="$4"

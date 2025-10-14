@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Input, InputProps } from "tamagui";
-import { useState } from 'react'
 
-export const DefualtInput = (props: InputProps) => {
-    const [text, setText] = useState('')
+export const DefaultInput = (props: InputProps) => {
+  const [text, setText] = useState("");
   return (
     <Input
       size="$4"
