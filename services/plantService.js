@@ -100,3 +100,18 @@ export async function deletePlant(plantId) {
     throw error;
   }
 }
+
+export async function getOtherUsersPlants(userId) {
+  try {
+    const q = query(collection(db, "plants"), where("userId", "!=", userId));
+    const querySnapshot = await getDocs(q);
+    const plants = [];
+    querySnapshot.forEach((doc) => {
+      plants.push({ id: doc.id, ...doc.data() });
+    });
+    return plants;
+  } catch (error) {
+    console.error("Error getting other users' plants:", error);
+    throw error;
+  }
+}
