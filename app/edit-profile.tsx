@@ -1,24 +1,25 @@
 // här ändrar man ex sin bio, sin profilbild och kanske mer. När man trycker på spara = (router.replace('/(tabs)'))
 
-import { useRouter } from "expo-router";
-import { useState, useEffect } from "react";
-import { TextInput, View } from "react-native";
-import { Text } from "tamagui";
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefualtInput } from "@/components/ui/input/DefaultInput";
-import { DefualtTextArea } from "@/components/ui/input/DefaultTextArea";
-import { updateUserProfile, getUserProfile } from "@/services/userService";
+import { DefaultInput } from "@/components/ui/input/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/input/DefaultTextArea";
 import { useAuth } from "@/contexts/AuthContext";
+import { pickAndUploadImage } from "@/services/imageService";
+import { getUserProfile, updateUserProfile } from "@/services/userService";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Alert, Image, View } from "react-native";
+import { Text } from "tamagui";
 
-export default function LoginScreen() {
+export default function EditProfileScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const [newUsername, setNewUsername] = useState("");
   const [newPostalcode, setNewPostalcode] = useState("");
   const [newBio, setNewBio] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
-
-  
   useEffect(() => {
     if (user?.uid) {
       async function fetchProfile() {
@@ -27,52 +28,115 @@ export default function LoginScreen() {
           setNewUsername(profile.username || "");
           setNewPostalcode(profile.postalCode || "");
           setNewBio(profile.bio || "");
+          setProfileImageUrl(profile.profileImageUrl || "");
         }
       }
       fetchProfile();
     }
   }, [user?.uid]);
 
+  async function handleImageUpload() {
+    if (!user?.uid) {
+      Alert.alert("Fel", "Du måste vara inloggad");
+      return;
+    }
+    try {
+      setIsUploading(true);
+      // Upload image to 'profiles' folder with user's ID as filename
+      const downloadURL = await pickAndUploadImage("profiles", user?.uid);
+
+      if (downloadURL) {
+        setProfileImageUrl(downloadURL);
+        Alert.alert("Klart!", "Profilbild uppladdad!");
+      }
+    } catch (error) {
+      Alert.alert("Fel", "Kunde inte ladda upp bild. Försök igen.");
+      console.error(error);
+    } finally {
+      setIsUploading(false);
+    }
+  }
 
   async function handleSave() {
-    await updateUserProfile(user?.uid, { 
+    await updateUserProfile(user?.uid, {
       username: newUsername,
       postalCode: newPostalcode,
-      bio: newBio
+      bio: newBio,
+      profileImageUrl: profileImageUrl,
     });
-    router.replace('/(tabs)');
+    router.replace("/(tabs)");
   }
 
   return (
     <View
       style={{
-        height: 300,
+        flex: 1,
         backgroundColor: "blue",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
       }}
     >
-{/* Här ska sedan finnas ett state om bild ej finns skriv ladda upp */}
-<DefaultButton variant="tertiary">{"Ändra profilbild"}</DefaultButton> 
+      {/* Profile Image Preview */}
+      {profileImageUrl ? (
+        <Image
+          source={{ uri: profileImageUrl }}
+          style={{
+            width: 240,
+            height: 240,
+            padding: 40,
+            borderRadius: 16,
+            marginBottom: 24,
+          }}
+        />
+      ) : (
+        <View
+          style={{
+            width: 240,
+            height: 240,
+            padding: 40,
+            borderRadius: 16,
+            marginBottom: 24,
+            backgroundColor: "gray",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white" }}>Ingen bild</Text>
+        </View>
+      )}
 
-      <DefualtInput 
+      <DefaultButton
+        variant="primary"
+        onPress={handleImageUpload}
+        disabled={isUploading}
+      >
+        {isUploading
+          ? "Väntar"
+          : profileImageUrl
+          ? "Ändra profilbild"
+          : "Ladda upp profilbild"}
+      </DefaultButton>
+
+      {isUploading && <ActivityIndicator size="small" color="#0000ff" />}
+
+      <DefaultInput
         value={newUsername}
         onChangeText={setNewUsername}
         placeholder="Användarnamn"
       />
-      <DefualtInput 
+      <DefaultInput
         value={newPostalcode}
         onChangeText={setNewPostalcode}
         placeholder="Postnummer"
       />
-      <DefualtTextArea 
+      <DefaultTextArea
         value={newBio}
         onChangeText={setNewBio}
         placeholder="Bio"
       />
       <DefaultButton onPress={handleSave}>Spara</DefaultButton>
-
     </View>
   );
 }
