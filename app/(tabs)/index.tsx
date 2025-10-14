@@ -1,10 +1,9 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
-import { getUserProfile } from "@/services/userService";
 import { getUserPlants } from "@/services/plantService";
+import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import TabLayout from "./_layout";
 
@@ -15,7 +14,6 @@ export default function ProfileScreen() {
     null
   );
   const [plants, setPlants] = useState<Plant[]>([]);
-  
 
   useEffect(() => {
     if (user?.uid) {
@@ -37,14 +35,14 @@ export default function ProfileScreen() {
     createdAt: any;
   }
   interface Plant {
-  id: string;
-  name: string;
-  description: string;
-  readyToAdopt: boolean;
-  userId: string;
-  categoryId: string;
-  imageUrl: string;
-}
+    id: string;
+    name: string;
+    description: string;
+    readyToAdopt: boolean;
+    userId: string;
+    categoryId: string;
+    imageUrl: string;
+  }
 
   useEffect(() => {
     if (user?.uid) {
@@ -60,36 +58,38 @@ export default function ProfileScreen() {
 
   return (
     <>
-    <ScrollView>
+      <ScrollView>
+        <Text style={{ fontSize: 50, padding: 40 }}>PROFIL</Text>
+        <Text style={{ fontSize: 50, padding: 40 }}>Email: {user?.email}</Text>
+        <Text style={{ fontSize: 20, padding: 40 }}>
+          username: {userProfile?.username}
+        </Text>
+        <Text style={{ fontSize: 20, padding: 40 }}>
+          postal: {userProfile?.postalCode}
+        </Text>
+        <Text style={{ fontSize: 20, padding: 40 }}>
+          bio: {userProfile?.bio}
+        </Text>
+        <Text style={{ fontSize: 20, padding: 40 }}>
+          credits: {userProfile?.credits}
+        </Text>
 
-      <Text style={{ fontSize: 50, padding: 40 }}>PROFIL</Text>
-      <Text style={{ fontSize: 50, padding: 40 }}>Email: {user?.email}</Text>
-      <Text style={{ fontSize: 20, padding: 40 }}>
-        username: {userProfile?.username}
-      </Text>
-      <Text style={{ fontSize: 20, padding: 40 }}>
-        postal: {userProfile?.postalCode}
-      </Text>
-      <Text style={{ fontSize: 20, padding: 40 }}>bio: {userProfile?.bio}</Text>
-      <Text style={{ fontSize: 20, padding: 40 }}>
-        credits: {userProfile?.credits}
-      </Text>
+        {plants.map((plant) => (
+          <View key={plant.id}>
+            <Text>{plant.name}</Text>
+            <DefaultButton
+              onPress={() => router.push(`/view-plant/${plant.id}`)}
+            >
+              Titta på plantan
+            </DefaultButton>
+          </View>
+        ))}
 
-            {plants.map((plant) => (
-              <View key={plant.id}>
-          <Text>{plant.name}</Text>
-          <DefaultButton onPress={() => router.push(`/edit-plant/${plant.id}`)}>
-            Redigera
-          </DefaultButton>
-        </View>
-      ))}
-
-
-      <TabLayout />
-      <DefaultButton onPress={() => router.replace("/settings")}>
-        {" "}
-        Inställningar
-      </DefaultButton>
+        <TabLayout />
+        <DefaultButton onPress={() => router.replace("/settings")}>
+          {" "}
+          Inställningar
+        </DefaultButton>
       </ScrollView>
     </>
   );

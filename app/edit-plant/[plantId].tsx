@@ -42,7 +42,7 @@ export default function EditPlantScreen() {
       description: description,
       readyToAdopt: readyToAdopt,
     });
-    router.replace("/(tabs)");
+    router.replace(`/view-plant/${plantId}`)
   }
 
   async function handleDeletePlant() {
