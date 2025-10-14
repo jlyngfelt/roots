@@ -1,9 +1,9 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
+import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import TabLayout from "./_layout";
-import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -15,9 +15,9 @@ export default function ProfileScreen() {
       <Text style={{ fontSize: 50, padding: 40 }}>Email: {user?.email}</Text>
 
       <TabLayout />
-      <DefaultButton onPress={() => router.replace("/edit-profile")}>
+      <DefaultButton onPress={() => router.replace("/settings")}>
         {" "}
-        Redigera profil
+        Inställningar
       </DefaultButton>
       <DefaultSwitch />
     </>

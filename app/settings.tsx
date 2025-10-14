@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { useRouter } from "expo-router";
+import { View } from "react-native";
+import { Text } from "tamagui";
 import { logOut } from "../auth";
-import { Button, Input, Text } from "tamagui";
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export default function WelcomeScreen() {
   return (
     <View
       style={{
-        height: 100,
+        height: 300,
         backgroundColor: "blue",
         display: "flex",
         justifyContent: "center",
@@ -19,14 +19,15 @@ export default function WelcomeScreen() {
     >
       <Text style={{ fontSize: 20, color: "green" }}>ROOTS</Text>
 
-      <Button
-        onPress={() => logOut()}
-        color="#841584"
-        size="$4"
-        marginVertical="10"
-      >
-        {"Logga ut"}
-      </Button>
+      <DefaultButton onPress={() => router.replace("/edit-profile")}>
+        Redigera profil
+      </DefaultButton>
+
+      <DefaultButton onPress={() => ""}>Uppdatera e-postadress</DefaultButton>
+
+      <DefaultButton onPress={() => ""}>Byt lösenord</DefaultButton>
+
+      <DefaultButton onPress={() => logOut()}>Logga ut</DefaultButton>
     </View>
   );
 }
