@@ -3,60 +3,11 @@ import { StyleSheet } from "react-native";
 
 // || Color variables
 export const Colors = {
-  light: {
-    primary: {
-      main: "#4A90E2",
-      light: "#6FA8E8",
-      dark: "#357ABD",
-    },
-    secondary: {
-      main: "#50C878",
-      light: "#7DD89C",
-      dark: "#3DA55F",
-    },
-    text: {
-      primary: "#11181C",
-      secondary: "#687076",
-      disabled: "#9BA1A6",
-      inverse: "#FFFFFF",
-    },
-    background: {
-      primary: "#FFFFFF",
-      secondary: "#F5F5F5",
-      tertiary: "#E6F4FE",
-    },
-    tint: "#0a7ea4",
-    icon: "#687076",
-    tabIconDefault: "#687076",
-    tabIconSelected: "#0a7ea4",
-  },
-  dark: {
-    primary: {
-      main: "#6FA8E8",
-      light: "#8BBBEF",
-      dark: "#4A90E2",
-    },
-    secondary: {
-      main: "#7DD89C",
-      light: "#99E1B3",
-      dark: "#50C878",
-    },
-    text: {
-      primary: "#ECEDEE",
-      secondary: "#9BA1A6",
-      disabled: "#687076",
-      inverse: "#11181C",
-    },
-    background: {
-      primary: "#151718",
-      secondary: "#1E2022",
-      tertiary: "#2A2D30",
-    },
-    tint: "#FFFFFF",
-    icon: "#9BA1A6",
-    tabIconDefault: "#9BA1A6",
-    tabIconSelected: "#FFFFFF",
-  },
+  primary: "#1b9844ff",
+  secondary: "#E8F5E9",
+  accent: "#f119b1ff",
+  text: "#1A1A1A",
+  background: "#FFFFFF",
 };
 
 // || Typography
@@ -113,73 +64,73 @@ export const Styles = StyleSheet.create({
   heading1: {
     fontSize: Typography.fontSize["2xl"],
     fontWeight: Typography.fontWeight.bold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   heading2: {
     fontSize: Typography.fontSize["xl"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   heading3: {
     fontSize: Typography.fontSize["l"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   heading4: {
     fontSize: Typography.fontSize["m"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   heading5: {
     fontSize: Typography.fontSize["s"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   bodyXL: {
     fontSize: Typography.fontSize["xl"],
     fontWeight: Typography.fontWeight.regular,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   bodyL: {
     fontSize: Typography.fontSize["l"],
     fontWeight: Typography.fontWeight.regular,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   bodyM: {
     fontSize: Typography.fontSize["m"],
     fontWeight: Typography.fontWeight.regular,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   bodyS: {
     fontSize: Typography.fontSize["s"],
     fontWeight: Typography.fontWeight.regular,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   bodyXS: {
     fontSize: Typography.fontSize["xs"],
     fontWeight: Typography.fontWeight.regular,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   actionL: {
     fontSize: Typography.fontSize["m"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   actionM: {
     fontSize: Typography.fontSize["s"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
   actionS: {
     fontSize: Typography.fontSize["xs"],
     fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.text.primary,
+    color: Colors.text,
   },
 
   caption: {
     fontSize: Typography.fontSize.xs,
     fontWeight: Typography.fontWeight.regular,
-    color: Colors.light.text.secondary,
+    color: Colors.text,
     textTransform: "uppercase",
     letterSpacing: Typography.fontSize["xs"] * 0.05,
   },
