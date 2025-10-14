@@ -3,7 +3,7 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { TextInput, View } from "react-native";
-import { Button, Text } from "tamagui";
+import { Text } from "tamagui";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function LoginScreen() {
   return (
     <View
       style={{
-        height: 100,
+        height: 300,
         backgroundColor: "blue",
         display: "flex",
         justifyContent: "center",
@@ -38,23 +38,6 @@ export default function LoginScreen() {
         autoCapitalize="none"
         style={{ height: 40, fontSize: 30, color: "black" }}
       />
-
-      <Button
-        onPress={() => router.replace("/(tabs)")}
-        color="#841584"
-        size="$4"
-        marginVertical="10"
-      >
-        {"Skapa Profil"}
-      </Button>
-      <Button
-        onPress={() => router.replace("/settings")}
-        color="#841584"
-        size="$4"
-        marginVertical="10"
-      >
-        {"Inställningar"}
-      </Button>
     </View>
   );
 }
