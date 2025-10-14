@@ -37,10 +37,11 @@ export default function ViewPlantScreen() {
         <Text style={{ fontSize: 30, padding: 40 }}>{description}</Text>
         <Text style={{ fontSize: 30, padding: 40 }}>{readyToAdopt ? "Ready to adopt" : "not ready to adopt yet"}</Text>
 
-        <DefaultButton onPress={() => router.replace("/settings")}>
-          {" "}
-          Inställningar
-        </DefaultButton>
+            <DefaultButton
+              onPress={() => router.push(`/edit-plant/${plantId}`)}
+            >
+              Redigera
+            </DefaultButton>
       </ScrollView>
     </>
   );

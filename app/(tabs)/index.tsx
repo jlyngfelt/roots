@@ -78,11 +78,6 @@ export default function ProfileScreen() {
           <View key={plant.id}>
             <Text>{plant.name}</Text>
             <DefaultButton
-              onPress={() => router.push(`/edit-plant/${plant.id}`)}
-            >
-              Redigera
-            </DefaultButton>
-            <DefaultButton
               onPress={() => router.push(`/view-plant/${plant.id}`)}
             >
               Titta på plantan
