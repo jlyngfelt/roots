@@ -13,7 +13,7 @@ export default function StartScreen() {
   const [activeDot, setActiveDot] = useState(0);
   const router = useRouter();
 
-  const loadingPlant = require("../assets/images/loadingPlant.png");
+  const loadingPlant = require("../assets/icons/loadingPlant.png");
 
   useEffect(() => {
     const loadingInterval = setInterval(() => {

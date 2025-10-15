@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator, ViewStyle } from "react-native";
-import { isPlantFavorited, addToFavorites, removeFromFavorites } from "../../../services/favoritesService";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Image, TouchableOpacity } from "react-native";
+import {
+  addToFavorites,
+  isPlantFavorited,
+  removeFromFavorites,
+} from "../../../services/favoritesService";
 
-const heartFilled = require("../../../assets/images/likeFilled.png");
-const heartUnfilled = require("../../../assets/images/likeUnfilled.png");
+const heartFilled = require("../../../assets/icons/likeFilled.png");
+const heartUnfilled = require("../../../assets/icons/likeUnfilled.png");
 
 interface FavoriteButtonProps {
   userId: string;
@@ -11,7 +15,11 @@ interface FavoriteButtonProps {
   onFavoriteChange?: (plantId: string, isFavorited: boolean) => void;
 }
 
-export const FavoriteButton = ({ userId, plantId, onFavoriteChange }: FavoriteButtonProps) => {
+export const FavoriteButton = ({
+  userId,
+  plantId,
+  onFavoriteChange,
+}: FavoriteButtonProps) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +48,7 @@ export const FavoriteButton = ({ userId, plantId, onFavoriteChange }: FavoriteBu
         await addToFavorites(userId, plantId);
         setIsFavorited(true);
       }
-      
+
       if (onFavoriteChange) {
         onFavoriteChange(plantId, !isFavorited);
       }
