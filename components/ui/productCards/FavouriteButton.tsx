@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator, ViewStyle } from "react-native";
 import { isPlantFavorited, addToFavorites, removeFromFavorites } from "../../../services/favoritesService";
 
+const heartFilled = require("../../../assets/images/likeFilled.png");
+const heartUnfilled = require("../../../assets/images/likeUnfilled.png");
 
 interface FavoriteButtonProps {
   userId: string;
@@ -54,8 +56,8 @@ export const FavoriteButton = ({ userId, plantId, onFavoriteChange }: FavoriteBu
   return (
     <TouchableOpacity onPress={handleToggleFavorite}>
       <Image
-        source={isFavorited ? require("../../../assets/images/likeFilled.png") : require("../../../assets/images/likeUnfilled.png")}
-        style={{ width: 28, height: 28 }}
+        source={isFavorited ? heartFilled : heartUnfilled}
+        style={{ width: 30, height: 28 }}
       />
     </TouchableOpacity>
   );
