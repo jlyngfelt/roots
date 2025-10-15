@@ -23,7 +23,9 @@ export default function TabLayout() {
           borderTopWidth: 0,
         },
         headerShown: true,
-        headerTitle: "",
+        headerTitle: () => (
+          <IconSymbol size={32} name="leaf.fill" color={Colors.primary} />
+        ),
         headerStyle: {
           backgroundColor: Colors.secondary,
           height: 100,
