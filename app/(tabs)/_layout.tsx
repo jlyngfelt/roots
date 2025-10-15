@@ -10,8 +10,10 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.background,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
@@ -19,7 +21,7 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={30} name="paperplane.fill" color={color} />
           ),
         }}
       />
@@ -28,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: "Messages",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="esim.fill" color={color} />
+            <IconSymbol size={30} name="esim.fill" color={color} />
           ),
         }}
       />
@@ -37,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: "upload",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="play.fill" color={color} />
+            <IconSymbol size={30} name="play.fill" color={color} />
           ),
         }}
       />
@@ -46,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: "Favourites",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="heart.fill" color={color} />
+            <IconSymbol size={30} name="heart.fill" color={color} />
           ),
         }}
       />
@@ -55,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={30} name="house.fill" color={color} />
           ),
         }}
       />
