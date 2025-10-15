@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, ScrollView, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import { FavoriteButton } from "@/components/ui/productCards/FavouriteButton";
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function ExploreScreen() {
           setLoading(true);
           const otherPlants = await getOtherUsersPlants(user?.uid);
           setPlants(otherPlants);
-        } catch (err) {
+        } catch (err: any) {
           setError(err.message);
           console.error("Error fetching plants:", err);
         } finally {
@@ -49,9 +50,15 @@ export default function ExploreScreen() {
           <View key={plant.id}>
             <Text>{plant.name}</Text>
             <Text>Ready to adopt: {plant.readyToAdopt ? "Yes" : "No"}</Text>
+            <FavoriteButton 
+            userId={user?.uid!} 
+            plantId={plant.id}
+          />
           </View>
         ))}
       
+    
+
         </ScrollView>
     </>
   );
