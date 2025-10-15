@@ -1,19 +1,13 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/input/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/input/DefaultTextArea";
+import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView } from "react-native";
+import { Text } from "tamagui";
 import { useAuth } from "../../contexts/AuthContext";
-import { pickAndUploadImage } from "../../services/imageService";
 import { createPlant } from "../../services/plantService";
 
 export default function UploadScreen() {
@@ -22,45 +16,20 @@ export default function UploadScreen() {
   const [plantName, setPlantName] = useState("");
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);
-  const [plantImageUrl, setPlantImageUrl] = useState("");
+  const [plantImages, setPlantImages] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-
-  async function handleImageUpload() {
-    if (!user?.uid) {
-      Alert.alert("Fel", "Du måste vara inloggad");
-      return;
-    }
-
-    try {
-      setIsUploading(true);
-      // Use a temporary ID for the plant image
-      const tempId = `temp_${Date.now()}`;
-      const downloadURL = await pickAndUploadImage("plants", tempId);
-
-      if (downloadURL) {
-        setPlantImageUrl(downloadURL);
-        Alert.alert("Klart!", "Plantbild uppladdad!");
-      }
-    } catch (err) {
-      Alert.alert("Fel", "Kunde inte ladda upp bild. Försök igen.");
-      console.error(err);
-    } finally {
-      setIsUploading(false);
-    }
-  }
 
   const handleCreatePlant = async () => {
     setError("");
 
     if (!plantName.trim()) {
-      setError("Plant name is required");
+      setError("Plantans namn krävs");
       return;
     }
 
     if (!description.trim()) {
-      setError("Description is required");
+      setError("Beskrivning krävs");
       return;
     }
 
@@ -71,90 +40,54 @@ export default function UploadScreen() {
         name: plantName.trim(),
         description: description.trim(),
         readyToAdopt: readyToAdopt,
-        categoryId: "", // Lägg till categoryId-hantering
-        imageUrl: plantImageUrl,
+        categoryId: "",
+        imageUrl: plantImages[0] || "",
+        imageUrls: plantImages,
       });
 
-      console.log("Plant created successfully!");
-      router.replace("/(tabs)/explore"); // här ska man redirectas till plantas sida
+      setPlantName("");
+      setDescription("");
+      setReadyToAdopt(false);
+      setPlantImages([]);
+
+      router.replace("/(tabs)/explore");
     } catch (err) {
-      console.error("Error creating plant:", err);
-      setError("Failed to create plant. Please try again.");
+      console.error(err);
+      setError("Kunde inte skapa planta");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <Text style={{ fontSize: 50, padding: 40 }}>UPLOAD</Text>
-
-      {/* Plant Image Preview */}
-      {plantImageUrl ? (
-        <Image
-          source={{ uri: plantImageUrl }}
-          style={{
-            width: 240,
-            height: 240,
-            padding: 40,
-            borderRadius: 16,
-            marginBottom: 24,
-            alignSelf: "center",
-          }}
-        />
-      ) : (
-        <View
-          style={{
-            width: 240,
-            height: 240,
-            padding: 40,
-            borderRadius: 16,
-            marginBottom: 24,
-            backgroundColor: "gray",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text>Ingen bild</Text>
-        </View>
-      )}
-
-      <DefaultButton
-        variant="secondary"
-        onPress={handleImageUpload}
-        disabled={isUploading}
-      >
-        {isUploading
-          ? "Laddar upp..."
-          : plantImageUrl
-          ? "Ändra bild"
-          : "Ladda upp bild"}
-      </DefaultButton>
-
-      {isUploading && <ActivityIndicator size="small" color="#0000ff" />}
+    <ScrollView style={{ padding: 20 }}>
+      <MultiImagePicker
+        images={plantImages}
+        onImagesChange={setPlantImages}
+        maxImages={5}
+        folder="plants"
+        fileNamePrefix={`plant_${user?.uid || "temp"}`}
+      />
 
       <DefaultInput
         value={plantName}
         onChangeText={setPlantName}
-        placeholder="Ex. Monstera"
+        placeholder="Plantans namn"
       />
+
       <DefaultTextArea
         value={description}
         onChangeText={setDescription}
         placeholder="Beskrivning"
       />
+
       <DefaultSwitch checked={readyToAdopt} onCheckedChange={setReadyToAdopt} />
 
-      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+      {error ? <Text>{error}</Text> : null}
 
-      <DefaultButton
-        onPress={handleCreatePlant}
-        disabled={loading || isUploading}
-      >
+      <DefaultButton onPress={handleCreatePlant} disabled={loading}>
         {loading ? "Sparar..." : "Spara"}
       </DefaultButton>
-    </>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({});
