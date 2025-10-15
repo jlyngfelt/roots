@@ -1,6 +1,6 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefualtInput } from "@/components/ui/input/DefaultInput";
-import { DefualtTextArea } from "@/components/ui/input/DefaultTextArea";
+import { DefaultInput } from "@/components/ui/input/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/input/DefaultTextArea";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -54,12 +54,12 @@ export default function EditPlantScreen() {
     <>
       <Text style={{ fontSize: 50, padding: 40 }}>UPLOAD</Text>
 
-      <DefualtInput
+      <DefaultInput
         value={plantName}
         onChangeText={setPlantName}
         placeholder="Ex. Monstera"
       />
-      <DefualtTextArea
+      <DefaultTextArea
         value={description}
         onChangeText={setDescription}
         placeholder="Beskrivning"
