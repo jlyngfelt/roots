@@ -11,6 +11,17 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.background,
+        tabBarStyle: {
+          backgroundColor: Colors.secondary,
+          height: 60,
+          paddingTop: 12,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          overflow: "hidden",
+          marginHorizontal: 2,
+          position: "absolute",
+          borderTopWidth: 0,
+        },
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarShowLabel: false,
