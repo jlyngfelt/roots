@@ -1,9 +1,10 @@
+import { FavoriteButton } from "@/components/ui/buttons/FavouriteButton";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
-import { FavoriteButton } from "@/components/ui/productCards/FavouriteButton";
+import { ReadyToAdopt } from "@/components/ui/buttons/ReadyToAdopt";
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -16,9 +17,13 @@ export default function ExploreScreen() {
     id: string;
     name: string;
     description?: string;
-    readyToAdopt?: boolean;
+    readyToAdopt: boolean;
     // fyll på här med resten av våra fält
   }
+
+//   interface ReadyToAdoptProps {
+//   readyToAdopt: boolean;
+// }
 
   useEffect(() => {
     if (user?.uid) {
@@ -42,24 +47,18 @@ export default function ExploreScreen() {
 
   return (
     <>
-    <ScrollView>
+      <ScrollView>
+        <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
 
-      <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
-      
         {plants.map((plant) => (
           <View key={plant.id}>
             <Text>{plant.name}</Text>
             <Text>Ready to adopt: {plant.readyToAdopt ? "Yes" : "No"}</Text>
-            <FavoriteButton 
-            userId={user?.uid!} 
-            plantId={plant.id}
-          />
+            <FavoriteButton userId={user?.uid!} plantId={plant.id} />
+          <ReadyToAdopt readyToAdopt={plant.readyToAdopt} />
           </View>
         ))}
-      
-    
-
-        </ScrollView>
+      </ScrollView>
     </>
   );
 }
