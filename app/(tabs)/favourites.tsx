@@ -31,14 +31,11 @@ useEffect(() => {
       try {
         setLoading(true);
         const favoritePlantIds = await getUserFavorites(user?.uid);
-        
-        // Hämta plantdata för varje favorit-ID
         const plantPromises = favoritePlantIds.map(plantId => 
           getPlantById(plantId)
         );
         const plantData = await Promise.all(plantPromises);
         
-        // Filtrera bort eventuella null (om någon planta inte finns)
         const validPlants = plantData.filter(plant => plant !== null);
         
         setPlants(validPlants);
@@ -65,7 +62,7 @@ useEffect(() => {
             plantId={plant.id}
             onFavoriteChange={(plantId, isFavorited) => {
               if (!isFavorited) {
-                // Ta bort från listan när unfavorited
+
                 setPlants(prev => prev.filter(p => p.id !== plantId));
               }
             }}
