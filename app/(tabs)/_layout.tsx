@@ -34,7 +34,7 @@ export default function TabLayout() {
           paddingLeft: 16,
         },
         headerRightContainerStyle: {
-          paddingLeft: 16,
+          paddingRight: 16,
         },
         headerShadowVisible: false,
         tabBarButton: HapticTab,
@@ -112,7 +112,15 @@ export default function TabLayout() {
               />
             </Pressable>
           ),
-
+          headerRight: () => (
+            <Pressable onPress={() => router.push("/settings")}>
+              <IconSymbol
+                size={30}
+                name="gearshape"
+                color={Colors.background}
+              />
+            </Pressable>
+          ),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={32} name="person" color={color} />
           ),
