@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { ReadyToAdopt } from "@/components/ui/buttons/ReadyToAdopt";
+import { ProductCard } from "@/components/ui/productCard/ProductCard";
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function ExploreScreen() {
     name: string;
     description?: string;
     readyToAdopt: boolean;
+    imageUrl: string;
     // fyll på här med resten av våra fält
   }
 
@@ -47,14 +49,26 @@ export default function ExploreScreen() {
       <ScrollView>
         <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
 
-        {plants.map((plant) => (
+        {/* {plants.map((plant) => (
           <View key={plant.id}>
             <Text>{plant.name}</Text>
             <Text>Ready to adopt: {plant.readyToAdopt ? "Yes" : "No"}</Text>
             <FavoriteButton userId={user?.uid!} plantId={plant.id} />
           <ReadyToAdopt readyToAdopt={plant.readyToAdopt} />
           </View>
-        ))}
+        ))} */}
+
+        {plants.map((plant) => (
+  <ProductCard 
+    key={plant.id}
+    userId={user?.uid!}
+    plantId={plant.id}
+    name={plant.name}
+    description={plant.description}
+    image={plant.imageUrl}
+    readyToAdopt={plant.readyToAdopt}
+  />
+))}
       </ScrollView>
     </>
   );
