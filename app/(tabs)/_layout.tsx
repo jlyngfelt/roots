@@ -22,7 +22,13 @@ export default function TabLayout() {
           position: "absolute",
           borderTopWidth: 0,
         },
-        headerShown: false,
+        headerShown: true,
+        headerTitle: "",
+        headerStyle: {
+          backgroundColor: Colors.secondary,
+          height: 100,
+        },
+        headerShadowVisible: false,
         tabBarButton: HapticTab,
         tabBarShowLabel: false,
       }}
