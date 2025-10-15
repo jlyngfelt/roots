@@ -1,114 +1,174 @@
 import * as ImagePicker from "expo-image-picker";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { Alert } from "react-native";
 import { storage } from "../firebaseConfig";
 
 /**
- * Picks an image from the device's library
- * Returns the selected image URI or null if cancelled
+ * Optimizes an image by resizing and compressing it
+ */
+export async function optimizeImage(imageUri, options = {}) {
+  const {
+    maxWidth = 1200,
+    maxHeight = 1200,
+    quality = 0.7,
+    format = SaveFormat.JPEG,
+  } = options;
+
+  try {
+    const manipulatedImage = await manipulateAsync(
+      imageUri,
+      [{ resize: { width: maxWidth, height: maxHeight } }],
+      { compress: quality, format: format }
+    );
+    return manipulatedImage.uri;
+  } catch (error) {
+    console.error("Error optimizing image:", error);
+    return imageUri;
+  }
+}
+
+/**
+ * Shows alert to choose between camera or gallery
+ */
+export async function chooseImageSource() {
+  return new Promise((resolve) => {
+    Alert.alert(
+      "Välj bild",
+      "Hur vill du lägga till en bild?",
+      [
+        {
+          text: "Ta foto",
+          onPress: async () => {
+            const uri = await takePhoto();
+            resolve(uri);
+          },
+        },
+        {
+          text: "Välj från galleri",
+          onPress: async () => {
+            const uri = await pickImageFromLibrary();
+            resolve(uri);
+          },
+        },
+        {
+          text: "Avbryt",
+          style: "cancel",
+          onPress: () => resolve(null),
+        },
+      ],
+      { cancelable: true, onDismiss: () => resolve(null) }
+    );
+  });
+}
+
+/**
+ * Picks an image from library
  */
 export async function pickImageFromLibrary() {
   try {
-    // Request permission to access media library
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permissionResult.granted) {
-      alert("Permission to access camera roll is required!");
+      Alert.alert(
+        "Behörighet krävs",
+        "Vi behöver tillgång till ditt fotobibliotek."
+      );
       return null;
     }
 
-    // Launch the image picker
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1], // Square crop for profile pictures
-      quality: 0.7, // Compress to 70% quality to save storage
+      aspect: [1, 1],
+      quality: 1,
     });
 
     if (!result.canceled) {
       return result.assets[0].uri;
     }
-
     return null;
   } catch (error) {
     console.error("Error picking image:", error);
+    Alert.alert("Fel", "Kunde inte välja bild.");
     throw error;
   }
 }
 
 /**
- * Takes a photo using the device's camera
- * Returns the photo URI or null if cancelled
+ * Takes a photo with camera
  */
 export async function takePhoto() {
   try {
-    // Request permission to access camera
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (!permissionResult.granted) {
-      alert("Permission to access camera is required!");
+      Alert.alert("Behörighet krävs", "Vi behöver tillgång till din kamera.");
       return null;
     }
 
-    // Launch the camera
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.7,
+      quality: 1,
     });
 
     if (!result.canceled) {
       return result.assets[0].uri;
     }
-
     return null;
   } catch (error) {
     console.error("Error taking photo:", error);
+    Alert.alert("Fel", "Kunde inte ta foto.");
     throw error;
   }
 }
 
 /**
- * Uploads an image to Firebase Storage
- * @param {string} imageUri - The local URI of the image
- * @param {string} folder - The folder in storage ('profiles' or 'plants')
- * @param {string} fileName - The name for the file (e.g., userId or plantId)
- * @returns {Promise<string>} The download URL of the uploaded image
+ * Uploads image to Firebase Storage
  */
-export async function uploadImage(imageUri, folder, fileName) {
+export async function uploadImage(
+  imageUri,
+  folder,
+  fileName,
+  optimizationOptions = {}
+) {
   try {
-    // Convert the image URI to a blob
-    const response = await fetch(imageUri);
+    const optimizedUri = await optimizeImage(imageUri, optimizationOptions);
+    const response = await fetch(optimizedUri);
     const blob = await response.blob();
 
-    // Create a reference to where we want to store the file
     const storageRef = ref(storage, `${folder}/${fileName}.jpg`);
-
-    // Upload the file
     await uploadBytes(storageRef, blob);
-
-    // Get the download URL
     const downloadURL = await getDownloadURL(storageRef);
 
     return downloadURL;
   } catch (error) {
     console.error("Error uploading image:", error);
+    Alert.alert("Fel", "Kunde inte ladda upp bild.");
     throw error;
   }
 }
 
 /**
- * Complete flow: Pick image and upload it
- * @param {string} folder - The folder in storage ('profiles' or 'plants')
- * @param {string} fileName - The name for the file (e.g., userId or plantId)
- * @returns {Promise<string|null>} The download URL or null if cancelled
+ * Complete flow: choose source and upload
  */
-export async function pickAndUploadImage(folder, fileName) {
+export async function pickAndUploadImage(
+  folder,
+  fileName,
+  optimizationOptions = {}
+) {
   try {
-    const imageUri = await pickImageFromLibrary();
+    const imageUri = await chooseImageSource();
     if (!imageUri) return null;
 
-    const downloadURL = await uploadImage(imageUri, folder, fileName);
+    const downloadURL = await uploadImage(
+      imageUri,
+      folder,
+      fileName,
+      optimizationOptions
+    );
     return downloadURL;
   } catch (error) {
     console.error("Error in pickAndUploadImage:", error);
@@ -117,20 +177,10 @@ export async function pickAndUploadImage(folder, fileName) {
 }
 
 /**
- * Complete flow: Take photo and upload it
- * @param {string} folder - The folder in storage ('profiles' or 'plants')
- * @param {string} fileName - The name for the file (e.g., userId or plantId)
- * @returns {Promise<string|null>} The download URL or null if cancelled
+ * Optimization presets
  */
-export async function takeAndUploadPhoto(folder, fileName) {
-  try {
-    const imageUri = await takePhoto();
-    if (!imageUri) return null;
-
-    const downloadURL = await uploadImage(imageUri, folder, fileName);
-    return downloadURL;
-  } catch (error) {
-    console.error("Error in takeAndUploadPhoto:", error);
-    throw error;
-  }
-}
+export const OptimizationPresets = {
+  profile: { maxWidth: 800, maxHeight: 800, quality: 0.8 },
+  plant: { maxWidth: 1200, maxHeight: 1200, quality: 0.75 },
+  thumbnail: { maxWidth: 400, maxHeight: 400, quality: 0.7 },
+};
