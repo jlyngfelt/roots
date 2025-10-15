@@ -24,6 +24,7 @@ export async function createPlant(userId, plantData) {
       imageUrl: plantData.imageUrl || "",
       createdAt: serverTimestamp(),
       adoptedBy: null,
+      imageUrls: plantData.imageUrls || [],
     });
     console.log("Plant created!");
     return plantRef.id;
@@ -52,7 +53,7 @@ export async function getAvailablePlants() {
   try {
     const q = query(
       collection(db, "plants"),
-      where("readyToAdopt", "==", true),
+      where("readyToAdopt", "==", true)
     );
     const querySnapshot = await getDocs(q);
     const plants = [];
