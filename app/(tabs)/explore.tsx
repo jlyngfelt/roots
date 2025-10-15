@@ -21,9 +21,6 @@ export default function ExploreScreen() {
     // fyll på här med resten av våra fält
   }
 
-//   interface ReadyToAdoptProps {
-//   readyToAdopt: boolean;
-// }
 
   useEffect(() => {
     if (user?.uid) {
