@@ -13,12 +13,12 @@ export default function TabLayout() {
         tabBarInactiveTintColor: Colors.background,
         tabBarStyle: {
           backgroundColor: Colors.secondary,
-          height: 60,
+          height: 70,
           paddingTop: 12,
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
           overflow: "hidden",
-          marginHorizontal: 2,
+          marginHorizontal: 0,
           position: "absolute",
           borderTopWidth: 0,
         },
@@ -32,7 +32,7 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={30} name="paperplane.fill" color={color} />
+            <IconSymbol size={32} name="apple.meditate" color={color} />
           ),
         }}
       />
@@ -41,7 +41,7 @@ export default function TabLayout() {
         options={{
           title: "Messages",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={30} name="esim.fill" color={color} />
+            <IconSymbol size={32} name="ellipsis.message" color={color} />
           ),
         }}
       />
@@ -50,7 +50,7 @@ export default function TabLayout() {
         options={{
           title: "upload",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={30} name="play.fill" color={color} />
+            <IconSymbol size={32} name="plus" color={color} />
           ),
         }}
       />
@@ -58,8 +58,12 @@ export default function TabLayout() {
         name="favourites"
         options={{
           title: "Favourites",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={30} name="heart.fill" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol
+              size={32}
+              name={focused ? "heart.fill" : "heart"}
+              color={focused ? "#ff7abd" : color}
+            />
           ),
         }}
       />
@@ -68,7 +72,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={30} name="house.fill" color={color} />
+            <IconSymbol size={32} name="person" color={color} />
           ),
         }}
       />
