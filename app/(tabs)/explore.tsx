@@ -27,7 +27,7 @@ export default function ExploreScreen() {
           setLoading(true);
           const otherPlants = await getOtherUsersPlants(user?.uid);
           setPlants(otherPlants);
-        } catch (err) {
+        } catch (err: any) {
           setError(err.message);
           console.error("Error fetching plants:", err);
         } finally {
