@@ -1,11 +1,9 @@
-import { FavoriteButton } from "@/components/ui/buttons/FavouriteButton";
+import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
-import { ReadyToAdopt } from "@/components/ui/buttons/ReadyToAdopt";
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -22,7 +20,6 @@ export default function ExploreScreen() {
     imageUrl: string;
     // fyll på här med resten av våra fält
   }
-
 
   useEffect(() => {
     if (user?.uid) {
@@ -45,8 +42,8 @@ export default function ExploreScreen() {
   }, [user?.uid]);
 
   return (
-    <>
-      <ScrollView>
+   
+      <ScrollView >
         <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
 
         {/* {plants.map((plant) => (
@@ -57,21 +54,29 @@ export default function ExploreScreen() {
           <ReadyToAdopt readyToAdopt={plant.readyToAdopt} />
           </View>
         ))} */}
+<View style={styles.feed}>
 
         {plants.map((plant) => (
-  <ProductCard 
-    key={plant.id}
-    userId={user?.uid!}
-    plantId={plant.id}
-    name={plant.name}
-    description={plant.description}
-    image={plant.imageUrl}
-    readyToAdopt={plant.readyToAdopt}
-  />
-))}
+          <ProductCard
+          key={plant.id}
+          userId={user?.uid!}
+          plantId={plant.id}
+          name={plant.name}
+          description={plant.description}
+          image={plant.imageUrl}
+          readyToAdopt={plant.readyToAdopt}
+          />
+        ))}
+        </View>
       </ScrollView>
-    </>
+ 
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  feed: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+});
