@@ -1,9 +1,8 @@
-import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Image, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import TabLayout from "./_layout";
 
@@ -58,55 +57,53 @@ export default function ProfileScreen() {
 
   return (
     <>
-   <ScrollView>
-      <Text style={{ fontSize: 20, padding: 10 }}>PROFIL</Text>
+      <ScrollView>
+        <Text style={{ fontSize: 20, padding: 10 }}>PROFIL</Text>
 
-      {/* Profile Image */}
-      {userProfile?.profileImageUrl ? (
-        <Image
-          source={{ uri: userProfile.profileImageUrl }}
-          style={{
-            width: 240,
-            height: 240,
-            padding: 40,
-            borderRadius: 16,
-            alignSelf: "center",
-            marginBottom: 24,
-          }}
-        />
-      ) : (
-        <View
-          style={{
-            width: 240,
-            height: 240,
-            padding: 40,
-            borderRadius: 16,
-            marginBottom: 24,
-            backgroundColor: "gray",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white" }}>Ingen bild</Text>
-        </View>
-      )}
+        {/* Profile Image */}
+        {userProfile?.profileImageUrl ? (
+          <Image
+            source={{ uri: userProfile.profileImageUrl }}
+            style={{
+              width: 240,
+              height: 240,
+              padding: 40,
+              borderRadius: 16,
+              alignSelf: "center",
+              marginBottom: 24,
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              width: 240,
+              height: 240,
+              padding: 40,
+              borderRadius: 16,
+              marginBottom: 24,
+              backgroundColor: "gray",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "white" }}>Ingen bild</Text>
+          </View>
+        )}
 
-      <Text style={{ fontSize: 20, padding: 10 }}>Email: {user?.email}</Text>
-      <Text style={{ fontSize: 20, padding: 10 }}>
-        username: {userProfile?.username}
-      </Text>
-      <Text style={{ fontSize: 20, padding: 10 }}>
-        postal: {userProfile?.postalCode}
-      </Text>
-      <Text style={{ fontSize: 20, padding: 10 }}>bio: {userProfile?.bio}</Text>
-      <Text style={{ fontSize: 20, padding: 10 }}>
-        credits: {userProfile?.credits}
-      </Text>
+        <Text style={{ fontSize: 20, padding: 10 }}>Email: {user?.email}</Text>
+        <Text style={{ fontSize: 20, padding: 10 }}>
+          username: {userProfile?.username}
+        </Text>
+        <Text style={{ fontSize: 20, padding: 10 }}>
+          postal: {userProfile?.postalCode}
+        </Text>
+        <Text style={{ fontSize: 20, padding: 10 }}>
+          bio: {userProfile?.bio}
+        </Text>
+        <Text style={{ fontSize: 20, padding: 10 }}>
+          credits: {userProfile?.credits}
+        </Text>
         <TabLayout />
-        <DefaultButton onPress={() => router.replace("/settings")}>
-          {" "}
-          Inställningar
-        </DefaultButton>
       </ScrollView>
     </>
   );
