@@ -10,8 +10,21 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.background,
+        tabBarStyle: {
+          backgroundColor: Colors.secondary,
+          height: 70,
+          paddingTop: 12,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          overflow: "hidden",
+          marginHorizontal: 0,
+          position: "absolute",
+          borderTopWidth: 0,
+        },
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
@@ -19,7 +32,7 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={32} name="apple.meditate" color={color} />
           ),
         }}
       />
@@ -28,7 +41,7 @@ export default function TabLayout() {
         options={{
           title: "Messages",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="esim.fill" color={color} />
+            <IconSymbol size={32} name="ellipsis.message" color={color} />
           ),
         }}
       />
@@ -37,7 +50,7 @@ export default function TabLayout() {
         options={{
           title: "upload",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="play.fill" color={color} />
+            <IconSymbol size={32} name="plus" color={color} />
           ),
         }}
       />
@@ -45,8 +58,12 @@ export default function TabLayout() {
         name="favourites"
         options={{
           title: "Favourites",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="heart.fill" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol
+              size={32}
+              name={focused ? "heart.fill" : "heart"}
+              color={focused ? "#ff7abd" : color}
+            />
           ),
         }}
       />
@@ -55,7 +72,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={32} name="person" color={color} />
           ),
         }}
       />
