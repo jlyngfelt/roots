@@ -36,16 +36,35 @@ export default function RootLayout() {
 }
 
 function NavigationHandler() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const router = useRouter();
   const segments = useSegments();
 
   useEffect(() => {
-    if (!user && segments[0] === "settings") {
+    if (loading) return;
+
+    const inAuthGroup =
+      segments[0] === "welcome" ||
+      segments[0] === "login" ||
+      segments[0] === "register";
+
+    const inProtectedGroup =
+      segments[0] === "(tabs)" ||
+      segments[0] === "create-profile" ||
+      segments[0] === "edit-profile" ||
+      segments[0] === "edit-plant" ||
+      segments[0] === "view-plant" ||
+      segments[0] === "settings";
+
+    if (!user && inProtectedGroup) {
       router.replace("/welcome");
     }
-  }, [user, segments]);
+
+    if (user && inAuthGroup) {
+      router.replace("/(tabs)/explore");
+    }
+  }, [user, loading, segments]);
 
   return (
     <Stack>
