@@ -3,7 +3,7 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { View } from "react-native";
+import { Alert, Linking, View } from "react-native";
 import { Input, Text } from "tamagui";
 import { signUp } from "../auth";
 
@@ -33,11 +33,21 @@ export default function RegisterScreen() {
     try {
       await signUp(email.trim(), password1);
       router.replace("/create-profile");
+      Alert.alert(
+        "Verifiera din e-post",
+        "Vi har skickat ett verifieringsmail till din e-mail. Vänligen klicka på länken i mailet för att aktivera ditt konto och gå vidare.",
+        [
+          {
+            text: "Öppna e-post",
+            onPress: () => Linking.openURL("message:"),
+          },
+        ]
+      );
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
-        setError("Email används redan");
+        setError("e-mail används redan");
       } else if (err.code === "auth/invalid-email") {
-        setError("Ogiltigt format på email");
+        setError("Ogiltigt format på e-mail");
       } else {
         setError("Något gick fel");
       }

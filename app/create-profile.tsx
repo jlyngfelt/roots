@@ -110,6 +110,12 @@ export default function CreateProfileScreen() {
         >
           {loading ? "Sparar..." : "Spara"}
         </DefaultButton>
+        <DefaultButton
+          onPress={() => router.replace("/welcome")}
+          variant="tertiary"
+        >
+          Tillbaka
+        </DefaultButton>
       </ScrollView>
     </KeyboardAvoidingView>
   );
