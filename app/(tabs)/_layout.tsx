@@ -1,9 +1,9 @@
-import { Tabs } from "expo-router";
-import React from "react";
-
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/design-system";
+import { router, Tabs } from "expo-router";
+import React from "react";
+import { Pressable } from "react-native";
 
 export default function TabLayout() {
   return (
@@ -22,7 +22,21 @@ export default function TabLayout() {
           position: "absolute",
           borderTopWidth: 0,
         },
-        headerShown: false,
+        headerShown: true,
+        headerTitle: () => (
+          <IconSymbol size={32} name="leaf.fill" color={Colors.primary} />
+        ),
+        headerStyle: {
+          backgroundColor: Colors.secondary,
+          height: 110,
+        },
+        headerLeftContainerStyle: {
+          paddingLeft: 16,
+        },
+        headerRightContainerStyle: {
+          paddingRight: 16,
+        },
+        headerShadowVisible: false,
         tabBarButton: HapticTab,
         tabBarShowLabel: false,
       }}
@@ -49,6 +63,15 @@ export default function TabLayout() {
         name="upload"
         options={{
           title: "upload",
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <IconSymbol
+                size={30}
+                name="chevron.left"
+                color={Colors.background}
+              />
+            </Pressable>
+          ),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={32} name="plus" color={color} />
           ),
@@ -58,6 +81,15 @@ export default function TabLayout() {
         name="favourites"
         options={{
           title: "Favourites",
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <IconSymbol
+                size={30}
+                name="chevron.left"
+                color={Colors.background}
+              />
+            </Pressable>
+          ),
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={32}
@@ -71,6 +103,24 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Profile",
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <IconSymbol
+                size={30}
+                name="chevron.left"
+                color={Colors.background}
+              />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable onPress={() => router.push("/settings")}>
+              <IconSymbol
+                size={30}
+                name="gearshape"
+                color={Colors.background}
+              />
+            </Pressable>
+          ),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={32} name="person" color={color} />
           ),
