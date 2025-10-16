@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
   feed: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
   },
 });

@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "tamagui";
-import { Colors, Spacing } from "../../../constants/design-system";
+import { Colors, Spacing, BorderRadius, Styles, Typography } from "../../../constants/design-system";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 
@@ -26,16 +26,11 @@ export const ProductCard = ({
   return (
     
       <View style={styles.card}>
-        {image ? (
           <Image style={styles.image} source={{ uri: image }} />
-        ) : (
-          <View style={styles.noImage}>
-            <Text style={{ color: "white" }}>Ingen bild</Text>
-          </View>
-        )}
+       
         <View style={styles.cardInfo}>
           <View style={styles.texts}>
-            <Text style={styles.name}>{name}</Text>
+            <Text style={Styles.heading2}>{name}</Text>
           </View>
 
           <View style={styles.icons}>
@@ -44,7 +39,7 @@ export const ProductCard = ({
           </View>
           </View>
             {description && (
-                <Text style={styles.description}>{description}</Text>
+                <Text style={[styles.description, Styles.bodyS]}>{description}</Text>
             )}
       </View>
     
@@ -55,46 +50,30 @@ const styles = StyleSheet.create({
 
   card: {
     width: "47%",
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.secondary,
     padding: Spacing.s,
-    borderRadius: 8,
+    borderRadius: BorderRadius.m,
     marginVertical: 5,
     marginHorizontal: 2,
   },
   image: {
     width: "95%",
-    height: 100,
-    borderRadius: 16,
+    aspectRatio: 4/5,
+    borderRadius: BorderRadius.xl,
     margin: Spacing.s,
     alignSelf: "center",
   },
-  noImage: {
-    width: 240,
-    height: 240,
-    padding: 40,
-    borderRadius: 16,
-    marginBottom: 24,
-    backgroundColor: "gray",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginTop: 8,
-  },
   description: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 4,
+    marginVertical: Spacing.s,
+    paddingHorizontal: Spacing.s,
   },
   cardInfo: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     padding: Spacing.s,
     width: "100%",
+    gap: Spacing.s
   },
   texts: {
     flexDirection: "column",
@@ -102,5 +81,6 @@ const styles = StyleSheet.create({
   icons: {
     flexDirection: "row",
     gap: Spacing.s,
+    alignItems: "center"
   },
 });
