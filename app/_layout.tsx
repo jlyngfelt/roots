@@ -49,15 +49,7 @@ function NavigationHandler() {
       segments[0] === "login" ||
       segments[0] === "register";
 
-    const inProtectedGroup =
-      segments[0] === "(tabs)" ||
-      segments[0] === "create-profile" ||
-      segments[0] === "edit-profile" ||
-      segments[0] === "edit-plant" ||
-      segments[0] === "view-plant" ||
-      segments[0] === "settings";
-
-    if (!user && inProtectedGroup) {
+    if (!user && !inAuthGroup) {
       router.replace("/welcome");
     }
 
