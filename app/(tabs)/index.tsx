@@ -2,7 +2,7 @@ import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import TabLayout from "./_layout";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
@@ -110,6 +110,8 @@ export default function ProfileScreen() {
 
         <View style={styles.feed}>
                 {plants.map((plant) => (
+                  <Pressable onPress={() => router.push("/view-plant/[plantId]")}>
+
                   <ProductCard
                   key={plant.id}
                   userId={user?.uid!}
@@ -119,6 +121,7 @@ export default function ProfileScreen() {
                   image={plant.imageUrl}
                   readyToAdopt={plant.readyToAdopt}
                   />
+                  </Pressable>
                 ))}
                 </View>
       </ScrollView>
