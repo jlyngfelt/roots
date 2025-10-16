@@ -13,7 +13,7 @@ import {
 } from "../../services/plantService";
 
 export default function EditPlantScreen() {
-  const { plantId } = useLocalSearchParams();
+  const { plantId } = useLocalSearchParams<{ plantId: string }>();
   const router = useRouter();
   const { user } = useAuth();
   const [plantName, setPlantName] = useState("");
