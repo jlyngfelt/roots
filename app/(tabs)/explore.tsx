@@ -76,6 +76,6 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   feed: {
     flexDirection: "column",
-    
+    marginBottom: 80,
   },
 });
