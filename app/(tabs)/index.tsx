@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import TabLayout from "./_layout";
+import { ProductCard } from "@/components/ui/productCard/ProductCard";
+import { Spacing } from '../../constants/design-system'
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -105,9 +107,31 @@ export default function ProfileScreen() {
           credits: {userProfile?.credits}
         </Text>
         <TabLayout />
+
+        <View style={styles.feed}>
+                {plants.map((plant) => (
+                  <ProductCard
+                  key={plant.id}
+                  userId={user?.uid!}
+                  plantId={plant.id}
+                  name={plant.name}
+                  description={plant.description}
+                  image={plant.imageUrl}
+                  readyToAdopt={plant.readyToAdopt}
+                  />
+                ))}
+                </View>
       </ScrollView>
     </>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  feed: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    marginBottom: 80,
+  },
+
+});
