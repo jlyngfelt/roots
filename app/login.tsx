@@ -18,7 +18,7 @@ export default function LoginScreen() {
     setLoading(true);
 
     try {
-      await signIn(email, password);
+      await signIn(email.trim(), password);
       router.replace("/(tabs)/explore");
     } catch (err: any) {
       if (
