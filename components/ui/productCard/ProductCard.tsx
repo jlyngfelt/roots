@@ -25,7 +25,7 @@ export const ProductCard = ({
 }: ProductCardProps) => {
   return (
     
-      <View style={[styles.card, variant === "big" ? styles.cardBig : styles.cardSmall]}>
+      <View style={[variant === "big" ? styles.cardBig : styles.cardSmall]}>
           <Image style={[styles.image, variant === "big" ? styles.imageBig : styles.imageSmall]} source={{ uri: image }} />
        
         <View style={styles.cardInfo}>

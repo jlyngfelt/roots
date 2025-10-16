@@ -2,8 +2,9 @@ import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -55,8 +56,11 @@ export default function ExploreScreen() {
           <ReadyToAdopt readyToAdopt={plant.readyToAdopt} />
           </View>
         ))} */}
+
       <View style={styles.feed}>
         {plants.map((plant) => (
+          <Pressable onPress={() => router.push("/view-plant/[plantId]")}>
+
           <ProductCard
           variant="big"
           key={plant.id}
@@ -67,6 +71,7 @@ export default function ExploreScreen() {
           image={plant.imageUrl}
           readyToAdopt={plant.readyToAdopt}
           />
+          </Pressable>
         ))}
       </View>
     </ScrollView>

@@ -3,7 +3,7 @@ import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScrollView, Text, View, StyleSheet, Pressable } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
 
@@ -57,6 +57,8 @@ export default function FavoritesScreen() {
 
 <View style={styles.feed}>
         {plants.map((plant) => (
+          <Pressable onPress={() => router.push("/view-plant/[plantId]")}>
+
           <ProductCard
           key={plant.id}
           userId={user?.uid!}
@@ -66,6 +68,7 @@ export default function FavoritesScreen() {
           image={plant.imageUrl}
           readyToAdopt={plant.readyToAdopt}
           />
+          </Pressable>
         ))}
         </View>
     </ScrollView>
