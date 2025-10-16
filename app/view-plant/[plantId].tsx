@@ -8,7 +8,7 @@ import { getPlantById } from "@/services/plantService";
 export default function ViewPlantScreen() {
   const router = useRouter();
   const { user } = useAuth();
-  const { plantId } = useLocalSearchParams();
+  const { plantId } = useLocalSearchParams<{ plantId: string }>();;
   const [plantName, setPlantName] = useState("");
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);

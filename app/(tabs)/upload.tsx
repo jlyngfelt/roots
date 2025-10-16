@@ -36,6 +36,7 @@ export default function UploadScreen() {
     setLoading(true);
 
     try {
+      if (!user?.uid) return;
       await createPlant(user?.uid, {
         name: plantName.trim(),
         description: description.trim(),
