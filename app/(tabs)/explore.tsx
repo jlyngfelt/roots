@@ -12,13 +12,14 @@ export default function ExploreScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  interface Plant {
+   interface Plant {
     id: string;
     name: string;
     description?: string;
     readyToAdopt: boolean;
+    userId: string;
+    categoryId?: string;
     imageUrl: string;
-    // fyll på här med resten av våra fält
   }
 
   useEffect(() => {
@@ -26,7 +27,8 @@ export default function ExploreScreen() {
       async function fetchPlants() {
         try {
           setLoading(true);
-          const otherPlants = await getOtherUsersPlants(user?.uid);
+          if (!user?.uid) return;
+          const otherPlants = await getOtherUsersPlants(user.uid);
           setPlants(otherPlants);
         } catch (err: any) {
           setError(err.message);
@@ -42,11 +44,10 @@ export default function ExploreScreen() {
   }, [user?.uid]);
 
   return (
-   
-      <ScrollView >
-        <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
+    <ScrollView>
+      <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
 
-        {/* {plants.map((plant) => (
+      {/* {plants.map((plant) => (
           <View key={plant.id}>
             <Text>{plant.name}</Text>
             <Text>Ready to adopt: {plant.readyToAdopt ? "Yes" : "No"}</Text>
@@ -54,8 +55,7 @@ export default function ExploreScreen() {
           <ReadyToAdopt readyToAdopt={plant.readyToAdopt} />
           </View>
         ))} */}
-<View style={styles.feed}>
-
+      <View style={styles.feed}>
         {plants.map((plant) => (
           <ProductCard
           variant="big"
@@ -68,9 +68,8 @@ export default function ExploreScreen() {
           readyToAdopt={plant.readyToAdopt}
           />
         ))}
-        </View>
-      </ScrollView>
- 
+      </View>
+    </ScrollView>
   );
 }
 

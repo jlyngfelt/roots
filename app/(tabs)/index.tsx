@@ -17,6 +17,7 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (user?.uid) {
       async function fetchPlants() {
+        if (!user?.uid) return;
         const userPlants = await getUserPlants(user?.uid);
         setPlants(userPlants);
       }
@@ -36,10 +37,10 @@ export default function ProfileScreen() {
   interface Plant {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     readyToAdopt: boolean;
     userId: string;
-    categoryId: string;
+    categoryId?: string;
     imageUrl: string;
   }
 
