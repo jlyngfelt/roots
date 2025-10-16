@@ -3,8 +3,9 @@ import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import { ProductCard } from "@/components/ui/productCard/ProductCard";
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function FavoritesScreen() {
 
   interface Plant {
     id: string;
-    name?: string;
+    name: string;
     description?: string;
     imageUrl?: string;
     categoryId?: string;
@@ -54,20 +55,27 @@ export default function FavoritesScreen() {
     <ScrollView>
       <Text style={{ fontSize: 50, padding: 40 }}>FAVORITES</Text>
 
-      {plants.map((plant) => (
-        <View key={plant.id}>
-          <Text>{plant.name}</Text>
-          <FavoriteButton
-            userId={user?.uid!}
-            plantId={plant.id}
-            onFavoriteChange={(plantId, isFavorited) => {
-              if (!isFavorited) {
-                setPlants((prev) => prev.filter((p) => p.id !== plantId));
-              }
-            }}
+<View style={styles.feed}>
+        {plants.map((plant) => (
+          <ProductCard
+          key={plant.id}
+          userId={user?.uid!}
+          plantId={plant.id}
+          name={plant.name}
+          description={plant.description}
+          image={plant.imageUrl}
+          readyToAdopt={plant.readyToAdopt}
           />
+        ))}
         </View>
-      ))}
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  feed: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+  },
+});
