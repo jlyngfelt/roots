@@ -25,12 +25,12 @@ export const ProductCard = ({
 }: ProductCardProps) => {
   return (
     
-      <View style={styles.card}>
-          <Image style={styles.image} source={{ uri: image }} />
+      <View style={[styles.card, variant === "big" ? styles.cardBig : styles.cardSmall]}>
+          <Image style={[styles.image, variant === "big" ? styles.imageBig : styles.imageSmall]} source={{ uri: image }} />
        
         <View style={styles.cardInfo}>
           <View style={styles.texts}>
-            <Text style={Styles.heading2}>{name}</Text>
+            <Text style={variant === "big" ? Styles.heading1 : Styles.heading2}>{name}</Text>
           </View>
 
           <View style={styles.icons}>
@@ -39,7 +39,7 @@ export const ProductCard = ({
           </View>
           </View>
             {description && (
-                <Text style={[styles.description, Styles.bodyS]}>{description}</Text>
+                <Text style={[styles.description, variant === "big" ? Styles.bodyM : Styles.bodyS]}>{description}</Text>
             )}
       </View>
     
@@ -47,15 +47,19 @@ export const ProductCard = ({
 };
 
 const styles = StyleSheet.create({
-
-  card: {
-    width: "47%",
-    backgroundColor: Colors.secondary,
-    padding: Spacing.s,
-    borderRadius: BorderRadius.m,
-    marginVertical: 5,
-    marginHorizontal: 2,
-  },
+cardBig: {
+    marginVertical: Spacing.m,
+    marginHorizontal: Spacing.m,
+    borderRadius: BorderRadius.xl
+},
+cardSmall: {
+        backgroundColor: Colors.secondary,
+        width: "47%",
+        padding: Spacing.s,
+        borderRadius: BorderRadius.m,
+        marginVertical: 5,
+        marginHorizontal: 2,
+    },
   image: {
     width: "95%",
     aspectRatio: 4/5,
@@ -63,15 +67,18 @@ const styles = StyleSheet.create({
     margin: Spacing.s,
     alignSelf: "center",
   },
+  imageBig: {},
+  imageSmall: {},
   description: {
     marginVertical: Spacing.s,
-    paddingHorizontal: Spacing.s,
+    paddingHorizontal: Spacing.m,
   },
   cardInfo: {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    padding: Spacing.s,
+    paddingHorizontal: Spacing.m,
+    paddingVertical: Spacing.s,
     width: "100%",
     gap: Spacing.s
   },

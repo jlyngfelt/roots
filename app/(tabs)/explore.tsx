@@ -58,13 +58,14 @@ export default function ExploreScreen() {
       <View style={styles.feed}>
         {plants.map((plant) => (
           <ProductCard
-            key={plant.id}
-            userId={user?.uid!}
-            plantId={plant.id}
-            name={plant.name}
-            description={plant.description}
-            image={plant.imageUrl}
-            readyToAdopt={plant.readyToAdopt}
+          variant="big"
+          key={plant.id}
+          userId={user?.uid!}
+          plantId={plant.id}
+          name={plant.name}
+          description={plant.description}
+          image={plant.imageUrl}
+          readyToAdopt={plant.readyToAdopt}
           />
         ))}
       </View>
@@ -74,8 +75,7 @@ export default function ExploreScreen() {
 
 const styles = StyleSheet.create({
   feed: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
+    flexDirection: "column",
+    
   },
 });
