@@ -58,6 +58,7 @@ export default function ExploreScreen() {
 
         {plants.map((plant) => (
           <ProductCard
+          variant="big"
           key={plant.id}
           userId={user?.uid!}
           plantId={plant.id}
@@ -75,8 +76,7 @@ export default function ExploreScreen() {
 
 const styles = StyleSheet.create({
   feed: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
+    flexDirection: "column",
+    
   },
 });
