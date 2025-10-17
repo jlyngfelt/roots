@@ -8,6 +8,8 @@ export const Colors = {
   accent: "#f119b1ff",
   text: "#1A1A1A",
   background: "#FFFFFF",
+  warning: "#F34813",
+  grey: "#d5d5d5ff",
 };
 
 // || Typography
