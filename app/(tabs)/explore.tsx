@@ -48,30 +48,18 @@ export default function ExploreScreen() {
     <ScrollView>
       <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
 
-      {/* {plants.map((plant) => (
-          <View key={plant.id}>
-            <Text>{plant.name}</Text>
-            <Text>Ready to adopt: {plant.readyToAdopt ? "Yes" : "No"}</Text>
-            <FavoriteButton userId={user?.uid!} plantId={plant.id} />
-          <ReadyToAdopt readyToAdopt={plant.readyToAdopt} />
-          </View>
-        ))} */}
-
       <View style={styles.feed}>
         {plants.map((plant) => (
-          <Pressable onPress={() => router.push("/view-plant/[plantId]")}>
-
           <ProductCard
           variant="big"
-          key={plant.id}
           userId={user?.uid!}
           plantId={plant.id}
           name={plant.name}
           description={plant.description}
           image={plant.imageUrl}
           readyToAdopt={plant.readyToAdopt}
+          onPress={() => router.push(`/view-plant/${plant.id}`)}
           />
-          </Pressable>
         ))}
       </View>
     </ScrollView>
