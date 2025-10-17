@@ -3,6 +3,7 @@ import { ScrollView } from "tamagui";
 import { Colors, Spacing, BorderRadius, Styles, Typography } from "../../../constants/design-system";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
+import { Pressable } from "react-native";
 
 interface ProductCardProps {
   userId: string;
@@ -12,6 +13,7 @@ interface ProductCardProps {
   image?: string;
   readyToAdopt?: boolean;
   variant?: "big" | "small";
+  onPress: () => void;
 }
 
 export const ProductCard = ({
@@ -22,10 +24,12 @@ export const ProductCard = ({
   image,
   readyToAdopt,
   variant = "small",
+  onPress,
 }: ProductCardProps) => {
   return (
     
-      <View style={[variant === "big" ? styles.cardBig : styles.cardSmall]}>
+    <View style={variant === "big" ? styles.cardBig : styles.cardSmall}>
+      <Pressable onPress={onPress} style={{ width: "100%" }}>
           <Image style={[styles.image, variant === "big" ? styles.imageBig : styles.imageSmall]} source={{ uri: image }} />
        
         <View style={styles.cardInfo}>
@@ -34,13 +38,14 @@ export const ProductCard = ({
           </View>
 
           <View style={styles.icons}>
-            <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
             <FavoriteButton userId={userId} plantId={plantId} />
+            <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
           </View>
           </View>
             {description && (
-                <Text style={[styles.description, variant === "big" ? Styles.bodyM : Styles.bodyS]}>{description}</Text>
+              <Text style={[styles.description, variant === "big" ? Styles.bodyM : Styles.bodyS]}>{description}</Text>
             )}
+            </Pressable>
       </View>
     
   );

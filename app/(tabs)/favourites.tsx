@@ -57,8 +57,6 @@ export default function FavoritesScreen() {
 
 <View style={styles.feed}>
         {plants.map((plant) => (
-          <Pressable onPress={() => router.push("/view-plant/[plantId]")}>
-
           <ProductCard
           key={plant.id}
           userId={user?.uid!}
@@ -67,8 +65,8 @@ export default function FavoritesScreen() {
           description={plant.description}
           image={plant.imageUrl}
           readyToAdopt={plant.readyToAdopt}
+          onPress={() => router.push(`/view-plant/${plant.id}`)}
           />
-          </Pressable>
         ))}
         </View>
     </ScrollView>

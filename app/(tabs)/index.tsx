@@ -109,21 +109,19 @@ export default function ProfileScreen() {
         <TabLayout />
 
         <View style={styles.feed}>
-                {plants.map((plant) => (
-                  <Pressable onPress={() => router.push("/view-plant/[plantId]")}>
-
-                  <ProductCard
-                  key={plant.id}
-                  userId={user?.uid!}
-                  plantId={plant.id}
-                  name={plant.name}
-                  description={plant.description}
-                  image={plant.imageUrl}
-                  readyToAdopt={plant.readyToAdopt}
-                  />
-                  </Pressable>
-                ))}
-                </View>
+  {plants.map((plant) => (
+      <ProductCard
+        variant="small"  
+        userId={user?.uid!}
+        plantId={plant.id}
+        name={plant.name}
+        description={plant.description}
+        image={plant.imageUrl}
+        readyToAdopt={plant.readyToAdopt}
+        onPress={() => router.push(`/view-plant/${plant.id}`)}
+      />
+  ))}
+</View>
       </ScrollView>
     </>
   );
