@@ -7,7 +7,7 @@ import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 export default function StartScreen() {
   const [activeDot, setActiveDot] = useState(0);
@@ -20,21 +20,46 @@ export default function StartScreen() {
       setActiveDot((prev) => (prev + 1) % 3);
     }, 400);
 
-    const unsubscribe = onAuthChange(async (user: User | null) => {
-      setTimeout(async () => {
-        if (user) {
-          const profile = await getUserProfile(user.uid);
+    let minLoadingComplete = false;
+    let authResolved = false;
+    let authResult: { user: User | null; profile: any } | null = null;
 
-          if (profile) {
-            router.replace("/(tabs)/explore");
-          } else {
-            router.replace("/create-profile");
-          }
-        } else {
-          router.replace("/welcome");
-        }
-      }, 2000);
+    // Minimum 2 second delay
+    setTimeout(() => {
+      minLoadingComplete = true;
+      if (authResolved) {
+        navigate(authResult);
+      }
+    }, 3000);
+
+    // Auth check
+    const unsubscribe = onAuthChange(async (user: User | null) => {
+      if (user) {
+        const profile = await getUserProfile(user.uid);
+        authResult = { user, profile };
+      } else {
+        authResult = { user: null, profile: null };
+      }
+
+      authResolved = true;
+      if (minLoadingComplete) {
+        navigate(authResult);
+      }
     });
+
+    function navigate(result: { user: User | null; profile: any } | null) {
+      console.log("Navigating from index...", result);
+      clearInterval(loadingInterval);
+      if (result?.user) {
+        if (result.profile) {
+          router.replace("/(tabs)/explore");
+        } else {
+          router.replace("/create-profile");
+        }
+      } else {
+        router.replace("/welcome");
+      }
+    }
 
     return () => {
       clearInterval(loadingInterval);
@@ -44,7 +69,11 @@ export default function StartScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, color: "green" }}>ROOTS</Text>
+      <Image
+        source={require("../assets/roots_logo.png")}
+        style={{ width: 250, height: 250 }}
+        resizeMode="contain"
+      />
       <View style={styles.dotsContainer}>
         <Image
           source={loadingPlant}

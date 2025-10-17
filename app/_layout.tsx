@@ -44,6 +44,9 @@ function NavigationHandler() {
   useEffect(() => {
     if (loading) return;
 
+    // Don't interfere with the loading screen
+    if (segments[0] === undefined) return;
+
     const inAuthGroup =
       segments[0] === "welcome" ||
       segments[0] === "login" ||
