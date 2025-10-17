@@ -126,6 +126,22 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          href: null,
+          headerLeft: () => (
+            <Pressable onPress={() => router.push("/(tabs)")}>
+              <IconSymbol
+                size={30}
+                name="chevron.left"
+                color={Colors.background}
+              />
+            </Pressable>
+          ),
+        }}
+      />
     </Tabs>
   );
 }
