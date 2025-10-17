@@ -2,7 +2,7 @@ import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { Text } from "tamagui";
-import { logOut } from "../auth";
+import { logOut } from "../../auth";
 
 export default function WelcomeScreen() {
   const router = useRouter();
