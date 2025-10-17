@@ -58,6 +58,7 @@ export default function FavoritesScreen() {
 <View style={styles.feed}>
         {plants.map((plant) => (
           <ProductCard
+          variant="small"
           key={plant.id}
           userId={user?.uid!}
           plantId={plant.id}

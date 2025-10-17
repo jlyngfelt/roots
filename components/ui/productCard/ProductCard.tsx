@@ -1,9 +1,12 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import { ScrollView } from "tamagui";
-import { Colors, Spacing, BorderRadius, Styles, Typography } from "../../../constants/design-system";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  BorderRadius,
+  Colors,
+  Spacing,
+  Styles,
+} from "../../../constants/design-system";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
-import { Pressable } from "react-native";
 
 interface ProductCardProps {
   userId: string;
@@ -12,8 +15,8 @@ interface ProductCardProps {
   description?: string;
   image?: string;
   readyToAdopt?: boolean;
-  variant?: "big" | "small";
-  onPress: () => void;
+  variant?: "big" | "small" | "view";
+  onPress?: () => void;
 }
 
 export const ProductCard = ({
@@ -23,51 +26,68 @@ export const ProductCard = ({
   description,
   image,
   readyToAdopt,
-  variant = "small",
+  variant = "big",
   onPress,
 }: ProductCardProps) => {
   return (
-    
-    <View style={variant === "big" ? styles.cardBig : styles.cardSmall}>
+    <View style={variant === "small" ? styles.cardSmall : styles.cardBig}>
       <Pressable onPress={onPress} style={{ width: "100%" }}>
-          <Image style={[styles.image, variant === "big" ? styles.imageBig : styles.imageSmall]} source={{ uri: image }} />
-       
-        <View style={styles.cardInfo}>
+        <Image
+          style={[
+            styles.image,
+            variant === "small" ? styles.imageSmall : styles.imageBig,
+          ]}
+          source={{ uri: image }}
+        />
+
+        <View
+          style={variant === "view" ? styles.viewCardInfo : styles.cardInfo}
+        >
           <View style={styles.texts}>
-            <Text style={variant === "big" ? Styles.heading1 : Styles.heading2}>{name}</Text>
+            <Text
+              style={variant === "small" ? Styles.heading2 : Styles.heading1}
+            >
+              {name}
+            </Text>
           </View>
 
-          <View style={styles.icons}>
+          <View style={variant === "view" ? styles.reverseIcons : styles.icons}>
             <FavoriteButton userId={userId} plantId={plantId} />
             <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
           </View>
-          </View>
-            {description && (
-              <Text style={[styles.description, variant === "big" ? Styles.bodyM : Styles.bodyS]}>{description}</Text>
-            )}
-            </Pressable>
-      </View>
-    
+        </View>
+        {description && (
+          <Text
+            style={[
+              styles.description,
+              variant === "small" ? Styles.bodyS : Styles.bodyM,
+            ]}
+          >
+            {description}
+          </Text>
+        )}
+      </Pressable>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-cardBig: {
+  cardBig: {
     marginVertical: Spacing.m,
     marginHorizontal: Spacing.m,
-    borderRadius: BorderRadius.xl
-},
-cardSmall: {
-        backgroundColor: Colors.secondary,
-        width: "47%",
-        padding: Spacing.s,
-        borderRadius: BorderRadius.m,
-        marginVertical: 5,
-        marginHorizontal: 2,
-    },
+    borderRadius: BorderRadius.xl,
+  },
+  cardSmall: {
+    backgroundColor: Colors.secondary,
+    width: "47%",
+    padding: Spacing.s,
+    borderRadius: BorderRadius.m,
+    marginVertical: 5,
+    marginHorizontal: 2,
+  },
   image: {
     width: "95%",
-    aspectRatio: 4/5,
+    aspectRatio: 4 / 5,
     borderRadius: BorderRadius.xl,
     margin: Spacing.s,
     alignSelf: "center",
@@ -85,7 +105,16 @@ cardSmall: {
     paddingHorizontal: Spacing.m,
     paddingVertical: Spacing.s,
     width: "100%",
-    gap: Spacing.s
+    gap: Spacing.s,
+  },
+  viewCardInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    paddingHorizontal: Spacing.m,
+    paddingVertical: Spacing.s,
+    width: "100%",
+    gap: Spacing.s,
   },
   texts: {
     flexDirection: "column",
@@ -93,6 +122,11 @@ cardSmall: {
   icons: {
     flexDirection: "row",
     gap: Spacing.s,
-    alignItems: "center"
+    alignItems: "center",
+  },
+  reverseIcons: {
+    flexDirection: "row-reverse",
+    gap: Spacing.s,
+    alignItems: "center",
   },
 });
