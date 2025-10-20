@@ -2,7 +2,7 @@ import { Colors, Typography } from "@/constants/design-system";
 import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
 
 interface CustomButtonProps extends Omit<PressableProps, "style"> {
-  variant?: "primary" | "secondary" | "tertiary" | "icon" | "list";
+  variant?: "primary" | "secondary" | "tertiary" | "icon";
   children: React.ReactNode;
   disabled?: boolean;
 }

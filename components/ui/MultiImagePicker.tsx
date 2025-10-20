@@ -1,14 +1,7 @@
 import { chooseImageSource, uploadImage } from "@/services/imageService";
 import { useState } from "react";
 import { Alert, Image, ScrollView, TouchableOpacity, View } from "react-native";
-
-interface MultiImagePickerProps {
-  images: string[];
-  onImagesChange: (images: string[]) => void;
-  maxImages?: number;
-  folder: string;
-  fileNamePrefix: string;
-}
+import { MultiImagePickerProps } from "../../interfaces/index"
 
 export function MultiImagePicker({
   images,

@@ -1,11 +1,5 @@
 import { ActivityIndicator, Image, TouchableOpacity, View } from "react-native";
-
-interface ImagePickerPreviewProps {
-  imageUrl: string | null;
-  onPress: () => void;
-  isUploading: boolean;
-  size?: number;
-}
+import { ImagePickerPreviewProps } from "../../interfaces/index"
 
 export function ImagePickerPreview({
   imageUrl,

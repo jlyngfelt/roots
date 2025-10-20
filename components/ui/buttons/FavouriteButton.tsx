@@ -5,15 +5,11 @@ import {
   isPlantFavorited,
   removeFromFavorites,
 } from "../../../services/favoritesService";
+import { FavoriteButtonProps } from "../../../interfaces/index"
+
 
 const heartFilled = require("../../../assets/icons/likeFilled.png");
 const heartUnfilled = require("../../../assets/icons/likeUnfilled.png");
-
-interface FavoriteButtonProps {
-  userId: string;
-  plantId: string;
-  onFavoriteChange?: (plantId: string, isFavorited: boolean) => void;
-}
 
 export const FavoriteButton = ({
   userId,
