@@ -1,9 +1,13 @@
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   onAuthStateChanged,
+  reauthenticateWithCredential,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
-  sendEmailVerification,
+  verifyBeforeUpdateEmail,
+  updatePassword,
 } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 
@@ -12,7 +16,7 @@ export const signUp = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     await sendEmailVerification(userCredential.user);
     return userCredential.user;
@@ -26,7 +30,7 @@ export const signIn = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
 
     if (!userCredential.user.emailVerified) {
@@ -49,4 +53,45 @@ export const logOut = async () => {
 
 export const onAuthChange = (callback) => {
   return onAuthStateChanged(auth, callback);
+};
+
+export const changePassword = async (currentPassword, newPassword) => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+      throw new Error("No user logged in");
+    }
+
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+    await reauthenticateWithCredential(user, credential);
+
+    await updatePassword(user, newPassword);
+    console.log("Password updated successfully!");
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changeEmail = async (currentPassword, newEmail) => {
+  try {
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+      throw new Error("No user logged in");
+    }
+
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+    await reauthenticateWithCredential(user, credential);
+
+   await verifyBeforeUpdateEmail(user, newEmail);
+
+    console.log("Email updated successfully! Verification email sent.");
+  } catch (error) {
+    throw error;
+  }
 };
