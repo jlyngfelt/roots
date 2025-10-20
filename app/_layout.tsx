@@ -1,21 +1,48 @@
+import {
+  Poppins_300Light,
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  useFonts,
+} from "@expo-google-fonts/poppins";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { defaultConfig } from "@tamagui/config/v4";
 import { Stack, useRouter, useSegments } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { createTamagui, TamaguiProvider } from "tamagui";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
+SplashScreen.preventAutoHideAsync();
+
 export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-//flytta options={{ headerShown: false }} till stack och skriv screenOptions={{ headerShown: false }}
-
 const config = createTamagui(defaultConfig);
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <ThemeProvider value={DefaultTheme}>
       <TamaguiProvider config={config}>
@@ -30,14 +57,11 @@ export default function RootLayout() {
 
 function NavigationHandler() {
   const { user, loading } = useAuth();
-
   const router = useRouter();
   const segments = useSegments();
 
   useEffect(() => {
     if (loading) return;
-
-    // Don't interfere with the loading screen
     if (segments[0] === undefined) return;
 
     const inAuthGroup =
