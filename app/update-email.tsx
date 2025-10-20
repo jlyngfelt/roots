@@ -3,10 +3,9 @@ import { DefaultInput } from "@/components/ui/input/DefaultInput";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Image, Text } from "tamagui";
 import { changeEmail } from "../auth";
-
 
 export default function UpdateEmailScreen() {
   const router = useRouter();
@@ -15,7 +14,7 @@ export default function UpdateEmailScreen() {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const handleEmailChange = async (
     currentPassword: string,
@@ -37,59 +36,62 @@ export default function UpdateEmailScreen() {
 
   return (
     <ScrollView style={styles.feed}>
-    <View style={styles.form}>
-
-      <Image
-        source={require("../assets/roots_logo.png")}
-        style={{ width: 300 }}
-        resizeMode="contain"
+      <View style={styles.form}>
+        <Image
+          source={require("../assets/roots_logo.png")}
+          style={{ width: 300 }}
+          resizeMode="contain"
         />
-    <View style={styles.inputfields}>
-      <DefaultInput
-      style={styles.input}
-        value={newEmail}
-        onChangeText={setNewEmail}
-        placeholder="Ny mail"
-        secureTextEntry={true}
-        />
-      <DefaultInput
-      style={styles.input}
-        value={confirmEmail}
-        onChangeText={setConfirmEmail}
-        placeholder="Ny mail"
-        secureTextEntry={true}
-        />
-      <DefaultInput
-      style={styles.input}
-        value={currentPassword}
-        onChangeText={setCurrentPassword}
-        placeholder="Lösenord"
-        secureTextEntry={true}
-        />
+        <View style={styles.inputfields}>
+          <DefaultInput
+            style={styles.input}
+            value={newEmail}
+            onChangeText={setNewEmail}
+            placeholder="Ny mail"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <DefaultInput
+            style={styles.input}
+            value={confirmEmail}
+            onChangeText={setConfirmEmail}
+            placeholder="Ny mail"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <DefaultInput
+            style={styles.input}
+            value={currentPassword}
+            onChangeText={setCurrentPassword}
+            placeholder="Lösenord"
+            secureTextEntry={true}
+          />
         </View>
 
-      <Text fontSize="$3">{error}</Text>
+        <Text fontSize="$3">{error}</Text>
 
-      <DefaultButton
-        onPress={() =>
+        <DefaultButton
+          onPress={() =>
             handleEmailChange(currentPassword, newEmail, confirmEmail)
-        }
-        disabled={loading}
+          }
+          disabled={loading}
         >
-        {loading ? "Skickar..." : "Spara"}
-      </DefaultButton>
+          {loading ? "Skickar..." : "Spara"}
+        </DefaultButton>
 
-      <Text style={[styles.success, Styles.actionM]}>
-        {success ? "Verifieringsmail skickat, titta i din inkorg för att slutföra registrering!" : ""}
-      </Text>
+        <Text style={[styles.success, Styles.actionM]}>
+          {success
+            ? "Verifieringsmail skickat, titta i din inkorg för att slutföra registrering!"
+            : ""}
+        </Text>
 
-      <DefaultButton
-        onPress={() => router.replace("/welcome")}
-        variant="tertiary"
+        <DefaultButton
+          onPress={() => router.replace("/welcome")}
+          variant="tertiary"
         >
-        Tillbaka
-      </DefaultButton>
-    </View>
+          Tillbaka
+        </DefaultButton>
+      </View>
     </ScrollView>
   );
 }
@@ -105,13 +107,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputfields: {
-    gap: Spacing.s
+    gap: Spacing.s,
   },
   input: {
-    width: 200
+    width: 200,
   },
   success: {
     paddingVertical: Spacing.m,
-    textAlign: "center"
+    textAlign: "center",
   },
 });
