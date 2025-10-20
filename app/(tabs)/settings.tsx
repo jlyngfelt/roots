@@ -57,7 +57,7 @@ export default function SettingsScreen() {
 
         <View style={styles.divider} />
 
-        <SettingItem title="Byt lösenord" onPress={() => {}} />
+        <SettingItem title="Byt lösenord" onPress={() => router.push("/update-password")} />
 
         <View style={styles.divider} />
 
