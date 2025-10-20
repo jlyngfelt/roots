@@ -26,7 +26,7 @@ export const FavoriteButton = ({
   useEffect(() => {
     checkFavoriteStatus();
   }, [userId, plantId]);
-
+if (!userId || !plantId) return;
   const checkFavoriteStatus = async () => {
     try {
       setLoading(true);

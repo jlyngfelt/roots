@@ -49,7 +49,7 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (user?.uid) {
       async function fetchProfile() {
-        const profile = await getUserProfile(user?.uid);
+        const profile = await getUserProfile(user?.uid!);
         if (profile) {
           setUserProfile(profile);
         }
@@ -109,19 +109,20 @@ export default function ProfileScreen() {
         <TabLayout />
 
         <View style={styles.feed}>
-          {plants.map((plant) => (
-            <ProductCard
-              variant="small"
-              userId={user?.uid!}
-              plantId={plant.id}
-              name={plant.name}
-              description={plant.description}
-              image={plant.imageUrl}
-              readyToAdopt={plant.readyToAdopt}
-              onPress={() => router.push(`/view-plant/${plant.id}`)}
-            />
-          ))}
-        </View>
+  {plants.map((plant) => (
+      <ProductCard
+      key={plant.id}
+        variant="small"  
+        userId={user?.uid!}
+        plantId={plant.id}
+        name={plant.name}
+        description={plant.description}
+        image={plant.imageUrl}
+        readyToAdopt={plant.readyToAdopt}
+        onPress={() => router.push(`/view-plant/${plant.id}`)}
+      />
+  ))}
+</View>
       </ScrollView>
     </>
   );
