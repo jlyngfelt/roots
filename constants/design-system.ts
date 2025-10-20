@@ -16,8 +16,11 @@ export const Colors = {
 // || Typography
 export const Typography = {
   fontFamily: {
-    sans: "system-ui",
-    mono: "monospace",
+    light: "Poppins_300Light",
+    regular: "Poppins_400Regular",
+    medium: "Poppins_500Medium",
+    semibold: "Poppins_600SemiBold",
+    bold: "Poppins_700Bold",
   },
   fontSize: {
     xs: 10,
@@ -63,76 +66,74 @@ export const BorderRadius = {
 
 // ||Re-usable styles
 export const Styles = StyleSheet.create({
-  // Typography styles
   heading1: {
+    fontFamily: "Poppins_700Bold",
     fontSize: Typography.fontSize["2xl"],
-    fontWeight: Typography.fontWeight.bold,
     color: Colors.text,
   },
   heading2: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["xl"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
   heading3: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["l"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
   heading4: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["m"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
   heading5: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["s"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
   bodyXL: {
+    fontFamily: "Poppins_400Regular",
     fontSize: Typography.fontSize["xl"],
-    fontWeight: Typography.fontWeight.regular,
     color: Colors.text,
   },
   bodyL: {
+    fontFamily: "Poppins_400Regular",
     fontSize: Typography.fontSize["l"],
-    fontWeight: Typography.fontWeight.regular,
     color: Colors.text,
   },
   bodyM: {
+    fontFamily: "Poppins_400Regular",
     fontSize: Typography.fontSize["m"],
-    fontWeight: Typography.fontWeight.regular,
     color: Colors.text,
   },
   bodyS: {
+    fontFamily: "Poppins_400Regular",
     fontSize: Typography.fontSize["s"],
-    fontWeight: Typography.fontWeight.regular,
     color: Colors.text,
   },
   bodyXS: {
+    fontFamily: "Poppins_400Regular",
     fontSize: Typography.fontSize["xs"],
-    fontWeight: Typography.fontWeight.regular,
     color: Colors.text,
   },
   actionL: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["m"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
   actionM: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["s"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
   actionS: {
+    fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["xs"],
-    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
   },
-
   caption: {
+    fontFamily: "Poppins_400Regular",
     fontSize: Typography.fontSize.xs,
-    fontWeight: Typography.fontWeight.regular,
     color: Colors.text,
     textTransform: "uppercase",
     letterSpacing: Typography.fontSize["xs"] * 0.05,
