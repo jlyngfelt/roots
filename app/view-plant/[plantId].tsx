@@ -1,12 +1,13 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
-import { BorderRadius, Spacing, Typography, Colors } from "@/constants/design-system";
+import { BorderRadius, Spacing, Typography } from "@/constants/design-system";
 import { getPlantById } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+
 
 export default function ViewPlantScreen() {
   const router = useRouter();
@@ -70,14 +71,19 @@ export default function ViewPlantScreen() {
             {userId === user?.uid ? "Ändra" : "Kontakta"}
           </DefaultButton>
         </View>
-{userId !== user?.uid ?
-        <View style={styles.uploaderInfo}>
-          <Image
-            style={styles.profileImage}
-            source={{ uri: userProfileImageUrl }}
-          />
-          <Text style={styles.uploaderName}>{userProfileName}</Text>
-        </View> : " "}
+        {userId !== user?.uid ? (
+          <View style={styles.uploaderInfo}>
+            <Image
+              style={styles.profileImage}
+              source={{ uri: userProfileImageUrl }}
+            />
+            <Pressable onPress={() => router.push(`/view-profile/${userId}`)}>
+              <Text style={styles.uploaderName}>{userProfileName}</Text>
+            </Pressable>
+          </View>
+        ) : (
+          " "
+        )}
       </ScrollView>
     </>
   );
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: Spacing.l,
-    marginVertical: Spacing.s
+    marginVertical: Spacing.s,
   },
   uploaderName: {
     fontSize: Typography.fontSize.l,

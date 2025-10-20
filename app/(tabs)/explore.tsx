@@ -51,6 +51,7 @@ export default function ExploreScreen() {
       <View style={styles.feed}>
         {plants.map((plant) => (
           <ProductCard
+          key={plant.id}
           variant="big"
           userId={user?.uid!}
           plantId={plant.id}
