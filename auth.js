@@ -6,7 +6,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
-  updateEmail,
+  verifyBeforeUpdateEmail,
   updatePassword,
 } from "firebase/auth";
 import { auth } from "./firebaseConfig";
@@ -88,9 +88,8 @@ export const changeEmail = async (currentPassword, newEmail) => {
     );
     await reauthenticateWithCredential(user, credential);
 
-    await updateEmail(user, newEmail);
+   await verifyBeforeUpdateEmail(user, newEmail);
 
-    await sendEmailVerification(user);
     console.log("Email updated successfully! Verification email sent.");
   } catch (error) {
     throw error;
