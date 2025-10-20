@@ -1,9 +1,10 @@
 import { Colors, Typography } from "@/constants/design-system";
-import { Button, ButtonProps } from "tamagui";
+import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
 
-interface CustomButtonProps extends Omit<ButtonProps, "variant"> {
-  // detta exkluderar variant då jag inte fick använda det annars
+interface CustomButtonProps extends Omit<PressableProps, "style"> {
   variant?: "primary" | "secondary" | "tertiary" | "icon" | "list";
+  children: React.ReactNode;
+  disabled?: boolean;
 }
 
 export const DefaultButton = ({
@@ -14,37 +15,73 @@ export const DefaultButton = ({
   ...props
 }: CustomButtonProps) => {
   return (
-    <Button
+    <Pressable
       onPress={onPress}
       disabled={disabled}
-      opacity={disabled ? 0.5 : 1}
-      backgroundColor={
-        variant === "primary"
-          ? Colors.details
-          : variant === "secondary"
-          ? "transparent"
-          : "transparent"
-      }
-      color={
-        variant === "tertiary"
-          ? Colors.warning
-          : variant === "secondary"
-          ? Colors.details
-          : Colors.light
-      }
-      alignSelf="center"
-      paddingVertical={variant === "tertiary" ? 0 : 8}
-      paddingHorizontal={variant === "tertiary" ? 0 : 24}
-      borderColor={variant === "secondary" ? Colors.details : undefined}
-      borderWidth={variant === "secondary" ? 2 : 1}
-      borderBottomWidth={variant === "tertiary" ? 2 : 0}
-      borderRadius={variant === "tertiary" ? 0 : undefined}
-      borderBottomColor={variant === "tertiary" ? Colors.warning : undefined}
-      fontSize={Typography.fontSize["m"]}
-      fontWeight={Typography.fontWeight.semibold}
+      style={[
+        styles.button,
+        variant === "primary" && styles.primary,
+        variant === "secondary" && styles.secondary,
+        variant === "tertiary" && styles.tertiary,
+        disabled && styles.disabled,
+      ]}
       {...props}
     >
-      {children}
-    </Button>
+      <Text
+        style={[
+          styles.text,
+          variant === "primary" && styles.primaryText,
+          variant === "secondary" && styles.secondaryText,
+          variant === "tertiary" && styles.tertiaryText,
+        ]}
+      >
+        {children}
+      </Text>
+    </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "transparent",
+  },
+  primary: {
+    backgroundColor: Colors.details,
+  },
+  secondary: {
+    backgroundColor: "transparent",
+    borderColor: Colors.details,
+    borderWidth: 2,
+  },
+  tertiary: {
+    backgroundColor: "transparent",
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    borderWidth: 0,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.warning,
+    borderRadius: 0,
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  text: {
+    fontSize: Typography.fontSize.m,
+    fontFamily: Typography.fontFamily.semibold,
+    textAlign: "center",
+  },
+  primaryText: {
+    color: Colors.light,
+  },
+  secondaryText: {
+    color: Colors.details,
+  },
+  tertiaryText: {
+    color: Colors.warning,
+  },
+});
