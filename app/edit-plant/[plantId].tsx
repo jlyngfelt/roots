@@ -52,7 +52,7 @@ export default function EditPlantScreen() {
 
   return (
     <>
-      <Text style={{ fontSize: 50, padding: 40 }}>UPLOAD</Text>
+      <Text style={{ fontSize: 50, padding: 40 }}>EDIT</Text>
 
       <DefaultInput
         value={plantName}

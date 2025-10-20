@@ -7,7 +7,14 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
-export async function createUserProfile(uid, userData) {
+interface UserData {
+  username: string;
+  postalCode?: string;
+  bio?: string;
+  profileImageUrl?: string;
+}
+
+export async function createUserProfile(uid: string, userData: UserData): Promise<void> {
   try {
     await setDoc(doc(db, "users", uid), {
       username: userData.username,
@@ -24,7 +31,7 @@ export async function createUserProfile(uid, userData) {
   }
 }
 
-export async function getUserProfile(uid) {
+export async function getUserProfile(uid: string): Promise<any> {
   try {
     const docSnap = await getDoc(doc(db, "users", uid));
     if (docSnap.exists()) {
@@ -39,7 +46,7 @@ export async function getUserProfile(uid) {
   }
 }
 
-export async function updateUserProfile(uid, updates) {
+export async function updateUserProfile(uid: string, updates: Partial<UserData>): Promise<void> {
   try {
     await updateDoc(doc(db, "users", uid), updates);
     console.log("Profile updated!");
@@ -49,11 +56,11 @@ export async function updateUserProfile(uid, updates) {
   }
 }
 
-export async function addCredits(uid, amount) {
+export async function addCredits(uid: string, amount: number): Promise<void> {
   try {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
-    const currentCredits = userSnap.data().credits || 0;
+    const currentCredits = userSnap.data()?.credits || 0;
 
     await updateDoc(userRef, {
       credits: currentCredits + amount,
