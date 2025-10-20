@@ -3,6 +3,7 @@
 // eventuellt lägga en mer smooth animation??
 
 import { onAuthChange } from "@/auth";
+import { Colors } from "@/constants/design-system";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
@@ -71,7 +72,7 @@ export default function StartScreen() {
     <View style={styles.container}>
       <Image
         source={require("../assets/roots_logo.png")}
-        style={{ width: 250, height: 250 }}
+        style={{ width: 300 }}
         resizeMode="contain"
       />
       <View style={styles.dotsContainer}>
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: Colors.secondary,
   },
   dotsContainer: {
     flexDirection: "row",

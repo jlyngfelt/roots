@@ -1,11 +1,10 @@
-import { FavoriteButton } from "@/components/ui/buttons/FavouriteButton";
+import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View, StyleSheet, Pressable } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -55,21 +54,21 @@ export default function FavoritesScreen() {
     <ScrollView>
       <Text style={{ fontSize: 50, padding: 40 }}>FAVORITES</Text>
 
-<View style={styles.feed}>
+      <View style={styles.feed}>
         {plants.map((plant) => (
           <ProductCard
-          variant="small"
-          key={plant.id}
-          userId={user?.uid!}
-          plantId={plant.id}
-          name={plant.name}
-          description={plant.description}
-          image={plant.imageUrl}
-          readyToAdopt={plant.readyToAdopt}
-          onPress={() => router.push(`/view-plant/${plant.id}`)}
+            variant="small"
+            key={plant.id}
+            userId={user?.uid!}
+            plantId={plant.id}
+            name={plant.name}
+            description={plant.description}
+            image={plant.imageUrl}
+            readyToAdopt={plant.readyToAdopt}
+            onPress={() => router.push(`/view-plant/${plant.id}`)}
           />
         ))}
-        </View>
+      </View>
     </ScrollView>
   );
 }

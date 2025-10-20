@@ -1,3 +1,4 @@
+import { Colors, Typography } from "@/constants/design-system";
 import { Button, ButtonProps } from "tamagui";
 
 interface CustomButtonProps extends Omit<ButtonProps, "variant"> {
@@ -19,30 +20,28 @@ export const DefaultButton = ({
       opacity={disabled ? 0.5 : 1}
       backgroundColor={
         variant === "primary"
-          ? "$blue10"
+          ? Colors.details
           : variant === "secondary"
-            ? "$green5"
-            : "transparent"
+          ? "transparent"
+          : "transparent"
       }
       color={
         variant === "tertiary"
-          ? "$red10"
+          ? Colors.warning
           : variant === "secondary"
-            ? "$gray12"
-            : "white"
+          ? Colors.details
+          : Colors.light
       }
-      alignSelf="center" // lägger knappar i mitten men gör också att de håller rätt storlek?
+      alignSelf="center"
       paddingVertical={variant === "tertiary" ? 0 : 8}
       paddingHorizontal={variant === "tertiary" ? 0 : 24}
-      borderBottomWidth={variant === "tertiary" ? 1 : 0}
+      borderColor={variant === "secondary" ? Colors.details : undefined}
+      borderWidth={variant === "secondary" ? 2 : 1}
+      borderBottomWidth={variant === "tertiary" ? 2 : 0}
       borderRadius={variant === "tertiary" ? 0 : undefined}
-      borderBottomColor={variant === "tertiary" ? "$red10" : undefined}
-      hoverStyle={{
-        backgroundColor: variant === "primary" ? "$blue11" : "$gray6",
-      }}
-      pressStyle={{
-        backgroundColor: variant === "primary" ? "$blue9" : "$gray4",
-      }}
+      borderBottomColor={variant === "tertiary" ? Colors.warning : undefined}
+      fontSize={Typography.fontSize["m"]}
+      fontWeight={Typography.fontWeight.semibold}
       {...props}
     >
       {children}

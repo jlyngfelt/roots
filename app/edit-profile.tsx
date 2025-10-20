@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Image, View } from "react-native";
 import { Text } from "tamagui";
+import { Colors } from "../constants/design-system";
 
 export default function EditProfileScreen() {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function EditProfileScreen() {
     <View
       style={{
         flex: 1,
-        backgroundColor: "blue",
+        backgroundColor: Colors.secondary,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -98,12 +99,12 @@ export default function EditProfileScreen() {
             padding: 40,
             borderRadius: 16,
             marginBottom: 24,
-            backgroundColor: "gray",
+            backgroundColor: Colors.grey,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "white" }}>Ingen bild</Text>
+          <Text style={{ color: Colors.light }}>Ingen bild</Text>
         </View>
       )}
 
@@ -119,7 +120,7 @@ export default function EditProfileScreen() {
           : "Ladda upp profilbild"}
       </DefaultButton>
 
-      {isUploading && <ActivityIndicator size="small" color="#0000ff" />}
+      {isUploading && <ActivityIndicator size="small" />}
 
       <DefaultInput
         value={newUsername}
