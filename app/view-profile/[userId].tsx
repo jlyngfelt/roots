@@ -12,28 +12,17 @@ export default function ViewProfileScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { userId } = useLocalSearchParams<{ userId: string }>();
-
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [credits, setCredits] = useState(0);
   const [plants, setPlants] = useState<any[]>([]);
   const [readyToAdoptPlants, setReadyToAdoptPlants] = useState<any[]>([]);
-  const [myFavorites, setMyFavorites] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(true)
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  interface Plant {
-    id: string;
-    name: string;
-    description?: string;
-    readyToAdopt: boolean;
-    userId: string;
-    categoryId?: string;
-    imageUrl: string;
-  }
+
 
   useEffect(() => {
     if (userId) {
@@ -75,24 +64,7 @@ export default function ViewProfileScreen() {
     }
   }, [userId]);
 
-  //   useEffect(() => {
-  //     if (user?.uid) {
-  //       async function fetchMyFavorites() {
-  //         try {
-  //           const favorites = await getUserFavorites(user?.uid!);
-  //           setMyFavorites(favorites);
-  //         } catch (err) {
-  //           console.error("Error fetching favorites:", err);
-  //         }
-  //       }
-  //       fetchMyFavorites();
-  //     }
-  //   }, [user?.uid]);
 
-  //   // Helper function to check if a plant is in my favorites
-  //   const isPlantLiked = (plantId: string) => {
-  //     return myFavorites.includes(plantId);
-  //   };
 
   return (
     <ScrollView>
@@ -167,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.xl,
   },
 profileWrapper: {
-    height: 200,
+    height: 240,
     gap: Spacing.m,
     justifyContent: "space-between"
 },
