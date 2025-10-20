@@ -3,7 +3,7 @@ import { Button, ButtonProps } from "tamagui";
 
 interface CustomButtonProps extends Omit<ButtonProps, "variant"> {
   // detta exkluderar variant då jag inte fick använda det annars
-  variant?: "primary" | "secondary" | "tertiary" | "icon" | "list";
+  variant?: "primary" | "secondary" | "tertiary" | "icon" ;
 }
 
 export const DefaultButton = ({

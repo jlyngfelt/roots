@@ -5,6 +5,9 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import {Plant} from "../../interfaces/index"
+   
+
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -13,24 +16,12 @@ export default function FavoritesScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  interface Plant {
-    id: string;
-    name: string;
-    description?: string;
-    imageUrl?: string;
-    categoryId?: string;
-    readyToAdopt?: boolean;
-    userId?: string;
-    adoptedBy?: string | null;
-    createdAt?: any;
-  }
-
   useEffect(() => {
     if (user?.uid) {
       async function fetchFavorites() {
         try {
           setLoading(true);
-          const favoritePlantIds = await getUserFavorites(user?.uid);
+          const favoritePlantIds = await getUserFavorites(user?.uid!);
           const plantPromises = favoritePlantIds.map((plantId) =>
             getPlantById(plantId)
           );

@@ -11,28 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-
-interface PlantData {
-  name: string;
-  description?: string;
-  readyToAdopt?: boolean;
-  categoryId: string;
-  imageUrl?: string;
-  imageUrls?: string[];
-}
-
-interface Plant {
-  id: string;
-  name: string;
-  description?: string;
-  readyToAdopt: boolean;
-  userId: string;
-  categoryId: string;
-  imageUrl: string;
-  createdAt: any;
-  adoptedBy: string | null;
-  imageUrls: string[];
-}
+import { Plant, PlantData } from "../interfaces/index"
 
 export async function createPlant(userId: string, plantData: PlantData): Promise<string> {
   try {

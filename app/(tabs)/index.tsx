@@ -7,6 +7,7 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { Colors } from "@/constants/design-system";
 import TabLayout from "./_layout";
+import { Plant, UserProfile } from "../../interfaces/index"
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -26,25 +27,6 @@ export default function ProfileScreen() {
       fetchPlants();
     }
   }, [user?.uid]);
-
-  interface UserProfile {
-    id: string;
-    username: string;
-    postalCode: string;
-    bio: string;
-    profileImageUrl: string;
-    credits: number;
-    createdAt: any;
-  }
-  interface Plant {
-    id: string;
-    name: string;
-    description?: string;
-    readyToAdopt: boolean;
-    userId: string;
-    categoryId?: string;
-    imageUrl: string;
-  }
 
   useEffect(() => {
     if (user?.uid) {

@@ -6,13 +6,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { UserData } from "../interfaces/index"
 
-interface UserData {
-  username: string;
-  postalCode?: string;
-  bio?: string;
-  profileImageUrl?: string;
-}
 
 export async function createUserProfile(uid: string, userData: UserData): Promise<void> {
   try {

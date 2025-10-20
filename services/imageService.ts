@@ -4,6 +4,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Alert } from "react-native";
 import { storage } from "../firebaseConfig";
 
+
 export interface OptimizationOptions {
   maxWidth?: number;
   maxHeight?: number;
