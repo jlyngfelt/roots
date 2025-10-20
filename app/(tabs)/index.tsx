@@ -1,12 +1,12 @@
+import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import { Colors } from "@/constants/design-system";
 import TabLayout from "./_layout";
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
-import { Spacing } from '../../constants/design-system'
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -84,12 +84,12 @@ export default function ProfileScreen() {
               padding: 40,
               borderRadius: 16,
               marginBottom: 24,
-              backgroundColor: "gray",
+              backgroundColor: "black",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "white" }}>Ingen bild</Text>
+            <Text style={{ color: Colors.light }}>Ingen bild</Text>
           </View>
         )}
 
@@ -109,19 +109,19 @@ export default function ProfileScreen() {
         <TabLayout />
 
         <View style={styles.feed}>
-  {plants.map((plant) => (
-      <ProductCard
-        variant="small"  
-        userId={user?.uid!}
-        plantId={plant.id}
-        name={plant.name}
-        description={plant.description}
-        image={plant.imageUrl}
-        readyToAdopt={plant.readyToAdopt}
-        onPress={() => router.push(`/view-plant/${plant.id}`)}
-      />
-  ))}
-</View>
+          {plants.map((plant) => (
+            <ProductCard
+              variant="small"
+              userId={user?.uid!}
+              plantId={plant.id}
+              name={plant.name}
+              description={plant.description}
+              image={plant.imageUrl}
+              readyToAdopt={plant.readyToAdopt}
+              onPress={() => router.push(`/view-plant/${plant.id}`)}
+            />
+          ))}
+        </View>
       </ScrollView>
     </>
   );
@@ -134,5 +134,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginBottom: 80,
   },
-
 });

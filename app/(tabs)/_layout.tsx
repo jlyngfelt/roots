@@ -9,10 +9,10 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.background,
+        tabBarActiveTintColor: Colors.secondary,
+        tabBarInactiveTintColor: Colors.secondary,
         tabBarStyle: {
-          backgroundColor: Colors.secondary,
+          backgroundColor: Colors.primary,
           height: 70,
           paddingTop: 12,
           borderTopLeftRadius: 32,
@@ -24,10 +24,10 @@ export default function TabLayout() {
         },
         headerShown: true,
         headerTitle: () => (
-          <IconSymbol size={32} name="leaf.fill" color={Colors.primary} />
+          <IconSymbol size={32} name="leaf.fill" color={Colors.secondary} />
         ),
         headerStyle: {
-          backgroundColor: Colors.secondary,
+          backgroundColor: Colors.primary,
           height: 110,
         },
         headerLeftContainerStyle: {
@@ -68,7 +68,7 @@ export default function TabLayout() {
               <IconSymbol
                 size={30}
                 name="chevron.left"
-                color={Colors.background}
+                color={Colors.secondary}
               />
             </Pressable>
           ),
@@ -86,7 +86,7 @@ export default function TabLayout() {
               <IconSymbol
                 size={30}
                 name="chevron.left"
-                color={Colors.background}
+                color={Colors.secondary}
               />
             </Pressable>
           ),
@@ -108,17 +108,13 @@ export default function TabLayout() {
               <IconSymbol
                 size={30}
                 name="chevron.left"
-                color={Colors.background}
+                color={Colors.secondary}
               />
             </Pressable>
           ),
           headerRight: () => (
             <Pressable onPress={() => router.push("/settings")}>
-              <IconSymbol
-                size={30}
-                name="gearshape"
-                color={Colors.background}
-              />
+              <IconSymbol size={30} name="gearshape" color={Colors.secondary} />
             </Pressable>
           ),
           tabBarIcon: ({ color }) => (
@@ -136,7 +132,7 @@ export default function TabLayout() {
               <IconSymbol
                 size={30}
                 name="chevron.left"
-                color={Colors.background}
+                color={Colors.secondary}
               />
             </Pressable>
           ),

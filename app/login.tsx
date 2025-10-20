@@ -1,9 +1,10 @@
 //Här ska man logga in med email och lösen (skickas sen vidare till tabs)
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
+import { Colors } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { Input, Text } from "tamagui";
+import { Image, Input, Text } from "tamagui";
 import { signIn } from "../auth";
 
 export default function LoginScreen() {
@@ -44,17 +45,18 @@ export default function LoginScreen() {
   return (
     <View
       style={{
-        height: 400,
-        backgroundColor: "blue",
+        flex: 1,
+        backgroundColor: Colors.secondary,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Text style={{ fontSize: 20, color: "green", marginVertical: 10 }}>
-        ROOTS
-      </Text>
-
+      <Image
+        source={require("../assets/roots_logo.png")}
+        style={{ width: 300 }}
+        resizeMode="contain"
+      />
       <Input
         value={email}
         onChangeText={setEmail}

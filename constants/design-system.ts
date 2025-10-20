@@ -3,13 +3,14 @@ import { StyleSheet } from "react-native";
 
 // || Color variables
 export const Colors = {
-  primary: "#1b9844ff",
-  secondary: "#caefcdff",
-  accent: "#f119b1ff",
-  text: "#1A1A1A",
-  background: "#FFFFFF",
+  primary: "#99B566",
+  secondary: "#E2E8D7",
+  accent: "#F88DA4",
+  details: "#9E8165",
+  text: "#333333ff",
+  light: "#FCFCF4",
   warning: "#F34813",
-  grey: "#d5d5d5ff",
+  grey: "#c7ccbcff",
 };
 
 // || Typography
