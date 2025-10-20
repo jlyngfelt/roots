@@ -53,7 +53,7 @@ export default function SettingsScreen() {
 
         <View style={styles.divider} />
 
-        <SettingItem title="Uppdatera e-postadress" onPress={() => {}} />
+        <SettingItem title="Uppdatera e-postadress" onPress={() => router.push("/update-email")} />
 
         <View style={styles.divider} />
 
