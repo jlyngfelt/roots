@@ -7,17 +7,7 @@ import {
 } from "../../../constants/design-system";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
-
-interface ProductCardProps {
-  userId: string;
-  plantId: string;
-  name: string;
-  description?: string;
-  image?: string;
-  readyToAdopt?: boolean;
-  variant?: "big" | "small" | "view";
-  onPress?: () => void;
-}
+import { ProductCardProps } from "../../../interfaces/index"
 
 export const ProductCard = ({
   userId,

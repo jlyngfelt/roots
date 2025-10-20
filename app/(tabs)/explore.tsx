@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import {Plant} from "../../interfaces/index"
 
 
 export default function ExploreScreen() {
@@ -13,15 +14,7 @@ export default function ExploreScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-   interface Plant {
-    id: string;
-    name: string;
-    description?: string;
-    readyToAdopt: boolean;
-    userId: string;
-    categoryId?: string;
-    imageUrl: string;
-  }
+
 
   useEffect(() => {
     if (user?.uid) {
