@@ -3,7 +3,7 @@ import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { Colors } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Image, Input, Text } from "tamagui";
 import { signIn } from "../auth";
 
@@ -43,53 +43,58 @@ export default function LoginScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: Colors.secondary,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Image
-        source={require("../assets/roots_logo.png")}
-        style={{ width: 300 }}
-        resizeMode="contain"
-      />
-      <Input
-        value={email}
-        onChangeText={setEmail}
-        placeholder="email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        size="$4"
-        marginVertical="10"
-        width="50%"
-      />
-      <Input
-        value={password}
-        onChangeText={setPassword}
-        placeholder="lösenord"
-        secureTextEntry={true}
-        autoCapitalize="none"
-        size="$4"
-        marginVertical="10"
-        width="50%"
-      />
+    <ScrollView style={styles.feed}>
+      <View style={styles.form}>
+        <Image
+          source={require("../assets/roots_logo.png")}
+          style={{ width: 300 }}
+          resizeMode="contain"
+        />
+        <Input
+          value={email}
+          onChangeText={setEmail}
+          placeholder="email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          size="$4"
+          marginVertical="10"
+          width="50%"
+        />
+        <Input
+          value={password}
+          onChangeText={setPassword}
+          placeholder="lösenord"
+          secureTextEntry={true}
+          autoCapitalize="none"
+          size="$4"
+          marginVertical="10"
+          width="50%"
+        />
 
-      <Text fontSize="$3">{error}</Text>
+        <Text fontSize="$3">{error}</Text>
 
-      <DefaultButton onPress={handleSignIn} disabled={loading}>
-        {loading ? "Loggar in.." : "Logga in"}
-      </DefaultButton>
+        <DefaultButton onPress={handleSignIn} disabled={loading}>
+          {loading ? "Loggar in.." : "Logga in"}
+        </DefaultButton>
 
-      <DefaultButton
-        onPress={() => router.replace("/welcome")}
-        variant="tertiary"
-      >
-        Tillbaka
-      </DefaultButton>
-    </View>
+        <DefaultButton
+          onPress={() => router.replace("/welcome")}
+          variant="tertiary"
+        >
+          Tillbaka
+        </DefaultButton>
+      </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  feed: {
+    flex: 1,
+    backgroundColor: Colors.secondary,
+  },
+  form: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
