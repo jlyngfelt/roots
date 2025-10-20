@@ -11,26 +11,26 @@ import { changePassword } from "../auth";
 export default function UpdatePasswordScreen() {
   const router = useRouter();
   const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword1, setNewPassword1] = useState("");
-  const [newPassword2, setNewPassword2] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handlePasswordChange = async (
     currentPassword: string,
-    newPassword1: string,
-    newPassword2: string
+    newPassword: string,
+    confirmPassword: string
   ) => {
     try {
-      if (newPassword1 !== newPassword2) {
+      if (newPassword !== confirmPassword) {
         throw new Error("Lösenorden matchar inte");
       }
-      if (currentPassword === newPassword1) {
+      if (currentPassword === newPassword) {
         throw new Error("Lösenordet får inte vara samma som tidigare");
       }
 
-      await changePassword(currentPassword, newPassword1);
+      await changePassword(currentPassword, newPassword);
       console.log("Password changed successfully!");
       setSuccess(true);
     } catch (error) {
@@ -58,15 +58,15 @@ export default function UpdatePasswordScreen() {
         />
       <DefaultInput
       style={styles.input}
-        value={newPassword1}
-        onChangeText={setNewPassword1}
+        value={newPassword}
+        onChangeText={setNewPassword}
         placeholder="Nytt lösenord"
         secureTextEntry={true}
         />
       <DefaultInput
       style={styles.input}
-        value={newPassword2}
-        onChangeText={setNewPassword2}
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
         placeholder="Nytt lösenord"
         secureTextEntry={true}
         
@@ -77,7 +77,7 @@ export default function UpdatePasswordScreen() {
 
       <DefaultButton
         onPress={() =>
-            handlePasswordChange(currentPassword, newPassword1, newPassword2)
+            handlePasswordChange(currentPassword, newPassword, confirmPassword)
         }
         disabled={loading}
         >
