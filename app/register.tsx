@@ -1,9 +1,10 @@
 //Här registrerar man sig med email, lösen, postnummer och bild. flrslagsvis kan vi här använda push (router.push('/create-profile')) då möjliggör vi att man kan gå tillbaka till register när man är i edit profile, vill vi detta?
 
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
+import { Colors } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Linking, View } from "react-native";
+import { Alert, Image, Linking, View } from "react-native";
 import { Input, Text } from "tamagui";
 import { signUp } from "../auth";
 
@@ -59,17 +60,18 @@ export default function RegisterScreen() {
   return (
     <View
       style={{
-        height: 400,
-        backgroundColor: "blue",
+        flex: 1,
+        backgroundColor: Colors.secondary,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Text style={{ fontSize: 20, color: "green", marginVertical: 10 }}>
-        ROOTS
-      </Text>
-
+      <Image
+        source={require("../assets/roots_logo.png")}
+        style={{ width: 300 }}
+        resizeMode="contain"
+      />
       <Input
         value={email}
         onChangeText={setEmail}

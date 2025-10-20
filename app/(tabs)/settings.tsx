@@ -22,7 +22,7 @@ export default function SettingsScreen() {
     title: string;
     onPress: () => void;
     isLogout?: boolean;
-    iconName?: string;
+    iconName?: any;
   }) => (
     <TouchableOpacity
       style={styles.settingItem}
@@ -76,7 +76,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.secondary,
   },
   heading: {
     ...Styles.heading2,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginVertical: Spacing.m,
   },
   section: {
-    backgroundColor: "white",
+    backgroundColor: Colors.secondary,
     marginHorizontal: 0,
   },
   settingItem: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: Spacing.m,
     paddingHorizontal: Spacing.m,
-    backgroundColor: "white",
+    backgroundColor: Colors.secondary,
   },
   settingText: {
     ...Styles.heading3,
