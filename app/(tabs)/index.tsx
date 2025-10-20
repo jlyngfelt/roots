@@ -49,7 +49,7 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (user?.uid) {
       async function fetchProfile() {
-        const profile = await getUserProfile(user?.uid);
+        const profile = await getUserProfile(user?.uid!);
         if (profile) {
           setUserProfile(profile);
         }
@@ -111,6 +111,7 @@ export default function ProfileScreen() {
         <View style={styles.feed}>
   {plants.map((plant) => (
       <ProductCard
+      key={plant.id}
         variant="small"  
         userId={user?.uid!}
         plantId={plant.id}

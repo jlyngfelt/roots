@@ -46,11 +46,11 @@ export default function ExploreScreen() {
 
   return (
     <ScrollView>
-      <Text style={{ fontSize: 50, padding: 40 }}>EXPLORE</Text>
 
       <View style={styles.feed}>
         {plants.map((plant) => (
           <ProductCard
+          key={plant.id}
           variant="big"
           userId={user?.uid!}
           plantId={plant.id}
