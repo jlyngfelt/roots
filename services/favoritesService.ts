@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
-export async function addToFavorites(userId, plantId) {
+export async function addToFavorites(userId: string, plantId: string): Promise<void> {
   try {
     await setDoc(doc(db, "users", userId, "favorites", plantId), {
       plantId: plantId,
@@ -22,7 +22,7 @@ export async function addToFavorites(userId, plantId) {
   }
 }
 
-export async function removeFromFavorites(userId, plantId) {
+export async function removeFromFavorites(userId: string, plantId: string): Promise<void> {
   try {
     await deleteDoc(doc(db, "users", userId, "favorites", plantId));
     console.log("Removed from favorites!");
@@ -32,12 +32,12 @@ export async function removeFromFavorites(userId, plantId) {
   }
 }
 
-export async function getUserFavorites(userId) {
+export async function getUserFavorites(userId: string): Promise<string[]> {
   try {
     const querySnapshot = await getDocs(
       collection(db, "users", userId, "favorites"),
     );
-    const favorites = [];
+    const favorites: string[] = [];
     querySnapshot.forEach((doc) => {
       favorites.push(doc.data().plantId);
     });
@@ -48,7 +48,7 @@ export async function getUserFavorites(userId) {
   }
 }
 
-export async function isPlantFavorited(userId, plantId) {
+export async function isPlantFavorited(userId: string, plantId: string): Promise<boolean> {
   try {
     const docSnap = await getDoc(
       doc(db, "users", userId, "favorites", plantId),
