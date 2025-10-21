@@ -57,7 +57,6 @@ export default function ViewPlantScreen() {
 useEffect(() => {
   if (!userId) return;
 
-  // Lyssna på ändringar i plantägarens profil i realtid
   const userRef = doc(db, 'users', userId);
   const unsubscribe = onSnapshot(userRef, (docSnap) => {
     if (docSnap.exists()) {
@@ -69,7 +68,6 @@ useEffect(() => {
     }
   });
 
-  // Cleanup när komponenten unmountas eller userId ändras
   return () => unsubscribe();
 }, [userId]);
 
