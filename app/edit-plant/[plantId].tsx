@@ -1,6 +1,6 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/input/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/input/DefaultTextArea";
+import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ export default function EditPlantScreen() {
   useEffect(() => {
     if (user?.uid) {
       async function fetchPlant() {
-        const plant: any = await getPlantById(plantId); 
+        const plant: any = await getPlantById(plantId);
         if (plant) {
           setPlantName(plant.name || "");
           setDescription(plant.description || "");
@@ -42,7 +42,7 @@ export default function EditPlantScreen() {
       description: description,
       readyToAdopt: readyToAdopt,
     });
-    router.replace(`/view-plant/${plantId}`)
+    router.replace(`/view-plant/${plantId}`);
   }
 
   async function handleDeletePlant() {

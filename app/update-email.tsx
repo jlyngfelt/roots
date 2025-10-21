@@ -1,5 +1,5 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/input/DefaultInput";
+import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";

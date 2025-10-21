@@ -119,7 +119,7 @@ export const Styles = StyleSheet.create({
   actionL: {
     fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["m"],
-    color: Colors.text,
+    color: Colors.warning,
   },
   actionM: {
     fontFamily: "Poppins_600SemiBold",

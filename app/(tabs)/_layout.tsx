@@ -138,6 +138,22 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="edit-profile"
+        options={{
+          title: "Edit Profile",
+          href: null,
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <IconSymbol
+                size={30}
+                name="chevron.left"
+                color={Colors.secondary}
+              />
+            </Pressable>
+          ),
+        }}
+      />
     </Tabs>
   );
 }

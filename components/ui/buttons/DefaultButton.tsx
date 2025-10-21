@@ -5,6 +5,8 @@ interface CustomButtonProps extends Omit<PressableProps, "style"> {
   variant?: "primary" | "secondary" | "tertiary" | "icon";
   children: React.ReactNode;
   disabled?: boolean;
+  textColor?: string;
+  borderBottomColor?: string;
 }
 
 export const DefaultButton = ({
@@ -12,6 +14,8 @@ export const DefaultButton = ({
   children,
   onPress,
   disabled = false,
+  textColor,
+  borderBottomColor,
   ...props
 }: CustomButtonProps) => {
   return (
@@ -23,6 +27,7 @@ export const DefaultButton = ({
         variant === "primary" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "tertiary" && styles.tertiary,
+        borderBottomColor && { borderBottomColor: borderBottomColor },
         disabled && styles.disabled,
       ]}
       {...props}
@@ -33,6 +38,7 @@ export const DefaultButton = ({
           variant === "primary" && styles.primaryText,
           variant === "secondary" && styles.secondaryText,
           variant === "tertiary" && styles.tertiaryText,
+          textColor && { color: textColor },
         ]}
       >
         {children}
