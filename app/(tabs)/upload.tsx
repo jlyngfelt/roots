@@ -1,6 +1,6 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/input/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/input/DefaultTextArea";
+import { DefaultInput } from "@/components/ui/form/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/form/DefaultTextArea";
 import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { useRouter } from "expo-router";

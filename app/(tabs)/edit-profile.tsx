@@ -1,8 +1,8 @@
 // här ändrar man ex sin bio, sin profilbild och kanske mer. När man trycker på spara = (router.replace('/(tabs)'))
 
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/input/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/input/DefaultTextArea";
+import { DefaultInput } from "@/components/ui/form/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/form/DefaultTextArea";
 import { useAuth } from "@/contexts/AuthContext";
 import { pickAndUploadImage } from "@/services/imageService";
 import { getUserProfile, updateUserProfile } from "@/services/userService";
@@ -10,7 +10,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Image, View } from "react-native";
 import { Text } from "tamagui";
-import { Colors } from "../constants/design-system";
+import { Colors } from "../../constants/design-system";
 
 export default function EditProfileScreen() {
   const router = useRouter();
@@ -24,6 +24,7 @@ export default function EditProfileScreen() {
   useEffect(() => {
     if (user?.uid) {
       async function fetchProfile() {
+        if (!user?.uid) return;
         const profile: any = await getUserProfile(user?.uid);
         if (profile) {
           setNewUsername(profile.username || "");
@@ -59,6 +60,7 @@ export default function EditProfileScreen() {
   }
 
   async function handleSave() {
+    if (!user?.uid) return;
     await updateUserProfile(user?.uid, {
       username: newUsername,
       postalCode: newPostalcode,
