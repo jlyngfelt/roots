@@ -5,6 +5,7 @@ import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { useAuth } from "@/contexts/AuthContext";
 import { pickAndUploadImage } from "@/services/imageService";
+import { getCoordinates } from "@/services/locationService";
 import { getUserProfile, updateUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -20,6 +21,8 @@ export default function EditProfileScreen() {
   const [newBio, setNewBio] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user?.uid) {
@@ -61,13 +64,33 @@ export default function EditProfileScreen() {
 
   async function handleSave() {
     if (!user?.uid) return;
-    await updateUserProfile(user?.uid, {
-      username: newUsername,
-      postalCode: newPostalcode,
-      bio: newBio,
-      profileImageUrl: profileImageUrl,
-    });
-    router.replace("/(tabs)");
+    try {
+      setLoading(true);
+
+      const coordinates = await getCoordinates(newPostalcode.trim());
+
+      if (!coordinates) {
+        setError("Ogiltigt postnummer. Kontrollera och försök igen.");
+        setLoading(false);
+        return;
+      }
+
+      await updateUserProfile(user?.uid!, {
+        username: newUsername,
+        postalCode: newPostalcode,
+        latitude: coordinates.lat,
+        longitude: coordinates.lon,
+        bio: newBio,
+        profileImageUrl: profileImageUrl,
+      });
+
+      router.replace("/(tabs)");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setError("Kunde inte uppdatera profil");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

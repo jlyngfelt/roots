@@ -7,6 +7,7 @@ import { Input, Text, TextArea } from "tamagui";
 import { useAuth } from "../contexts/AuthContext";
 import { pickAndUploadImage } from "../services/imageService";
 import { createUserProfile } from "../services/userService";
+import { getCoordinates } from "@/services/locationService";
 
 export default function CreateProfileScreen() {
   const router = useRouter();
@@ -35,25 +36,37 @@ export default function CreateProfileScreen() {
     }
   }
 
+
   const handleCreateProfile = async () => {
     setError("");
-
     if (!username.trim()) {
       setError("Användarnamn krävs");
       return;
     }
-
+      if (!postalCode.trim()) {
+      setError("Postnummer krävs");
+      return;
+    }
     if (!user) {
       setError("Ingen användare inloggad");
       return;
     }
-
     setLoading(true);
 
     try {
+      const coordinates = await getCoordinates(postalCode.trim());
+
+      if (!coordinates) {
+        setError("Ogiltigt postnummer. Kontrollera och försök igen.");
+        setLoading(false);
+        return;
+      }
+
       await createUserProfile(user.uid, {
         username: username.trim(),
         postalCode: postalCode.trim(),
+        latitude: coordinates.lat,
+        longitude: coordinates.lon,
         bio: bio.trim(),
         profileImageUrl: profileImageUrl,
       });
@@ -66,6 +79,8 @@ export default function CreateProfileScreen() {
       setLoading(false);
     }
   };
+
+  
 
   return (
     <KeyboardAvoidingView

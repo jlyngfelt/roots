@@ -8,6 +8,7 @@ import {
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 import { ProductCardProps } from "../../../interfaces/index"
+import { calculateDistance} from '../../../utils/distanceCalculator';
 
 export const ProductCard = ({
   userId,
@@ -17,8 +18,17 @@ export const ProductCard = ({
   image,
   readyToAdopt,
   variant = "big",
+  plantOwnerLat,
+  plantOwnerLon,
+  userLat,
+  userLon,
   onPress,
 }: ProductCardProps) => {
+
+
+
+const distance = calculateDistance(userLat, userLon, plantOwnerLat, plantOwnerLon);
+
   return (
     <View style={variant === "small" ? styles.cardSmall : styles.cardBig}>
       <Pressable onPress={onPress} style={{ width: "100%" }}>
@@ -34,6 +44,8 @@ export const ProductCard = ({
           style={variant === "view" ? styles.viewCardInfo : styles.cardInfo}
         >
           <View style={styles.texts}>
+            {variant === "view" ?
+            <Text>Denna planta bor {distance} km från dig</Text> : ""}
             <Text
               style={variant === "small" ? Styles.heading2 : Styles.heading1}
             >
