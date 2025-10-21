@@ -1,7 +1,7 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
-import { Styles } from "@/constants/design-system";
+import { Colors, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Image } from "react-native";
@@ -47,7 +47,7 @@ export default function LoginScreen() {
     <FormLayout>
       <Image
         source={require("../assets/roots_logo.png")}
-        style={{ height: 160, margin: 60 }}
+        style={{ height: 170, margin: 40 }}
         resizeMode="contain"
       />
 
@@ -57,6 +57,7 @@ export default function LoginScreen() {
         placeholder="E-postadress"
         keyboardType="email-address"
         autoCapitalize="none"
+        color={Colors.warning}
       />
 
       <DefaultInput
@@ -76,6 +77,8 @@ export default function LoginScreen() {
       <DefaultButton
         onPress={() => router.replace("/welcome")}
         variant="tertiary"
+        textColor={Colors.primary}
+        borderBottomColor={Colors.primary}
       >
         Tillbaka
       </DefaultButton>
