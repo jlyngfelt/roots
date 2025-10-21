@@ -1,10 +1,11 @@
-//Här ska man logga in med email och lösen (skickas sen vidare till tabs)
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { Colors } from "@/constants/design-system";
+import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { Image, Input, Text } from "tamagui";
+import { Image } from "react-native";
+import { Text } from "tamagui";
 import { signIn } from "../auth";
 
 export default function LoginScreen() {
@@ -26,7 +27,7 @@ export default function LoginScreen() {
         err.code === "auth/invalid-credential" ||
         err.code === "auth/invalid-email"
       ) {
-        setError("Fel email eller lösenord");
+        setError("Fel e-postadress eller lösenord");
       } else if (err.code === "auth/too-many-requests") {
         setError("För många försök, försök igen senare");
       } else if (err.code === "auth/user-disabled") {
@@ -43,58 +44,41 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView style={styles.feed}>
-      <View style={styles.form}>
-        <Image
-          source={require("../assets/roots_logo.png")}
-          style={{ width: 300 }}
-          resizeMode="contain"
-        />
-        <Input
-          value={email}
-          onChangeText={setEmail}
-          placeholder="email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          size="$4"
-          marginVertical="10"
-          width="50%"
-        />
-        <Input
-          value={password}
-          onChangeText={setPassword}
-          placeholder="lösenord"
-          secureTextEntry={true}
-          autoCapitalize="none"
-          size="$4"
-          marginVertical="10"
-          width="50%"
-        />
+    <FormLayout>
+      <Image
+        source={require("../assets/roots_logo.png")}
+        style={{ height: 160, margin: 60 }}
+        resizeMode="contain"
+      />
 
-        <Text fontSize="$3">{error}</Text>
+      <DefaultInput
+        value={email}
+        onChangeText={setEmail}
+        placeholder="E-postadress"
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
 
-        <DefaultButton onPress={handleSignIn} disabled={loading}>
-          {loading ? "Loggar in.." : "Logga in"}
-        </DefaultButton>
+      <DefaultInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Lösenord"
+        secureTextEntry={true}
+        autoCapitalize="none"
+      />
 
-        <DefaultButton
-          onPress={() => router.replace("/welcome")}
-          variant="tertiary"
-        >
-          Tillbaka
-        </DefaultButton>
-      </View>
-    </ScrollView>
+      <Text style={Styles.actionL}>{error}</Text>
+
+      <DefaultButton onPress={handleSignIn} disabled={loading}>
+        {loading ? "Loggar in.." : "Logga in"}
+      </DefaultButton>
+
+      <DefaultButton
+        onPress={() => router.replace("/welcome")}
+        variant="tertiary"
+      >
+        Tillbaka
+      </DefaultButton>
+    </FormLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  feed: {
-    flex: 1,
-    backgroundColor: Colors.secondary,
-  },
-  form: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
