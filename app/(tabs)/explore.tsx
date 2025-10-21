@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import {Plant} from "../../interfaces/index"
+import { Select, XStack, Button } from 'tamagui';
 
 
 export default function ExploreScreen() {
@@ -13,8 +14,41 @@ export default function ExploreScreen() {
   const [plants, setPlants] = useState<Plant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
 
+  type SortOption = 'nameAsc' | 'nameDesc' | 'newest' | 'oldest' | 'distance';
 
+  const getSortedPlants = (plants: Plant[], sortOption: SortOption) => {
+  const sorted = [...plants];
+
+  switch (sortOption) {
+    case 'nameAsc':
+      return sorted.sort((a, b) => a.name.localeCompare(b.name));
+    
+    case 'nameDesc':
+      return sorted.sort((a, b) => b.name.localeCompare(a.name));
+    
+    case 'newest':
+      return sorted.sort((a, b) => 
+        b.createdAt?.toMillis() - a.createdAt?.toMillis()
+      );
+    
+    case 'oldest':
+      return sorted.sort((a, b) => 
+        a.createdAt?.toMillis() - b.createdAt?.toMillis()
+      );
+    
+    // case 'distance':
+    //   return sorted.sort((a, b) => 
+    //     (a.distance || Infinity) - (b.distance || Infinity)
+    //   );
+    
+    default:
+      return sorted;
+  }
+};
+
+const sortedPlants = getSortedPlants(plants, sortBy);
 
   useEffect(() => {
     if (user?.uid) {
@@ -40,8 +74,42 @@ export default function ExploreScreen() {
   return (
     <ScrollView>
 
+<XStack gap="$2" flexWrap="wrap" padding="$2">
+  <Button 
+    size="$3"
+    onPress={() => setSortBy('newest')}
+    theme={sortBy === 'newest' ? 'active' : undefined}
+  >
+    Senaste
+  </Button>
+  <Button 
+    size="$3"
+    onPress={() => setSortBy('oldest')}
+    theme={sortBy === 'oldest' ? 'active' : undefined}
+  >
+    Äldsta
+  </Button>
+  <Button 
+    size="$3"
+    onPress={() => setSortBy('nameAsc')}
+    theme={sortBy === 'nameAsc' ? 'active' : undefined}
+  >
+    A-Ö
+  </Button>
+  <Button 
+    size="$3"
+    onPress={() => setSortBy('nameDesc')}
+    theme={sortBy === 'nameDesc' ? 'active' : undefined}
+  >
+    Ö-A
+  </Button>
+
+</XStack>
+
+
+
       <View style={styles.feed}>
-        {plants.map((plant) => (
+        {sortedPlants.map((plant) => (
           <ProductCard
           key={plant.id}
           variant="big"
@@ -58,6 +126,7 @@ export default function ExploreScreen() {
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   feed: {
