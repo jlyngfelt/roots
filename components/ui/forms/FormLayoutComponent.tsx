@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     minHeight: height,
     justifyContent: "center",
     alignItems: "center",
-    padding: Spacing.m,
+    paddingHorizontal: Spacing["2xl"],
     gap: Spacing.m,
   },
 });
