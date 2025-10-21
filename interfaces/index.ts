@@ -41,6 +41,8 @@ export interface UserData {
   postalCode?: string;
   bio?: string;
   profileImageUrl?: string;
+  longitude?: number;
+  latitude?: number;
 }
 
 export interface ReadyToAdoptProps {
@@ -55,6 +57,10 @@ export interface ProductCardProps {
   image?: string;
   readyToAdopt?: boolean;
   variant?: "big" | "small" | "view";
+  plantOwnerLat?: string;
+  plantOwnerLon?: string;
+  userLat?: string;
+  userLon?: string;
   onPress?: () => void;
 }
 
@@ -71,4 +77,9 @@ export interface MultiImagePickerProps {
   maxImages?: number;
   folder: string;
   fileNamePrefix: string;
+}
+
+export interface Coordinates {
+  lat: number;
+  lon: number;
 }
