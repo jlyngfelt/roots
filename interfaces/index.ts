@@ -41,6 +41,8 @@ export interface UserData {
   postalCode?: string;
   bio?: string;
   profileImageUrl?: string;
+  longitude?: number;
+  latitude?: number;
 }
 
 export interface ReadyToAdoptProps {
