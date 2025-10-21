@@ -1,6 +1,6 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/form/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/form/DefaultTextArea";
+import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";

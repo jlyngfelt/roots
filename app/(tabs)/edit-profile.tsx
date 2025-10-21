@@ -1,8 +1,8 @@
 // här ändrar man ex sin bio, sin profilbild och kanske mer. När man trycker på spara = (router.replace('/(tabs)'))
 
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/form/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/form/DefaultTextArea";
+import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { useAuth } from "@/contexts/AuthContext";
 import { pickAndUploadImage } from "@/services/imageService";
 import { getUserProfile, updateUserProfile } from "@/services/userService";
