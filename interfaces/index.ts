@@ -41,8 +41,8 @@ export interface UserData {
   postalCode?: string;
   bio?: string;
   profileImageUrl?: string;
-  longitude?: number;
-  latitude?: number;
+  lon?: number;
+  lat?: number;
 }
 
 export interface ReadyToAdoptProps {
@@ -82,4 +82,8 @@ export interface MultiImagePickerProps {
 export interface Coordinates {
   lat: number;
   lon: number;
+}
+
+export interface PlantWithDistance extends Plant {
+  distance: number | null;
 }

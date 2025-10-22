@@ -14,8 +14,8 @@ export async function createUserProfile(uid: string, userData: UserData): Promis
     await setDoc(doc(db, "users", uid), {
       username: userData.username,
       postalCode: userData.postalCode || "",
-      longitude: userData.longitude || "",
-      latitude: userData.latitude || "",
+      lon: userData.lon || "",
+      lat: userData.lat|| "",
       bio: userData.bio || "",
       profileImageUrl: userData.profileImageUrl || "",
       credits: 0,

@@ -65,8 +65,8 @@ export default function CreateProfileScreen() {
       await createUserProfile(user.uid, {
         username: username.trim(),
         postalCode: postalCode.trim(),
-        latitude: coordinates.lat,
-        longitude: coordinates.lon,
+        lat: coordinates.lat,
+        lon: coordinates.lon,
         bio: bio.trim(),
         profileImageUrl: profileImageUrl,
       });
