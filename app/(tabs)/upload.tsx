@@ -1,6 +1,7 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
+import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
@@ -17,6 +18,7 @@ export default function UploadScreen() {
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);
   const [plantImages, setPlantImages] = useState<string[]>([]);
+    const [categoryId, setCategoryId] = useState('');
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -80,6 +82,19 @@ export default function UploadScreen() {
         value={description}
         onChangeText={setDescription}
         placeholder="Beskrivning..."
+      />
+
+      {/* <DefaultSelect 
+        value={categoryId} 
+        onValueChange={setCategoryId} 
+      /> */}
+
+       <DefaultSelect 
+        value={categoryId}
+        onValueChange={(newValue) => {
+          setCategoryId(newValue);
+          console.log('Vald kategori:', newValue);
+        }}
       />
 
       <View style={styles.adoptWrapper}>
