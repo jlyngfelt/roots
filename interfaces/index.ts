@@ -5,6 +5,7 @@ export interface Plant {
   readyToAdopt: boolean;
   userId: string;
   categoryId?: string;
+  categoryName?: string; 
   imageUrl: string;
   createdAt?: any;
   adoptedBy?: string | null;
@@ -86,4 +87,9 @@ export interface Coordinates {
 
 export interface PlantWithDistance extends Plant {
   distance: number | null;
+}
+
+export interface Category {
+  id: string;
+  name: string;
 }
