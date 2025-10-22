@@ -1,17 +1,16 @@
-// här ändrar man ex sin bio, sin profilbild och kanske mer. När man trycker på spara = (router.replace('/(tabs)'))
-
+import { ImagePickerPreview } from "@/components/ui/ImagePickerPreview";
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
+import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { Colors, Styles } from "@/constants/design-system";
 import { useAuth } from "@/contexts/AuthContext";
 import { pickAndUploadImage } from "@/services/imageService";
 import { getCoordinates } from "@/services/locationService";
 import { getUserProfile, updateUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Image, View } from "react-native";
-import { Text } from "tamagui";
-import { Colors } from "../../constants/design-system";
+import { Alert, Text } from "react-native";
 
 export default function EditProfileScreen() {
   const router = useRouter();
@@ -47,7 +46,6 @@ export default function EditProfileScreen() {
     }
     try {
       setIsUploading(true);
-      // Upload image to 'profiles' folder with user's ID as filename
       const downloadURL = await pickAndUploadImage("profiles", user?.uid);
 
       if (downloadURL) {
@@ -94,75 +92,46 @@ export default function EditProfileScreen() {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: Colors.secondary,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-      }}
-    >
-      {/* Profile Image Preview */}
-      {profileImageUrl ? (
-        <Image
-          source={{ uri: profileImageUrl }}
-          style={{
-            width: 240,
-            height: 240,
-            padding: 40,
-            borderRadius: 16,
-            marginBottom: 24,
-          }}
-        />
-      ) : (
-        <View
-          style={{
-            width: 240,
-            height: 240,
-            padding: 40,
-            borderRadius: 16,
-            marginBottom: 24,
-            backgroundColor: Colors.grey,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: Colors.light }}>Ingen bild</Text>
-        </View>
-      )}
+    <FormLayout>
+      <ImagePickerPreview
+        imageUrl={profileImageUrl}
+        onPress={handleImageUpload}
+        isUploading={isUploading}
+      />
 
       <DefaultButton
-        variant="primary"
         onPress={handleImageUpload}
+        variant="tertiary"
+        textColor={Colors.details}
+        borderBottomColor={Colors.details}
         disabled={isUploading}
       >
-        {isUploading
-          ? "Väntar"
-          : profileImageUrl
-          ? "Ändra profilbild"
-          : "Ladda upp profilbild"}
+        Ladda upp bild
       </DefaultButton>
-
-      {isUploading && <ActivityIndicator size="small" />}
 
       <DefaultInput
         value={newUsername}
         onChangeText={setNewUsername}
         placeholder="Användarnamn"
       />
+
       <DefaultInput
         value={newPostalcode}
         onChangeText={setNewPostalcode}
         placeholder="Postnummer"
       />
+
       <DefaultTextArea
         value={newBio}
         onChangeText={setNewBio}
-        placeholder="Bio"
+        placeholder="Beskrivning..."
       />
-      <DefaultButton onPress={handleSave}>Spara</DefaultButton>
-    </View>
+
+      <Text style={Styles.actionL}>{error}</Text>
+
+      <DefaultButton onPress={handleSave} disabled={loading}>
+        {loading ? "Sparar..." : "Spara"}
+      </DefaultButton>
+    </FormLayout>
   );
 }
