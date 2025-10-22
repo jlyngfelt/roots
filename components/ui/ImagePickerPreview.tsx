@@ -1,5 +1,6 @@
+import { Colors } from "@/constants/design-system";
 import { ActivityIndicator, Image, TouchableOpacity, View } from "react-native";
-import { ImagePickerPreviewProps } from "../../interfaces/index"
+import { ImagePickerPreviewProps } from "../../interfaces/index";
 
 export function ImagePickerPreview({
   imageUrl,
@@ -15,7 +16,14 @@ export function ImagePickerPreview({
           style={{ width: size, height: size }}
         />
       ) : (
-        <View style={{ width: size, height: size, backgroundColor: "#ccc" }} />
+        <View
+          style={{
+            width: size,
+            height: size,
+            backgroundColor: Colors.grey,
+            borderRadius: 16,
+          }}
+        />
       )}
       {isUploading && (
         <View

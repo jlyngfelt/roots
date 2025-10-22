@@ -1,13 +1,16 @@
-import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { ImagePickerPreview } from "@/components/ui/ImagePickerPreview";
+import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
+import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
+import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { Colors, Styles } from "@/constants/design-system";
+import { getCoordinates } from "@/services/locationService";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { Input, Text, TextArea } from "tamagui";
+import { Image, Text } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { pickAndUploadImage } from "../services/imageService";
 import { createUserProfile } from "../services/userService";
-import { getCoordinates } from "@/services/locationService";
 
 export default function CreateProfileScreen() {
   const router = useRouter();
@@ -36,14 +39,13 @@ export default function CreateProfileScreen() {
     }
   }
 
-
   const handleCreateProfile = async () => {
     setError("");
     if (!username.trim()) {
       setError("Användarnamn krävs");
       return;
     }
-      if (!postalCode.trim()) {
+    if (!postalCode.trim()) {
       setError("Postnummer krävs");
       return;
     }
@@ -61,7 +63,6 @@ export default function CreateProfileScreen() {
         setLoading(false);
         return;
       }
-
       await createUserProfile(user.uid, {
         username: username.trim(),
         postalCode: postalCode.trim(),
@@ -80,58 +81,65 @@ export default function CreateProfileScreen() {
     }
   };
 
-  
-
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <ImagePickerPreview
-          imageUrl={profileImageUrl}
-          onPress={handleImageUpload}
-          isUploading={uploading}
-          size={200}
-        />
+    <FormLayout>
+      <Image
+        source={require("../assets/roots_logo.png")}
+        style={{ height: 70, margin: 10 }}
+        resizeMode="contain"
+      />
+      <ImagePickerPreview
+        imageUrl={profileImageUrl}
+        onPress={handleImageUpload}
+        isUploading={uploading}
+      />
 
-        <Input
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Användarnamn"
-          autoCapitalize="none"
-        />
+      <DefaultButton
+        onPress={handleImageUpload}
+        variant="tertiary"
+        textColor={Colors.details}
+        borderBottomColor={Colors.details}
+      >
+        Ladda upp bild
+      </DefaultButton>
 
-        <Input
-          value={postalCode}
-          onChangeText={setPostalCode}
-          placeholder="Postnummer"
-          autoCapitalize="characters"
-        />
+      <DefaultInput
+        value={username}
+        onChangeText={setUsername}
+        placeholder="Användarnamn"
+        autoCapitalize="none"
+      />
 
-        <TextArea
-          value={bio}
-          onChangeText={setBio}
-          placeholder="Beskrivning"
-          multiline
-          numberOfLines={3}
-        />
+      <DefaultInput
+        value={postalCode}
+        onChangeText={setPostalCode}
+        placeholder="Postnummer"
+        autoCapitalize="characters"
+      />
 
-        {error ? <Text>{error}</Text> : null}
+      <DefaultTextArea
+        value={bio}
+        onChangeText={setBio}
+        placeholder="Beskrivning..."
+      />
 
-        <DefaultButton
-          onPress={handleCreateProfile}
-          disabled={loading || uploading}
-        >
-          {loading ? "Sparar..." : "Spara"}
-        </DefaultButton>
-        <DefaultButton
-          onPress={() => router.replace("/welcome")}
-          variant="tertiary"
-        >
-          Tillbaka
-        </DefaultButton>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <Text style={Styles.actionL}>{error}</Text>
+
+      <DefaultButton
+        onPress={handleCreateProfile}
+        disabled={loading || uploading}
+      >
+        {loading ? "Sparar..." : "Spara"}
+      </DefaultButton>
+
+      {/* <DefaultButton
+        onPress={() => router.replace("/welcome")}
+        variant="tertiary"
+        textColor={Colors.primary}
+        borderBottomColor={Colors.primary}
+      >
+        Tillbaka
+      </DefaultButton> */}
+    </FormLayout>
   );
 }
