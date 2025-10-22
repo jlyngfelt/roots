@@ -143,6 +143,7 @@ export default function TabLayout() {
         options={{
           title: "Edit Profile",
           href: null,
+          tabBarStyle: { display: "none" },
           headerLeft: () => (
             <Pressable onPress={() => router.back()}>
               <IconSymbol
