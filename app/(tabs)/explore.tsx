@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
+import { getCategories } from "../../services/categoryService"
 import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -8,8 +9,8 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { Plant } from "../../interfaces/index";
 import { XStack, Button, Text } from 'tamagui';
-import { Coordinates, PlantWithDistance} from "../../interfaces/index"
-
+import { Coordinates, PlantWithDistance, Category} from "../../interfaces/index"
+import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 
 type SortOption = 'nameAsc' | 'nameDesc' | 'newest' | 'oldest' | 'distance';
 
@@ -20,8 +21,21 @@ export default function ExploreScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [filterBy, setFilterBy] = useState<string>('all'); // LADE TILL DENNA!
+  const [showOnlyReadyToAdopt, setShowOnlyReadyToAdopt] = useState(false);
   const [myCoordinates, setMyCoordinates] = useState<Coordinates | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
 
+  // Hämta kategorier
+  useEffect(() => {
+    async function fetchCategories() {
+      const categories = await getCategories();
+      setCategories(categories);
+    }
+    fetchCategories();
+  }, []);
+
+  // Hämta mina koordinater
   useEffect(() => {
     if (!user?.uid) return;
 
@@ -37,6 +51,7 @@ export default function ExploreScreen() {
     fetchMyCoordinates();
   }, [user?.uid]);
 
+  // Hämta plantor med distance
   useEffect(() => {
     if (!user?.uid || !myCoordinates) return;
 
@@ -74,6 +89,25 @@ export default function ExploreScreen() {
     fetchPlantsWithDistance();
   }, [user?.uid, myCoordinates]);
 
+  // Filtreringsfunktion
+  const getFilteredPlants = (
+    plants: PlantWithDistance[], 
+    categoryFilter: string,
+    onlyReadyToAdopt: boolean
+  ): PlantWithDistance[] => {
+    let filtered = plants;
+
+    if (onlyReadyToAdopt) {
+      filtered = filtered.filter(plant => plant.readyToAdopt === true);
+    }
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter(plant => plant.categoryId === categoryFilter);
+    }
+
+    return filtered;
+  };
+
+  // Sorteringsfunktion
   const getSortedPlants = (
     plants: PlantWithDistance[], 
     sortOption: SortOption
@@ -107,11 +141,43 @@ export default function ExploreScreen() {
     }
   };
 
-  const sortedPlants = getSortedPlants(plants, sortBy);
+  // Filtrera och sortera
+  const filteredPlants = getFilteredPlants(plants, filterBy, showOnlyReadyToAdopt);
+  const sortedAndFilteredPlants = getSortedPlants(filteredPlants, sortBy);
 
   return (
     <ScrollView>
-      
+      <View>
+        <Button 
+          onPress={() => setShowOnlyReadyToAdopt(!showOnlyReadyToAdopt)}
+          style={showOnlyReadyToAdopt ? styles.acitve : styles.inactive}
+        >
+          {showOnlyReadyToAdopt ? '✓ Redo att adopteras' : 'Redo att adopteras'}
+        </Button>
+      </View>
+
+        <XStack gap="$2" padding="$2">
+          <Button 
+            size="$2"
+            onPress={() => setFilterBy('all')}
+            theme={filterBy === 'all' ? 'active' : undefined}
+          >
+            Alla
+          </Button>
+          {categories.map((category) => (
+            <Button 
+              key={category.id}
+              size="$2"
+              onPress={() => setFilterBy(category.id)}
+              theme={filterBy === category.id ? 'active' : undefined}
+            >
+              {category.name}
+            </Button>
+          ))}
+        </XStack>
+
+
+      {/* Sorteringsknappar */}
       <XStack gap="$2" flexWrap="wrap" padding="$2">
         <Button 
           size="$3"
@@ -150,8 +216,9 @@ export default function ExploreScreen() {
         </Button>
       </XStack>
 
+      {/* Feed */}
       <View style={styles.feed}>
-        {sortedPlants.map((plant) => (
+        {sortedAndFilteredPlants.map((plant) => (
           <ProductCard
             key={plant.id}
             variant="big"
@@ -174,4 +241,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginBottom: 80,
   },
+  acitve: {
+    backgroundColor: 'rgb(0, 128, 0)',
+  },
+  inactive: {
+    backgroundColor: '#313170',
+  }
 });
