@@ -1,10 +1,12 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
+import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
+import { Colors, Styles } from "@/constants/design-system";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   deletePlant,
@@ -21,6 +23,7 @@ export default function EditPlantScreen() {
   const [readyToAdopt, setReadyToAdopt] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [plantImages, setPlantImages] = useState<string[]>([]);
 
   useEffect(() => {
     if (user?.uid) {
@@ -30,6 +33,7 @@ export default function EditPlantScreen() {
           setPlantName(plant.name || "");
           setDescription(plant.description || "");
           setReadyToAdopt(plant.readyToAdopt || false);
+          setPlantImages(plant.imageUrls || [plant.imageUrl] || []);
         }
       }
       fetchPlant();
@@ -37,39 +41,88 @@ export default function EditPlantScreen() {
   }, [user?.uid]);
 
   async function handleUpdatePlant() {
-    await updatePlant(plantId, {
-      name: plantName,
-      description: description,
-      readyToAdopt: readyToAdopt,
-    });
-    router.replace(`/view-plant/${plantId}`);
+    setLoading(true);
+    try {
+      await updatePlant(plantId, {
+        name: plantName,
+        description: description,
+        readyToAdopt: readyToAdopt,
+        imageUrl: plantImages[0] || "",
+        imageUrls: plantImages,
+      });
+      router.replace(`/view-plant/${plantId}`);
+    } catch (err) {
+      console.error(err);
+      setError("Kunde inte uppdatera planta");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleDeletePlant() {
-    await deletePlant(plantId);
-    router.replace("/(tabs)");
+    try {
+      await deletePlant(plantId);
+      router.replace("/(tabs)");
+    } catch (err) {
+      console.error(err);
+      setError("Kunde inte ta bort planta");
+    }
   }
 
   return (
-    <>
-      <Text style={{ fontSize: 50, padding: 40 }}>EDIT</Text>
-
+    <FormLayout>
+      {/* <MultiImagePicker
+        images={plantImages}
+        onImagesChange={setPlantImages}
+        maxImages={5}
+        folder="plants"
+        fileNamePrefix={`plant_${user?.uid || "temp"}_${plantId}`}
+      /> */}
       <DefaultInput
         value={plantName}
         onChangeText={setPlantName}
         placeholder="Ex. Monstera"
       />
+
       <DefaultTextArea
         value={description}
         onChangeText={setDescription}
-        placeholder="Beskrivning"
+        placeholder="Beskrivning..."
       />
-      <DefaultSwitch checked={readyToAdopt} onCheckedChange={setReadyToAdopt} />
 
-      <DefaultButton onPress={handleUpdatePlant}>Spara</DefaultButton>
-      <DefaultButton onPress={handleDeletePlant}>Ta Bort</DefaultButton>
-    </>
+      <View
+        style={{
+          flexDirection: "column",
+          width: "100%",
+          justifyContent: "flex-start",
+          gap: 8,
+        }}
+      >
+        <Text style={Styles.heading4}>Redo att adopteras?</Text>
+        <DefaultSwitch
+          checked={readyToAdopt}
+          onCheckedChange={setReadyToAdopt}
+        />
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "center",
+          gap: 16,
+          marginTop: 16,
+        }}
+      >
+        <DefaultButton onPress={handleUpdatePlant} disabled={loading}>
+          {loading ? "Sparar..." : "Spara"}
+        </DefaultButton>
+
+        <DefaultButton onPress={handleDeletePlant} variant="secondary">
+          Ta bort
+        </DefaultButton>
+      </View>
+      <Text style={[Styles.bodyS, { color: Colors.warning }]}>{error}</Text>
+    </FormLayout>
   );
 }
-
-const styles = StyleSheet.create({});

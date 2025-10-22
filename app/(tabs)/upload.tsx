@@ -1,12 +1,12 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
-import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
+import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
+import { Colors, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView } from "react-native";
-import { Text } from "tamagui";
+import { Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { createPlant } from "../../services/plantService";
 
@@ -61,14 +61,14 @@ export default function UploadScreen() {
   };
 
   return (
-    <ScrollView style={{ padding: 20 }}>
-      <MultiImagePicker
+    <FormLayout>
+      {/* <MultiImagePicker
         images={plantImages}
         onImagesChange={setPlantImages}
         maxImages={5}
         folder="plants"
         fileNamePrefix={`plant_${user?.uid || "temp"}`}
-      />
+      /> */}
 
       <DefaultInput
         value={plantName}
@@ -79,16 +79,29 @@ export default function UploadScreen() {
       <DefaultTextArea
         value={description}
         onChangeText={setDescription}
-        placeholder="Beskrivning"
+        placeholder="Beskrivning..."
       />
 
-      <DefaultSwitch checked={readyToAdopt} onCheckedChange={setReadyToAdopt} />
-
-      {error ? <Text>{error}</Text> : null}
+      <View
+        style={{
+          flexDirection: "column",
+          width: "100%",
+          justifyContent: "flex-start",
+          gap: 8,
+        }}
+      >
+        <Text style={Styles.heading4}>Redo att adopteras?</Text>
+        <DefaultSwitch
+          checked={readyToAdopt}
+          onCheckedChange={setReadyToAdopt}
+        />
+      </View>
 
       <DefaultButton onPress={handleCreatePlant} disabled={loading}>
         {loading ? "Sparar..." : "Spara"}
       </DefaultButton>
-    </ScrollView>
+
+      <Text style={[Styles.bodyS, { color: Colors.warning }]}>{error}</Text>
+    </FormLayout>
   );
 }
