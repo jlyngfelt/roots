@@ -35,6 +35,11 @@ export default function UploadScreen() {
       return;
     }
 
+      if (!categoryId) {  // LÄGG TILL VALIDERING!
+    setError("Kategori krävs");
+    return;
+  }
+
     setLoading(true);
 
     try {
@@ -43,7 +48,7 @@ export default function UploadScreen() {
         name: plantName.trim(),
         description: description.trim(),
         readyToAdopt: readyToAdopt,
-        categoryId: "",
+        categoryId: categoryId,
         imageUrl: plantImages[0] || "",
         imageUrls: plantImages,
       });
@@ -51,6 +56,7 @@ export default function UploadScreen() {
       setPlantName("");
       setDescription("");
       setReadyToAdopt(false);
+      setCategoryId("");
       setPlantImages([]);
 
       router.replace("/(tabs)/explore");

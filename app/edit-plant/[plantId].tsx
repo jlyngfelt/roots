@@ -50,6 +50,7 @@ export default function EditPlantScreen() {
         name: plantName,
         description: description,
         readyToAdopt: readyToAdopt,
+        categoryId: categoryId,
         imageUrl: plantImages[0] || "",
         imageUrls: plantImages,
       });
