@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getCategories } from '@/services/categoryService';
 import { Category } from '@/interfaces';
 import { AntDesign } from '@expo/vector-icons';
+import { Colors, Styles, BorderRadius} from "../../../constants/design-system"
 
 export function DefaultSelect({ 
   value, 
@@ -31,10 +32,11 @@ export function DefaultSelect({
   return (
     <Dropdown
       style={styles.dropdown}
-      placeholderStyle={styles.placeholderStyle}
-      selectedTextStyle={styles.selectedTextStyle}
+      placeholderStyle={[Styles.bodyM, styles.placeholderStyle]}
+      selectedTextStyle={[Styles.bodyM, styles.selectedTextStyle]}
       containerStyle={styles.containerStyle}
-      itemTextStyle={styles.itemTextStyle}
+      itemTextStyle={[Styles.bodyM, styles.itemTextStyle]}
+      itemContainerStyle={styles.itemContainerStyle} 
       activeColor="#f0f0f0"
       data={data}
       labelField="label"
@@ -43,7 +45,7 @@ export function DefaultSelect({
       value={value}
       onChange={item => onValueChange(item.value)}
       renderRightIcon={() => (
-        <AntDesign name="down" size={20} color="#666" />
+        <AntDesign name="down" size={15} color={Colors.details} />
       )}
     />
   );
@@ -51,31 +53,30 @@ export function DefaultSelect({
 
 const styles = StyleSheet.create({
   dropdown: {
-    width: 220,
-    height: 48,
+    width: "100%",
+    height: 46,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#fff',
+    borderColor: Colors.details,
+    borderRadius: BorderRadius.m,
+    paddingHorizontal: 24,
+    backgroundColor: Colors.secondary,
   },
   placeholderStyle: {
-    fontSize: 16,
-    color: '#999',
+    color: Colors.details,
   },
   selectedTextStyle: {
-    fontSize: 16,
-    color: '#000',
+    color: Colors.details,
   },
   containerStyle: {
-    borderRadius: 8,
+    borderRadius: BorderRadius.m,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: Colors.light,
     marginTop: 4,
   },
   itemTextStyle: {
-    fontSize: 16,
-    color: '#000',
-    paddingVertical: 8,
+    color: Colors.details,
   },
+  itemContainerStyle: {
+    borderRadius: BorderRadius.m, 
+  }
 });
