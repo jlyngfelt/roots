@@ -84,11 +84,6 @@ export default function UploadScreen() {
         placeholder="Beskrivning..."
       />
 
-      {/* <DefaultSelect 
-        value={categoryId} 
-        onValueChange={setCategoryId} 
-      /> */}
-
        <DefaultSelect 
         value={categoryId}
         onValueChange={(newValue) => {
