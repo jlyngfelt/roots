@@ -1,6 +1,7 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
+import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
@@ -17,6 +18,7 @@ export default function UploadScreen() {
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);
   const [plantImages, setPlantImages] = useState<string[]>([]);
+    const [categoryId, setCategoryId] = useState('');
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -33,6 +35,11 @@ export default function UploadScreen() {
       return;
     }
 
+      if (!categoryId) {  // LÄGG TILL VALIDERING!
+    setError("Kategori krävs");
+    return;
+  }
+
     setLoading(true);
 
     try {
@@ -41,7 +48,7 @@ export default function UploadScreen() {
         name: plantName.trim(),
         description: description.trim(),
         readyToAdopt: readyToAdopt,
-        categoryId: "",
+        categoryId: categoryId,
         imageUrl: plantImages[0] || "",
         imageUrls: plantImages,
       });
@@ -49,6 +56,7 @@ export default function UploadScreen() {
       setPlantName("");
       setDescription("");
       setReadyToAdopt(false);
+      setCategoryId("");
       setPlantImages([]);
 
       router.replace("/(tabs)/explore");
@@ -80,6 +88,14 @@ export default function UploadScreen() {
         value={description}
         onChangeText={setDescription}
         placeholder="Beskrivning..."
+      />
+
+       <DefaultSelect 
+        value={categoryId}
+        onValueChange={(newValue) => {
+          setCategoryId(newValue);
+          console.log('Vald kategori:', newValue);
+        }}
       />
 
       <View style={styles.adoptWrapper}>
