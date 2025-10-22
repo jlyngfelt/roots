@@ -78,8 +78,8 @@ export default function EditProfileScreen() {
       await updateUserProfile(user?.uid!, {
         username: newUsername,
         postalCode: newPostalcode,
-        latitude: coordinates.lat,
-        longitude: coordinates.lon,
+        lat: coordinates.lat,
+        lon: coordinates.lon,
         bio: newBio,
         profileImageUrl: profileImageUrl,
       });

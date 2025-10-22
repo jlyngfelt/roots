@@ -63,8 +63,8 @@ useEffect(() => {
       const userProfile = docSnap.data();
       setUserProfileName(userProfile.username || "");
       setUserProfileImageUrl(userProfile.profileImageUrl || "");
-      setPlantOwnerLat(userProfile.latitude || "");
-      setPlantOwnerLon(userProfile.longitude || "");
+      setPlantOwnerLat(userProfile.lat || "");
+      setPlantOwnerLon(userProfile.lon || "");
     }
   });
 

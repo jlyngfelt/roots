@@ -25,8 +25,6 @@ export const ProductCard = ({
   onPress,
 }: ProductCardProps) => {
 
-
-
 const distance = calculateDistance(userLat, userLon, plantOwnerLat, plantOwnerLon);
 
   return (
