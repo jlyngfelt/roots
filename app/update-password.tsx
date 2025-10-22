@@ -1,9 +1,10 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Image, Text } from "tamagui";
 import { changePassword } from "../auth";
 
@@ -38,80 +39,60 @@ export default function UpdatePasswordScreen() {
   };
 
   return (
-    <ScrollView style={styles.feed}>
-      <View style={styles.form}>
-        <Image
-          source={require("../assets/roots_logo.png")}
-          style={{ width: 300 }}
-          resizeMode="contain"
-        />
-        <View style={styles.inputfields}>
-          <DefaultInput
-            style={styles.input}
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-            placeholder="Nuvarande lösenord"
-            secureTextEntry={true}
-          />
-          <DefaultInput
-            style={styles.input}
-            value={newPassword}
-            onChangeText={setNewPassword}
-            placeholder="Nytt lösenord"
-            secureTextEntry={true}
-          />
-          <DefaultInput
-            style={styles.input}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            placeholder="Nytt lösenord"
-            secureTextEntry={true}
-          />
-        </View>
+    <FormLayout>
+      <Image
+        source={require("../assets/roots_logo.png")}
+        style={{ width: 180, height: 180 }}
+        resizeMode="contain"
+      />
+      <DefaultInput
+        value={currentPassword}
+        onChangeText={setCurrentPassword}
+        placeholder="Nuvarande lösenord"
+        secureTextEntry={true}
+      />
+      <DefaultInput
+        value={newPassword}
+        onChangeText={setNewPassword}
+        placeholder="Nytt lösenord"
+        secureTextEntry={true}
+      />
+      <DefaultInput
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        placeholder="Nytt lösenord"
+        secureTextEntry={true}
+      />
 
-        <Text fontSize="$3">{error}</Text>
+      <DefaultButton
+        onPress={() =>
+          handlePasswordChange(currentPassword, newPassword, confirmPassword)
+        }
+        disabled={loading}
+      >
+        {loading ? "Skickar..." : "Spara"}
+      </DefaultButton>
 
-        <DefaultButton
-          onPress={() =>
-            handlePasswordChange(currentPassword, newPassword, confirmPassword)
-          }
-          disabled={loading}
-        >
-          {loading ? "Skickar..." : "Spara"}
-        </DefaultButton>
+      <DefaultButton
+        onPress={() => router.replace("/welcome")}
+        variant="tertiary"
+        textColor={Colors.primary}
+        borderBottomColor={Colors.primary}
+      >
+        Tillbaka
+      </DefaultButton>
 
-        <Text style={[styles.success, Styles.actionM]}>
-          {success ? "Lösenordet uppdaterat!" : ""}
-        </Text>
+      <Text style={[Styles.bodyS, { color: Colors.warning }]}>{error}</Text>
 
-        <DefaultButton
-          onPress={() => router.replace("/welcome")}
-          variant="tertiary"
-        >
-          Tillbaka
-        </DefaultButton>
-      </View>
-    </ScrollView>
+      <Text style={[styles.success, Styles.actionM]}>
+        {success ? "Lösenordet uppdaterat!" : ""}
+      </Text>
+    </FormLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  feed: {
-    marginBottom: 80,
-    flex: 1,
-    backgroundColor: Colors.secondary,
-  },
-  form: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputfields: {
-    gap: Spacing.s,
-  },
-  input: {
-    width: 200,
-  },
   success: {
-    paddingVertical: Spacing.m,
+    paddingVertical: Spacing.xl,
   },
 });
