@@ -6,8 +6,9 @@ import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { Colors, Styles } from "@/constants/design-system";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import { Spacing } from "@/constants/design-system";
 import {
   deletePlant,
   getPlantById,
@@ -90,14 +91,7 @@ export default function EditPlantScreen() {
         placeholder="Beskrivning..."
       />
 
-      <View
-        style={{
-          flexDirection: "column",
-          width: "100%",
-          justifyContent: "flex-start",
-          gap: 8,
-        }}
-      >
+      <View style={styles.adoptWrapper}>
         <Text style={Styles.heading4}>Redo att adopteras?</Text>
         <DefaultSwitch
           checked={readyToAdopt}
@@ -105,15 +99,7 @@ export default function EditPlantScreen() {
         />
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "center",
-          gap: 16,
-          marginTop: 16,
-        }}
-      >
+      <View style={styles.buttonWrapper}>
         <DefaultButton onPress={handleUpdatePlant} disabled={loading}>
           {loading ? "Sparar..." : "Spara"}
         </DefaultButton>
@@ -126,3 +112,19 @@ export default function EditPlantScreen() {
     </FormLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  buttonWrapper: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
+    gap: Spacing.l,
+    marginTop: Spacing.l,
+  },
+  adoptWrapper: {
+    flexDirection: "column",
+    width: "100%",
+    justifyContent: "flex-start",
+    gap: Spacing.m,
+  },
+});

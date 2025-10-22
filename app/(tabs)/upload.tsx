@@ -3,10 +3,10 @@ import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
-import { Colors, Styles } from "@/constants/design-system";
+import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { createPlant } from "../../services/plantService";
 
@@ -82,14 +82,7 @@ export default function UploadScreen() {
         placeholder="Beskrivning..."
       />
 
-      <View
-        style={{
-          flexDirection: "column",
-          width: "100%",
-          justifyContent: "flex-start",
-          gap: 8,
-        }}
-      >
+      <View style={styles.adoptWrapper}>
         <Text style={Styles.heading4}>Redo att adopteras?</Text>
         <DefaultSwitch
           checked={readyToAdopt}
@@ -105,3 +98,12 @@ export default function UploadScreen() {
     </FormLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  adoptWrapper: {
+    flexDirection: "column",
+    width: "100%",
+    justifyContent: "flex-start",
+    gap: Spacing.m,
+  },
+});
