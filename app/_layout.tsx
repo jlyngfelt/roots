@@ -1,3 +1,4 @@
+import { TopBar } from "@/components/ui/TopBar";
 import {
   Poppins_300Light,
   Poppins_400Regular,
@@ -89,6 +90,41 @@ function NavigationHandler() {
       <Stack.Screen
         name="modal"
         options={{ presentation: "modal", headerShown: false }}
+      />
+      <Stack.Screen
+        name="edit-plant/[plantId]"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="view-plant/[plantId]"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="view-profile/[userId]"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="update-email"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="update-password"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
       />
     </Stack>
   );
