@@ -4,12 +4,13 @@ import { TopBar } from "@/components/ui/TopBar";
 import { Colors } from "@/constants/design-system";
 import { Tabs } from "expo-router";
 import React from "react";
+import { View } from "react-native";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.secondary,
+        tabBarActiveTintColor: Colors.starkWhite,
         tabBarInactiveTintColor: Colors.secondary,
         tabBarStyle: {
           backgroundColor: Colors.primary,
@@ -32,8 +33,22 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           header: () => <TopBar showBackButton={false} />,
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={32} name="apple.meditate" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <View
+              style={{
+                backgroundColor: focused
+                  ? "rgba(226, 232, 215, 0.2)"
+                  : "transparent",
+                padding: focused ? 10 : 8,
+                borderRadius: 16,
+              }}
+            >
+              <IconSymbol
+                size={focused ? 34 : 32}
+                name="apple.meditate"
+                color={color}
+              />
+            </View>
           ),
         }}
       />
@@ -42,8 +57,22 @@ export default function TabLayout() {
         options={{
           title: "Messages",
           header: () => <TopBar showBackButton={false} />,
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={32} name="ellipsis.message" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <View
+              style={{
+                backgroundColor: focused
+                  ? "rgba(226, 232, 215, 0.2)"
+                  : "transparent",
+                padding: focused ? 10 : 8,
+                borderRadius: 16,
+              }}
+            >
+              <IconSymbol
+                size={focused ? 34 : 32}
+                name="ellipsis.message"
+                color={color}
+              />
+            </View>
           ),
         }}
       />
@@ -52,8 +81,18 @@ export default function TabLayout() {
         options={{
           title: "upload",
           header: () => <TopBar showBackButton={true} />,
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={32} name="plus" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <View
+              style={{
+                backgroundColor: focused
+                  ? "rgba(226, 232, 215, 0.2)"
+                  : "transparent",
+                padding: focused ? 10 : 8,
+                borderRadius: 16,
+              }}
+            >
+              <IconSymbol size={focused ? 34 : 32} name="plus" color={color} />
+            </View>
           ),
         }}
       />
@@ -63,11 +102,21 @@ export default function TabLayout() {
           title: "Favourites",
           header: () => <TopBar showBackButton={true} />,
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
-              size={32}
-              name={focused ? "heart.fill" : "heart"}
-              color={focused ? "#ff7abd" : color}
-            />
+            <View
+              style={{
+                backgroundColor: focused
+                  ? "rgba(226, 232, 215, 0.2)"
+                  : "transparent",
+                padding: focused ? 10 : 8,
+                borderRadius: 16,
+              }}
+            >
+              <IconSymbol
+                size={focused ? 34 : 32}
+                name={focused ? "heart.fill" : "heart"}
+                color={focused ? "#ff7abd" : color}
+              />
+            </View>
           ),
         }}
       />
@@ -78,8 +127,22 @@ export default function TabLayout() {
           header: () => (
             <TopBar showBackButton={true} showSettingsButton={true} />
           ),
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={32} name="person" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <View
+              style={{
+                backgroundColor: focused
+                  ? "rgba(226, 232, 215, 0.2)"
+                  : "transparent",
+                padding: focused ? 10 : 8,
+                borderRadius: 16,
+              }}
+            >
+              <IconSymbol
+                size={focused ? 34 : 32}
+                name="person"
+                color={color}
+              />
+            </View>
           ),
         }}
       />

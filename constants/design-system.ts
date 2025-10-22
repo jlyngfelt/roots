@@ -11,6 +11,7 @@ export const Colors = {
   light: "#FCFCF4",
   warning: "#F34813",
   grey: "#c7ccbcff",
+  starkWhite: "#fff",
 };
 
 // || Typography
