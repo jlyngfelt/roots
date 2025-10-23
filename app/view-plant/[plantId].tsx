@@ -87,7 +87,7 @@ useEffect(() => {
 }, [user?.uid]);
 
   return (
-    <>
+
       <ScrollView>
         <ProductCard
           variant="view"
@@ -121,7 +121,6 @@ useEffect(() => {
           " "
         )}
       </ScrollView>
-    </>
   );
 }
 
