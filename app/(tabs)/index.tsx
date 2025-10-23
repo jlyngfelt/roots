@@ -1,10 +1,11 @@
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { Colors } from "@/constants/design-system";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
+import { ProfileCard } from "../../components/ui/profilePage/ProfileCard";
+import { ProfileFeed } from "../../components/ui/profilePage/ProfileFeed";
 import { useAuth } from "../../contexts/AuthContext";
 import { Plant, UserProfile } from "../../interfaces/index";
 import TabLayout from "./_layout";
@@ -42,82 +43,24 @@ export default function ProfileScreen() {
 
   return (
     <>
-      <ScrollView style={styles.bgColor}>
-        <Text style={{ fontSize: 20, padding: 10 }}>PROFIL</Text>
+      <ScrollView style={styles.page}>
+        <ProfileCard userProfile={userProfile} />
 
-        {/* Profile Image */}
-        {userProfile?.profileImageUrl ? (
-          <Image
-            source={{ uri: userProfile.profileImageUrl }}
-            style={{
-              width: 240,
-              height: 240,
-              padding: 40,
-              borderRadius: 16,
-              alignSelf: "center",
-              marginBottom: 24,
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              width: 240,
-              height: 240,
-              padding: 40,
-              borderRadius: 16,
-              marginBottom: 24,
-              backgroundColor: "black",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: Colors.light }}>Ingen bild</Text>
-          </View>
-        )}
-
-        <Text style={{ fontSize: 20, padding: 10 }}>Email: {user?.email}</Text>
-        <Text style={{ fontSize: 20, padding: 10 }}>
-          username: {userProfile?.username}
-        </Text>
-        <Text style={{ fontSize: 20, padding: 10 }}>
-          postal: {userProfile?.postalCode}
-        </Text>
-        <Text style={{ fontSize: 20, padding: 10 }}>
-          bio: {userProfile?.bio}
-        </Text>
-        <Text style={{ fontSize: 20, padding: 10 }}>
-          credits: {userProfile?.credits}
-        </Text>
         <TabLayout />
 
-        <View style={styles.feed}>
-          {plants.map((plant) => (
-            <ProductCard
-              key={plant.id}
-              variant="small"
-              userId={user?.uid!}
-              plantId={plant.id}
-              name={plant.name}
-              description={plant.description}
-              image={plant.imageUrl}
-              readyToAdopt={plant.readyToAdopt}
-              onPress={() => router.push(`/view-plant/${plant.id}`)}
-            />
-          ))}
-        </View>
+        <ProfileFeed
+          plants={plants}
+          userId={user?.uid!}
+          onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
+        />
       </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  bgColor: {
+  page: {
     backgroundColor: Colors.secondary,
-  },
-  feed: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    marginBottom: 80,
+    paddingVertical: 40,
   },
 });
