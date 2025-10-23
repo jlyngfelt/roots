@@ -119,6 +119,7 @@ export default function EditProfileScreen() {
         value={newPostalcode}
         onChangeText={setNewPostalcode}
         placeholder="Postnummer"
+        maxLength={5}
       />
 
       <DefaultTextArea

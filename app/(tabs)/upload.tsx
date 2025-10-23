@@ -82,6 +82,7 @@ export default function UploadScreen() {
         value={plantName}
         onChangeText={setPlantName}
         placeholder="Plantans namn"
+        maxLength={20}
       />
 
       <DefaultTextArea
