@@ -115,6 +115,7 @@ export default function CreateProfileScreen() {
         onChangeText={setPostalCode}
         placeholder="Postnummer"
         autoCapitalize="characters"
+        maxLength={5}
       />
 
       <DefaultTextArea
