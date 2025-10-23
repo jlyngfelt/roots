@@ -5,7 +5,7 @@ import { getUserProfile } from "@/services/userService";
 import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, RefreshControl } from "react-native";
 import { Button, XStack } from "tamagui";
 import { useAuth } from "../../contexts/AuthContext";
 import {
@@ -15,6 +15,7 @@ import {
 } from "../../interfaces/index";
 import { getCategories } from "../../services/categoryService";
 
+
 type SortOption = "nameAsc" | "nameDesc" | "newest" | "oldest" | "distance";
 
 export default function ExploreScreen() {
@@ -23,13 +24,49 @@ export default function ExploreScreen() {
   const [plants, setPlants] = useState<PlantWithDistance[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-  const [filterBy, setFilterBy] = useState<string>("all"); // LADE TILL DENNA!
+  const [filterBy, setFilterBy] = useState<string>("all");
   const [showOnlyReadyToAdopt, setShowOnlyReadyToAdopt] = useState(false);
   const [myCoordinates, setMyCoordinates] = useState<Coordinates | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  // Hämta kategorier
+  
+  const fetchPlantsWithDistance = async () => {
+    if (!user?.uid || !myCoordinates) return;
+
+    try {
+      setLoading(true);
+      const allPlants = await getOtherUsersPlants(user.uid);
+
+      const plantsWithDistance: PlantWithDistance[] = await Promise.all(
+        allPlants.map(async (plant) => {
+          const ownerProfile = await getUserProfile(plant.userId);
+
+          const distance =
+            ownerProfile?.lat && ownerProfile?.lon
+              ? calculateDistance(
+                  myCoordinates.lat,
+                  myCoordinates.lon,
+                  ownerProfile.lat,
+                  ownerProfile.lon
+                )
+              : null;
+
+          return { ...plant, distance };
+        })
+      );
+
+      setPlants(plantsWithDistance);
+    } catch (err: any) {
+      setError(err.message);
+      console.error("Error fetching plants:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
     async function fetchCategories() {
       const categories = await getCategories();
@@ -38,7 +75,6 @@ export default function ExploreScreen() {
     fetchCategories();
   }, []);
 
-  // Hämta mina koordinater
   useEffect(() => {
     if (!user?.uid) return;
 
@@ -54,46 +90,18 @@ export default function ExploreScreen() {
     fetchMyCoordinates();
   }, [user?.uid]);
 
-  // Hämta plantor med distance
   useEffect(() => {
-    if (!user?.uid || !myCoordinates) return;
-
-    async function fetchPlantsWithDistance() {
-      try {
-        setLoading(true);
-        const allPlants = await getOtherUsersPlants(user?.uid!);
-
-        const plantsWithDistance: PlantWithDistance[] = await Promise.all(
-          allPlants.map(async (plant) => {
-            const ownerProfile = await getUserProfile(plant.userId);
-
-            const distance =
-              ownerProfile?.lat && ownerProfile?.lon
-                ? calculateDistance(
-                    myCoordinates!.lat,
-                    myCoordinates!.lon,
-                    ownerProfile.lat,
-                    ownerProfile.lon
-                  )
-                : null;
-
-            return { ...plant, distance };
-          })
-        );
-
-        setPlants(plantsWithDistance);
-      } catch (err: any) {
-        setError(err.message);
-        console.error("Error fetching plants:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchPlantsWithDistance();
   }, [user?.uid, myCoordinates]);
 
-  // Filtreringsfunktion
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchPlantsWithDistance();
+    setRefreshing(false);
+  };
+
+  
   const getFilteredPlants = (
     plants: PlantWithDistance[],
     categoryFilter: string,
@@ -113,7 +121,7 @@ export default function ExploreScreen() {
     return filtered;
   };
 
-  // Sorteringsfunktion
+
   const getSortedPlants = (
     plants: PlantWithDistance[],
     sortOption: SortOption
@@ -158,7 +166,17 @@ export default function ExploreScreen() {
   const sortedAndFilteredPlants = getSortedPlants(filteredPlants, sortBy);
 
   return (
-    <ScrollView style={styles.bgColor}>
+    <ScrollView 
+      style={styles.bgColor}
+      refreshControl={
+        <RefreshControl 
+          refreshing={refreshing} 
+          onRefresh={onRefresh}
+          colors={[Colors.accent]} 
+          tintColor={Colors.accent}
+        />
+      }
+    >
       <View>
         <Button
           onPress={() => setShowOnlyReadyToAdopt(!showOnlyReadyToAdopt)}
