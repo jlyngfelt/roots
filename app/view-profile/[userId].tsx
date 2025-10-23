@@ -1,5 +1,7 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
+import { FeedToggle } from "@/components/ui/profilePage/FeedToggle";
+import { Colors } from "@/constants/design-system";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -62,19 +64,14 @@ export default function ViewProfileScreen() {
   }, [userId]);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.bgColor}>
       <ProfileCard userProfile={userProfile} />
 
-      <DefaultButton variant="secondary">Kontakta</DefaultButton>
+      <DefaultButton variant="secondary" style={styles.fullWidthButton}>
+        Kontakta
+      </DefaultButton>
 
-      {/* <View style={styles.buttonContainer}>
-        <DefaultButton onPress={() => setShowAll(true)}>
-          Alla plantor
-        </DefaultButton>
-        <DefaultButton onPress={() => setShowAll(false)}>
-          Redo att adopteras
-        </DefaultButton>
-      </View> */}
+      <FeedToggle showAll={showAll} onToggle={setShowAll} />
 
       {showAll ? (
         <View style={styles.feed}>
@@ -114,11 +111,23 @@ export default function ViewProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  bgColor: {
+    backgroundColor: Colors.secondary,
+  },
+  fullWidthButton: {
+    alignSelf: "stretch",
+    marginHorizontal: 16,
+  },
   feed: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
     marginBottom: 80,
   },
-  contactButton: {},
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 96,
+    marginVertical: 24,
+  },
 });
