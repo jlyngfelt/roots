@@ -1,13 +1,12 @@
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
+import { Colors } from "@/constants/design-system";
 import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
-import {Plant} from "../../interfaces/index"
-   
-
+import { Plant } from "../../interfaces/index";
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -42,7 +41,7 @@ export default function FavoritesScreen() {
   }, [user?.uid]);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.bgColor}>
       <Text style={{ fontSize: 50, padding: 40 }}>FAVORITES</Text>
 
       <View style={styles.feed}>
@@ -65,6 +64,9 @@ export default function FavoritesScreen() {
 }
 
 const styles = StyleSheet.create({
+  bgColor: {
+    backgroundColor: Colors.secondary,
+  },
   feed: {
     flexDirection: "row",
     flexWrap: "wrap",

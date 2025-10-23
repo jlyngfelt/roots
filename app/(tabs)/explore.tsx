@@ -1,18 +1,21 @@
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
+import { Colors } from "@/constants/design-system";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
-import { getCategories } from "../../services/categoryService"
 import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, XStack } from "tamagui";
 import { useAuth } from "../../contexts/AuthContext";
-import { Plant } from "../../interfaces/index";
-import { XStack, Button, Text } from 'tamagui';
-import { Coordinates, PlantWithDistance, Category} from "../../interfaces/index"
-import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
+import {
+  Category,
+  Coordinates,
+  PlantWithDistance,
+} from "../../interfaces/index";
+import { getCategories } from "../../services/categoryService";
 
-type SortOption = 'nameAsc' | 'nameDesc' | 'newest' | 'oldest' | 'distance';
+type SortOption = "nameAsc" | "nameDesc" | "newest" | "oldest" | "distance";
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -20,8 +23,8 @@ export default function ExploreScreen() {
   const [plants, setPlants] = useState<PlantWithDistance[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<SortOption>('newest');
-  const [filterBy, setFilterBy] = useState<string>('all'); // LADE TILL DENNA!
+  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [filterBy, setFilterBy] = useState<string>("all"); // LADE TILL DENNA!
   const [showOnlyReadyToAdopt, setShowOnlyReadyToAdopt] = useState(false);
   const [myCoordinates, setMyCoordinates] = useState<Coordinates | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -44,7 +47,7 @@ export default function ExploreScreen() {
       if (profile?.lat && profile?.lon) {
         setMyCoordinates({
           lat: profile.lat,
-          lon: profile.lon
+          lon: profile.lon,
         });
       }
     }
@@ -63,20 +66,21 @@ export default function ExploreScreen() {
         const plantsWithDistance: PlantWithDistance[] = await Promise.all(
           allPlants.map(async (plant) => {
             const ownerProfile = await getUserProfile(plant.userId);
-            
-            const distance = (ownerProfile?.lat && ownerProfile?.lon)
-              ? calculateDistance(
-                  myCoordinates!.lat,
-                  myCoordinates!.lon,
-                  ownerProfile.lat,
-                  ownerProfile.lon
-                )
-              : null;
-            
+
+            const distance =
+              ownerProfile?.lat && ownerProfile?.lon
+                ? calculateDistance(
+                    myCoordinates!.lat,
+                    myCoordinates!.lon,
+                    ownerProfile.lat,
+                    ownerProfile.lon
+                  )
+                : null;
+
             return { ...plant, distance };
           })
         );
-        
+
         setPlants(plantsWithDistance);
       } catch (err: any) {
         setError(err.message);
@@ -85,23 +89,25 @@ export default function ExploreScreen() {
         setLoading(false);
       }
     }
-    
+
     fetchPlantsWithDistance();
   }, [user?.uid, myCoordinates]);
 
   // Filtreringsfunktion
   const getFilteredPlants = (
-    plants: PlantWithDistance[], 
+    plants: PlantWithDistance[],
     categoryFilter: string,
     onlyReadyToAdopt: boolean
   ): PlantWithDistance[] => {
     let filtered = plants;
 
     if (onlyReadyToAdopt) {
-      filtered = filtered.filter(plant => plant.readyToAdopt === true);
+      filtered = filtered.filter((plant) => plant.readyToAdopt === true);
     }
-    if (categoryFilter !== 'all') {
-      filtered = filtered.filter(plant => plant.categoryId === categoryFilter);
+    if (categoryFilter !== "all") {
+      filtered = filtered.filter(
+        (plant) => plant.categoryId === categoryFilter
+      );
     }
 
     return filtered;
@@ -109,108 +115,113 @@ export default function ExploreScreen() {
 
   // Sorteringsfunktion
   const getSortedPlants = (
-    plants: PlantWithDistance[], 
+    plants: PlantWithDistance[],
     sortOption: SortOption
   ): PlantWithDistance[] => {
     const sorted = [...plants];
 
     switch (sortOption) {
-      case 'nameAsc':
+      case "nameAsc":
         return sorted.sort((a, b) => a.name.localeCompare(b.name));
-      
-      case 'nameDesc':
+
+      case "nameDesc":
         return sorted.sort((a, b) => b.name.localeCompare(a.name));
-      
-      case 'newest':
-        return sorted.sort((a, b) => 
-          (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0)
+
+      case "newest":
+        return sorted.sort(
+          (a, b) =>
+            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0)
         );
-      
-      case 'oldest':
-        return sorted.sort((a, b) => 
-          (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0)
+
+      case "oldest":
+        return sorted.sort(
+          (a, b) =>
+            (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0)
         );
-      
-      case 'distance':
-        return sorted.sort((a, b) => 
-          (a.distance || Infinity) - (b.distance || Infinity)
+
+      case "distance":
+        return sorted.sort(
+          (a, b) => (a.distance || Infinity) - (b.distance || Infinity)
         );
-      
+
       default:
         return sorted;
     }
   };
 
   // Filtrera och sortera
-  const filteredPlants = getFilteredPlants(plants, filterBy, showOnlyReadyToAdopt);
+  const filteredPlants = getFilteredPlants(
+    plants,
+    filterBy,
+    showOnlyReadyToAdopt
+  );
   const sortedAndFilteredPlants = getSortedPlants(filteredPlants, sortBy);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.bgColor}>
       <View>
-        <Button 
+        <Button
           onPress={() => setShowOnlyReadyToAdopt(!showOnlyReadyToAdopt)}
           style={showOnlyReadyToAdopt ? styles.acitve : styles.inactive}
         >
-          {showOnlyReadyToAdopt ? '✓ Redo att adopteras' : 'Redo att adopteras'}
+          {showOnlyReadyToAdopt ? "✓ Redo att adopteras" : "Redo att adopteras"}
         </Button>
       </View>
 
-        <XStack gap="$2" padding="$2">
-          <Button 
+      <XStack gap="$2" padding="$2">
+        <Button
+          size="$2"
+          onPress={() => setFilterBy("all")}
+          theme={filterBy === "all" ? "active" : undefined}
+        >
+          Alla
+        </Button>
+        {categories.map((category) => (
+          <Button
+            key={category.id}
             size="$2"
-            onPress={() => setFilterBy('all')}
-            theme={filterBy === 'all' ? 'active' : undefined}
+            onPress={() => setFilterBy(category.id)}
+            theme={filterBy === category.id ? "active" : undefined}
           >
-            Alla
+            {category.name}
           </Button>
-          {categories.map((category) => (
-            <Button 
-              key={category.id}
-              size="$2"
-              onPress={() => setFilterBy(category.id)}
-              theme={filterBy === category.id ? 'active' : undefined}
-            >
-              {category.name}
-            </Button>
-          ))}
-        </XStack>
-
+        ))}
+      </XStack>
 
       {/* Sorteringsknappar */}
       <XStack gap="$2" flexWrap="wrap" padding="$2">
-        <Button 
+        <Button
           size="$3"
-          onPress={() => setSortBy('distance')}
-          theme={sortBy === 'distance' ? 'active' : undefined}
+          onPress={() => setSortBy("distance")}
+          theme={sortBy === "distance" ? "active" : undefined}
         >
           Närmast
         </Button>
-        <Button 
+        <Button
           size="$3"
-          onPress={() => setSortBy('newest')}
-          theme={sortBy === 'newest' ? 'active' : undefined}
+          onPress={() => setSortBy("newest")}
+          theme={sortBy === "newest" ? "active" : undefined}
         >
           Senaste
         </Button>
-        <Button 
+        <Button
           size="$3"
-          onPress={() => setSortBy('oldest')}
-          theme={sortBy === 'oldest' ? 'active' : undefined}
+          onPress={() => setSortBy("oldest")}
+          theme={sortBy === "oldest" ? "active" : undefined}
         >
           Äldsta
         </Button>
-        <Button 
+        <Button
           size="$3"
-          onPress={() => setSortBy('nameAsc')}
-          theme={sortBy === 'nameAsc' ? 'active' : undefined}
+          onPress={() => setSortBy("nameAsc")}
+          theme={sortBy === "nameAsc" ? "active" : undefined}
         >
           A-Ö
         </Button>
-        <Button 
+        <Button
           size="$3"
-          onPress={() => setSortBy('nameDesc')}
-          theme={sortBy === 'nameDesc' ? 'active' : undefined}
+          onPress={() => setSortBy("nameDesc")}
+          theme={sortBy === "nameDesc" ? "active" : undefined}
         >
           Ö-A
         </Button>
@@ -237,14 +248,18 @@ export default function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
+  bgColor: {
+    backgroundColor: Colors.secondary,
+  },
   feed: {
     flexDirection: "column",
     marginBottom: 80,
+    backgroundColor: Colors.secondary,
   },
   acitve: {
-    backgroundColor: 'rgb(0, 128, 0)',
+    backgroundColor: "rgb(0, 128, 0)",
   },
   inactive: {
-    backgroundColor: '#313170',
-  }
+    backgroundColor: "#313170",
+  },
 });
