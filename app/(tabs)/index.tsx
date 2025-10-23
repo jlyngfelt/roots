@@ -1,12 +1,12 @@
-import { FeedToggle } from "@/components/ui/profilePage/FeedToggle";
+import { FeedToggle } from "@/components/ui/profilePage/feedToggle";
 import { Colors } from "@/constants/design-system";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { ProfileCard } from "../../components/ui/profilePage/ProfileCard";
-import { ProfileFeed } from "../../components/ui/profilePage/ProfileFeed";
+import { ProfileCard } from "../../components/ui/profilePage/profileCard";
+import { ProfileFeed } from "../../components/ui/profilePage/profileFeed";
 import { useAuth } from "../../contexts/AuthContext";
 import { Plant, UserProfile } from "../../interfaces/index";
 import TabLayout from "./_layout";

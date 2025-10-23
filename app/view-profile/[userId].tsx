@@ -1,13 +1,13 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
-import { FeedToggle } from "@/components/ui/profilePage/FeedToggle";
+import { FeedToggle } from "@/components/ui/profilePage/feedToggle";
 import { Colors } from "@/constants/design-system";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { ProfileCard } from "../../components/ui/profilePage/ProfileCard";
+import { ProfileCard } from "../../components/ui/profilePage/profileCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { UserProfile } from "../../interfaces/index";
 
