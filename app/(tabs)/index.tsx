@@ -1,3 +1,4 @@
+import { FeedToggle } from "@/components/ui/profilePage/FeedToggle";
 import { Colors } from "@/constants/design-system";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
@@ -12,6 +13,7 @@ import TabLayout from "./_layout";
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const [showAll, setShowAll] = useState(true);
   const { user, loading } = useAuth();
   const [userProfile, setUserProfile] = useState<Partial<UserProfile> | null>(
     null
@@ -41,15 +43,18 @@ export default function ProfileScreen() {
     }
   }, [user?.uid]);
 
+  const displayedPlants = showAll
+    ? plants
+    : plants.filter((plant) => plant.readyToAdopt);
+
   return (
     <>
       <ScrollView style={styles.page}>
         <ProfileCard userProfile={userProfile} />
-
+        <FeedToggle showAll={showAll} onToggle={setShowAll} />
         <TabLayout />
-
         <ProfileFeed
-          plants={plants}
+          plants={displayedPlants}
           userId={user?.uid!}
           onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
         />
