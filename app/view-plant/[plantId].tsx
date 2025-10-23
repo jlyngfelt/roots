@@ -1,12 +1,13 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { BorderRadius, Spacing, Typography } from "@/constants/design-system";
+import { db } from "@/firebaseConfig";
 import { getPlantById } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from 'firebase/firestore'; 
-import { db } from '@/firebaseConfig'; 
+import { Colors } from "@/constants/design-system";
 import {
   Image,
   Pressable,
@@ -53,42 +54,41 @@ export default function ViewPlantScreen() {
     }
   }, [user?.uid]);
 
-//Hämta plantans ägares koordinater
-useEffect(() => {
-  if (!userId) return;
-
-  const userRef = doc(db, 'users', userId);
-  const unsubscribe = onSnapshot(userRef, (docSnap) => {
-    if (docSnap.exists()) {
-      const userProfile = docSnap.data();
-      setUserProfileName(userProfile.username || "");
-      setUserProfileImageUrl(userProfile.profileImageUrl || "");
-      setPlantOwnerLat(userProfile.lat || "");
-      setPlantOwnerLon(userProfile.lon || "");
-    }
-  });
-
-  return () => unsubscribe();
-}, [userId]);
-
-
-//Hämta mina kordinater
+  //Hämta plantans ägares koordinater
   useEffect(() => {
-  if (user?.uid) {
-    async function fetchProfile() {
-      const profile = await getUserProfile(user?.uid!);
-      if (profile) {
-        setUserProfileLat(profile.latitude || "");
-        setUserProfileLon(profile.longitude || "");
+    if (!userId) return;
+
+    const userRef = doc(db, "users", userId);
+    const unsubscribe = onSnapshot(userRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const userProfile = docSnap.data();
+        setUserProfileName(userProfile.username || "");
+        setUserProfileImageUrl(userProfile.profileImageUrl || "");
+        setPlantOwnerLat(userProfile.lat || "");
+        setPlantOwnerLon(userProfile.lon || "");
       }
+    });
+
+    return () => unsubscribe();
+  }, [userId]);
+
+  //Hämta mina kordinater
+  useEffect(() => {
+    if (user?.uid) {
+      async function fetchProfile() {
+        const profile = await getUserProfile(user?.uid!);
+        if (profile) {
+          setUserProfileLat(profile.latitude || "");
+          setUserProfileLon(profile.longitude || "");
+        }
+      }
+      fetchProfile();
     }
-    fetchProfile();
-  }
-}, [user?.uid]);
+  }, [user?.uid]);
 
   return (
     <>
-      <ScrollView>
+      <ScrollView style={styles.bgColor}>
         <ProductCard
           variant="view"
           userId={user?.uid!}
@@ -126,6 +126,9 @@ useEffect(() => {
 }
 
 const styles = StyleSheet.create({
+  bgColor: {
+    backgroundColor: Colors.secondary,
+  },
   buttonContainer: {
     alignSelf: "flex-start",
     paddingHorizontal: Spacing.xl,
