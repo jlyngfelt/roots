@@ -1,5 +1,11 @@
 import { Colors, Typography } from "@/constants/design-system";
-import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
+import {
+  Pressable,
+  PressableProps,
+  StyleSheet,
+  Text,
+  ViewStyle,
+} from "react-native";
 
 interface CustomButtonProps extends Omit<PressableProps, "style"> {
   variant?: "primary" | "secondary" | "tertiary" | "icon";
@@ -7,6 +13,7 @@ interface CustomButtonProps extends Omit<PressableProps, "style"> {
   disabled?: boolean;
   textColor?: string;
   borderBottomColor?: string;
+  style?: ViewStyle | ViewStyle[];
 }
 
 export const DefaultButton = ({
@@ -16,6 +23,7 @@ export const DefaultButton = ({
   disabled = false,
   textColor,
   borderBottomColor,
+  style,
   ...props
 }: CustomButtonProps) => {
   return (
@@ -29,6 +37,7 @@ export const DefaultButton = ({
         variant === "tertiary" && styles.tertiary,
         borderBottomColor && { borderBottomColor: borderBottomColor },
         disabled && styles.disabled,
+        style,
       ]}
       {...props}
     >
