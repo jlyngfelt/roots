@@ -86,6 +86,7 @@ export default function EditPlantScreen() {
         value={plantName}
         onChangeText={setPlantName}
         placeholder="Ex. Monstera"
+        maxLength={20}
       />
 
       <DefaultTextArea
