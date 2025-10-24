@@ -1,6 +1,7 @@
 import { Colors, Spacing } from "@/constants/design-system";
 import { ReactNode } from "react";
-import { Dimensions, ScrollView, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 interface FormLayoutProps {
   children: ReactNode;
@@ -10,9 +11,15 @@ const { height } = Dimensions.get("window");
 
 export const FormLayout = ({ children }: FormLayoutProps) => {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      enableOnAndroid={true}
+      extraScrollHeight={20}
+      keyboardShouldPersistTaps="handled"
+    >
       {children}
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
