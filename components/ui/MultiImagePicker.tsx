@@ -83,7 +83,7 @@ export function MultiImagePicker({
 
   return (
     <View style={styles.container}>
-      {images.length > 0 && (
+      {images.length > 0 ? (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -146,6 +146,14 @@ export function MultiImagePicker({
             </View>
           ))}
         </ScrollView>
+      ) : (
+        <View style={styles.placeholderContainer}>
+          <Image
+            source={require("@/assets/placeholder.png")}
+            style={styles.placeholderImage}
+            resizeMode="cover"
+          />
+        </View>
       )}
 
       {images.length < maxImages && (
@@ -234,6 +242,17 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.7,
     transform: [{ scale: 0.95 }],
+  },
+  placeholderContainer: {
+    width: "100%",
+    height: 300,
+    borderRadius: BorderRadius.xl,
+    overflow: "hidden",
+    marginBottom: Spacing.m,
+  },
+  placeholderImage: {
+    width: "100%",
+    height: "100%",
   },
   addButton: {
     width: "100%",
