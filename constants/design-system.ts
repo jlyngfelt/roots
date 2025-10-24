@@ -5,11 +5,11 @@ import { StyleSheet } from "react-native";
 export const Colors = {
   primary: "#99B566",
   secondary: "#E2E8D7",
-  accent: "#F88DA4",
-  details: "#9E8165",
+  accent: "#f4728eff",
+  details: "#93785fff",
   text: "#333333ff",
   light: "#FCFCF4",
-  warning: "#F34813",
+  warning: "#d74518ff",
   grey: "#c7ccbcff",
   starkWhite: "#fff",
 };

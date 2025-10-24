@@ -5,15 +5,16 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 interface FormLayoutProps {
   children: ReactNode;
+  centered?: boolean;
 }
 
 const { height } = Dimensions.get("window");
 
-export const FormLayout = ({ children }: FormLayoutProps) => {
+export const FormLayout = ({ children, centered = true }: FormLayoutProps) => {
   return (
     <KeyboardAwareScrollView
       style={styles.container}
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[styles.content, centered && styles.centered]}
       enableOnAndroid={true}
       extraScrollHeight={20}
       keyboardShouldPersistTaps="handled"
@@ -29,10 +30,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
   },
   content: {
+    paddingHorizontal: Spacing["2xl"],
+    paddingVertical: Spacing.xl,
+    gap: Spacing.m,
+  },
+  centered: {
     minHeight: height,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: Spacing["2xl"],
-    gap: Spacing.m,
   },
 });
