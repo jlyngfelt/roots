@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
   feed: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
+    gap: 8,
+    marginBottom: 70
   },
 });
