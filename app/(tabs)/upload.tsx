@@ -1,8 +1,9 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
+import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
@@ -18,7 +19,7 @@ export default function UploadScreen() {
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);
   const [plantImages, setPlantImages] = useState<string[]>([]);
-    const [categoryId, setCategoryId] = useState('');
+  const [categoryId, setCategoryId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,10 +36,10 @@ export default function UploadScreen() {
       return;
     }
 
-      if (!categoryId) {  // LÄGG TILL VALIDERING!
-    setError("Kategori krävs");
-    return;
-  }
+    if (!categoryId) {
+      setError("Kategori krävs");
+      return;
+    }
 
     setLoading(true);
 
@@ -69,14 +70,14 @@ export default function UploadScreen() {
   };
 
   return (
-    <FormLayout>
-      {/* <MultiImagePicker
+    <FormLayout centered={false}>
+      <MultiImagePicker
         images={plantImages}
         onImagesChange={setPlantImages}
         maxImages={5}
         folder="plants"
         fileNamePrefix={`plant_${user?.uid || "temp"}`}
-      /> */}
+      />
 
       <DefaultInput
         value={plantName}
@@ -91,11 +92,11 @@ export default function UploadScreen() {
         placeholder="Beskrivning..."
       />
 
-       <DefaultSelect 
+      <DefaultSelect
         value={categoryId}
         onValueChange={(newValue) => {
           setCategoryId(newValue);
-          console.log('Vald kategori:', newValue);
+          console.log("Vald kategori:", newValue);
         }}
       />
 
