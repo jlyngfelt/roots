@@ -1,15 +1,16 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
+import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
-import { Colors, Styles } from "@/constants/design-system";
+import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
 import { StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
-import { Spacing } from "@/constants/design-system";
+
 import {
   deletePlant,
   getPlantById,
@@ -23,7 +24,7 @@ export default function EditPlantScreen() {
   const [plantName, setPlantName] = useState("");
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);
-      const [categoryId, setCategoryId] = useState('');
+  const [categoryId, setCategoryId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [plantImages, setPlantImages] = useState<string[]>([]);
@@ -75,13 +76,13 @@ export default function EditPlantScreen() {
 
   return (
     <FormLayout>
-      {/* <MultiImagePicker
+      <MultiImagePicker
         images={plantImages}
         onImagesChange={setPlantImages}
         maxImages={5}
         folder="plants"
-        fileNamePrefix={`plant_${user?.uid || "temp"}_${plantId}`}
-      /> */}
+        fileNamePrefix={`plant_${user?.uid || "temp"}`}
+      />
       <DefaultInput
         value={plantName}
         onChangeText={setPlantName}
@@ -95,13 +96,13 @@ export default function EditPlantScreen() {
         placeholder="Beskrivning..."
       />
 
-      <DefaultSelect 
-      value={categoryId}
-      onValueChange={(newValue) => {
-        setCategoryId(newValue);
-        console.log('Vald kategori:', newValue);
-      }}
-    />
+      <DefaultSelect
+        value={categoryId}
+        onValueChange={(newValue) => {
+          setCategoryId(newValue);
+          console.log("Vald kategori:", newValue);
+        }}
+      />
 
       <View style={styles.adoptWrapper}>
         <Text style={Styles.heading4}>Redo att adopteras?</Text>
