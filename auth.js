@@ -95,3 +95,16 @@ export const changeEmail = async (currentPassword, newEmail) => {
     throw error;
   }
 };
+
+export const checkEmailVerified = async () => {
+  const user = auth.currentUser;
+  if (user) {
+    await user.reload(); // Uppdatera användarens data från Firebase
+    return user.emailVerified;
+  }
+  return false;
+};
+
+export const getCurrentUser = () => {
+  return auth.currentUser;
+};

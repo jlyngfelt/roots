@@ -74,9 +74,9 @@ function NavigationHandler() {
       router.replace("/welcome");
     }
 
-    if (user && inAuthGroup) {
-      router.replace("/(tabs)/explore");
-    }
+// if (user && user.emailVerified && inAuthGroup) {
+//   router.replace("/(tabs)/explore");
+// }
   }, [user, loading, segments]);
 
   return (
@@ -85,7 +85,7 @@ function NavigationHandler() {
       <Stack.Screen name="welcome" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={{ headerShown: false }} />
-      <Stack.Screen name="create-profile" options={{ headerShown: false }} />
+      {/* <Stack.Screen name="create-profile" options={{ headerShown: false }} /> */}
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="modal"
