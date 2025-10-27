@@ -1,12 +1,12 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { FeedToggle } from "@/components/ui/profilePage/feedToggle";
+import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
 import { Colors } from "@/constants/design-system";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { ProfileCard } from "../../components/ui/profilePage/profileCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { UserProfile } from "../../interfaces/index";
@@ -74,37 +74,17 @@ export default function ViewProfileScreen() {
       <FeedToggle showAll={showAll} onToggle={setShowAll} />
 
       {showAll ? (
-        <View style={styles.feed}>
-          {plants.map((plant) => (
-            <ProductCard
-              key={plant.id}
-              variant="small"
-              userId={user?.uid!}
-              plantId={plant.id}
-              name={plant.name}
-              description={plant.description}
-              image={plant.imageUrl}
-              readyToAdopt={plant.readyToAdopt}
-              onPress={() => router.push(`/view-plant/${plant.id}`)}
-            />
-          ))}
-        </View>
+        <ProfileFeed
+          plants={plants}
+          userId={user?.uid!}
+          onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
+        />
       ) : (
-        <View style={styles.feed}>
-          {readyToAdoptPlants.map((plant) => (
-            <ProductCard
-              key={plant.id}
-              variant="small"
-              userId={user?.uid!}
-              plantId={plant.id}
-              name={plant.name}
-              description={plant.description}
-              image={plant.imageUrl}
-              readyToAdopt={plant.readyToAdopt}
-              onPress={() => router.push(`/view-plant/${plant.id}`)}
-            />
-          ))}
-        </View>
+        <ProfileFeed
+          plants={readyToAdoptPlants}
+          userId={user?.uid!}
+          onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
+        />
       )}
     </ScrollView>
   );
