@@ -1,3 +1,4 @@
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useRef, useState } from "react";
 import {
   Dimensions,
@@ -112,14 +113,13 @@ export const ProductCard = ({
 
           <View style={infoStyle}>
             <View style={styles.texts}>
-              <Text>Denna planta bor {distance} km från dig</Text>
-
-              <Text
-                style={[headingStyle, isSmallVariant && styles.plantName]}
-                numberOfLines={isSmallVariant ? 2 : undefined}
-              >
-                {name}
-              </Text>
+              <Text style={Styles.heading1}>{name}</Text>
+              <View style={styles.locationRow}>
+                <IconSymbol size={20} name="mappin" color={Colors.primary} />
+                <Text style={Styles.bodyS}>
+                  Denna planta bor {distance} km från dig
+                </Text>
+              </View>
             </View>
 
             <View style={iconsStyle}>
@@ -144,9 +144,6 @@ export const ProductCard = ({
 
           <View style={infoStyle}>
             <View style={styles.texts}>
-              {isViewVariant && (
-                <Text>Denna planta bor {distance} km från dig</Text>
-              )}
               <Text
                 style={[headingStyle, isSmallVariant && styles.plantName]}
                 numberOfLines={isSmallVariant ? 2 : undefined}
@@ -227,6 +224,12 @@ const styles = StyleSheet.create({
   },
   texts: {
     flexDirection: "column",
+    gap: Spacing.xs,
+  },
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.xs,
   },
   icons: {
     flexDirection: "row",
