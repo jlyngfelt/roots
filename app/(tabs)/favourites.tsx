@@ -1,18 +1,12 @@
+import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
 import { Colors } from "@/constants/design-system";
 import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { RefreshControl, ScrollView, StyleSheet } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { Plant } from "../../interfaces/index";
-import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -57,7 +51,6 @@ export default function FavoritesScreen() {
   };
 
   return (
-
     <ScrollView
       style={styles.bgColor}
       refreshControl={
@@ -68,13 +61,12 @@ export default function FavoritesScreen() {
           tintColor={Colors.accent}
         />
       }
-
+    >
       <ProfileFeed
         plants={plants}
         userId={user?.uid!}
         onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
       />
-
     </ScrollView>
   );
 }
