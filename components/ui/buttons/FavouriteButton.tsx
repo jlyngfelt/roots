@@ -1,15 +1,13 @@
+import { Colors } from "@/constants/design-system";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Image, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet } from "react-native";
+import { FavoriteButtonProps } from "../../../interfaces/index";
 import {
   addToFavorites,
   isPlantFavorited,
   removeFromFavorites,
 } from "../../../services/favoritesService";
-import { FavoriteButtonProps } from "../../../interfaces/index"
-
-
-const heartFilled = require("../../../assets/icons/likeFilled.png");
-const heartUnfilled = require("../../../assets/icons/likeUnfilled.png");
+import { IconSymbol } from "../icon-symbol";
 
 export const FavoriteButton = ({
   userId,
@@ -24,7 +22,7 @@ export const FavoriteButton = ({
 
     checkFavoriteStatus();
   }, [userId, plantId]);
-  
+
   const checkFavoriteStatus = async () => {
     try {
       setLoading(true);
@@ -56,15 +54,25 @@ export const FavoriteButton = ({
   };
 
   if (loading) {
-    return <ActivityIndicator size="small" color="#ff6b6b" />;
+    return <ActivityIndicator size="small" color={Colors.accent} />;
   }
 
   return (
-    <TouchableOpacity onPress={handleToggleFavorite}>
-      <Image
-        source={isFavorited ? heartFilled : heartUnfilled}
-        style={{ width: 30, height: 28 }}
+    <Pressable
+      onPress={handleToggleFavorite}
+      style={({ pressed }) => [pressed && styles.pressed]}
+    >
+      <IconSymbol
+        name={isFavorited ? "heart.fill" : "heart"}
+        size={32}
+        color={isFavorited ? Colors.accent : Colors.text}
       />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  pressed: {
+    opacity: 0.6,
+  },
+});
