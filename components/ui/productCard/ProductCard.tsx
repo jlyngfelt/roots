@@ -1,25 +1,26 @@
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useRef, useState } from "react";
 import {
+  Dimensions,
   Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  Dimensions,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
 } from "react-native";
-import { useState, useRef } from "react";
 import {
   BorderRadius,
   Colors,
   Spacing,
   Styles,
 } from "../../../constants/design-system";
-import { FavoriteButton } from "../buttons/FavouriteButton";
-import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 import { ProductCardProps } from "../../../interfaces/index";
 import { calculateDistance } from "../../../utils/distanceCalculator";
+import { FavoriteButton } from "../buttons/FavouriteButton";
+import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 
 const { width } = Dimensions.get("window");
 
@@ -102,8 +103,13 @@ export const ProductCard = ({
 
           <View style={styles.viewCardInfo}>
             <View style={styles.texts}>
-              <Text>Denna planta bor {distance} km från dig</Text>
               <Text style={Styles.heading1}>{name}</Text>
+              <View style={styles.locationRow}>
+                <IconSymbol size={20} name="mappin" color={Colors.primary} />
+                <Text style={Styles.bodyS}>
+                  Denna planta bor {distance} km från dig
+                </Text>
+              </View>
             </View>
 
             <View style={styles.reverseIcons}>
@@ -133,11 +139,6 @@ export const ProductCard = ({
             style={variant === "view" ? styles.viewCardInfo : styles.cardInfo}
           >
             <View style={styles.texts}>
-              {variant === "view" ? (
-                <Text>Denna planta bor {distance} km från dig</Text>
-              ) : (
-                ""
-              )}
               <Text
                 style={variant === "small" ? Styles.heading2 : Styles.heading1}
               >
@@ -219,6 +220,12 @@ const styles = StyleSheet.create({
   },
   texts: {
     flexDirection: "column",
+    gap: Spacing.xs,
+  },
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.xs,
   },
   icons: {
     flexDirection: "row",
