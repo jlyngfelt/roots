@@ -1,14 +1,27 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useRef, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import {
   BorderRadius,
   Colors,
   Spacing,
   Styles,
 } from "../../../constants/design-system";
+import { ProductCardProps } from "../../../interfaces/index";
+import { calculateDistance } from "../../../utils/distanceCalculator";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
-import { ProductCardProps } from "../../../interfaces/index"
-import { calculateDistance} from '../../../utils/distanceCalculator';
+
+const { width } = Dimensions.get("window");
 
 export const ProductCard = ({
   userId,
@@ -22,51 +35,134 @@ export const ProductCard = ({
   plantOwnerLon,
   userLat,
   userLon,
+  imageUrls,
   onPress,
 }: ProductCardProps) => {
+  const distance = calculateDistance(
+    userLat,
+    userLon,
+    plantOwnerLat,
+    plantOwnerLon
+  );
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const scrollViewRef = useRef<ScrollView>(null);
 
-const distance = calculateDistance(userLat, userLon, plantOwnerLat, plantOwnerLon);
+  // Use imageUrls if available, otherwise fall back to single image
+  const images: string[] =
+    imageUrls && imageUrls.length > 0 ? imageUrls : [image || ""];
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollPosition / (width - Spacing.m * 2));
+    setActiveIndex(index);
+  };
 
   return (
     <View style={variant === "small" ? styles.cardSmall : styles.cardBig}>
-      <Pressable onPress={onPress} style={{ width: "100%" }}>
-        <Image
-          style={[
-            styles.image,
-            variant === "small" ? styles.imageSmall : styles.imageBig,
-          ]}
-          source={{ uri: image }}
-        />
-
-        <View
-          style={variant === "view" ? styles.viewCardInfo : styles.cardInfo}
-        >
-          <View style={styles.texts}>
-            {variant === "view" ?
-            <Text>Denna planta bor {distance} km från dig</Text> : ""}
-            <Text
-              style={variant === "small" ? Styles.heading2 : Styles.heading1}
+      {variant === "view" && images.length > 1 ? (
+        <>
+          <View>
+            <ScrollView
+              ref={scrollViewRef}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onScroll={handleScroll}
+              scrollEventThrottle={16}
+              decelerationRate="fast"
+              snapToInterval={width - Spacing.m * 2}
+              snapToAlignment="center"
             >
-              {name}
-            </Text>
+              {images.map((imageUrl, index) => (
+                <View key={index} style={styles.imageWrapper}>
+                  <Image
+                    style={[styles.image, styles.imageBig]}
+                    source={{ uri: imageUrl }}
+                    resizeMode="cover"
+                  />
+                </View>
+              ))}
+            </ScrollView>
+
+            {/* Pagination Dots */}
+            <View style={styles.paginationContainer}>
+              {images.map((_, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.dot,
+                    index === activeIndex
+                      ? styles.activeDot
+                      : styles.inactiveDot,
+                  ]}
+                />
+              ))}
+            </View>
           </View>
 
-          <View style={variant === "view" ? styles.reverseIcons : styles.icons}>
-            <FavoriteButton userId={userId} plantId={plantId} />
-            <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
+          <View style={styles.viewCardInfo}>
+            <View style={styles.texts}>
+              <Text>Denna planta bor {distance} km från dig</Text>
+              <Text style={Styles.heading1}>{name}</Text>
+            </View>
+
+            <View style={styles.reverseIcons}>
+              <FavoriteButton userId={userId} plantId={plantId} />
+              <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
+            </View>
           </View>
-        </View>
-        {description && (
-          <Text
+
+          {description && (
+            <Text style={[styles.description, Styles.bodyM]}>
+              {description}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Pressable onPress={onPress} style={{ width: "100%" }}>
+          <Image
             style={[
-              styles.description,
-              variant === "small" ? Styles.bodyS : Styles.bodyM,
+              styles.image,
+              variant === "small" ? styles.imageSmall : styles.imageBig,
             ]}
+            source={{ uri: image }}
+          />
+
+          <View
+            style={variant === "view" ? styles.viewCardInfo : styles.cardInfo}
           >
-            {description}
-          </Text>
-        )}
-      </Pressable>
+            <View style={styles.texts}>
+              {variant === "view" ? (
+                <Text>Denna planta bor {distance} km från dig</Text>
+              ) : (
+                ""
+              )}
+              <Text
+                style={variant === "small" ? Styles.heading2 : Styles.heading1}
+              >
+                {name}
+              </Text>
+            </View>
+
+            <View
+              style={variant === "view" ? styles.reverseIcons : styles.icons}
+            >
+              <FavoriteButton userId={userId} plantId={plantId} />
+              <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
+            </View>
+          </View>
+          {description && (
+            <Text
+              style={[
+                styles.description,
+                variant === "small" ? Styles.bodyS : Styles.bodyM,
+              ]}
+            >
+              {description}
+            </Text>
+          )}
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -84,6 +180,10 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.m,
     marginVertical: 5,
     marginHorizontal: 2,
+  },
+  imageWrapper: {
+    width: width - Spacing.m * 2,
+    alignItems: "center",
   },
   image: {
     width: "95%",
@@ -128,5 +228,29 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     gap: Spacing.s,
     alignItems: "center",
+  },
+  paginationContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: Spacing.m,
+    left: 0,
+    right: 0,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    backgroundColor: Colors.accent,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  inactiveDot: {
+    backgroundColor: Colors.grey,
   },
 });
