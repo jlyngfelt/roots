@@ -5,7 +5,7 @@ export interface Plant {
   readyToAdopt: boolean;
   userId: string;
   categoryId?: string;
-  categoryName?: string; 
+  categoryName?: string;
   imageUrl: string;
   createdAt?: any;
   adoptedBy?: string | null;
@@ -62,6 +62,7 @@ export interface ProductCardProps {
   plantOwnerLon?: string;
   userLat?: string;
   userLon?: string;
+  imageUrls?: string[];
   onPress?: () => void;
 }
 
