@@ -198,8 +198,8 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   image: {
-    width: 300,
-    height: 300,
+    width: "100%",
+    height: 375,
     borderRadius: BorderRadius.xl,
   },
   primaryBadge: {
@@ -245,10 +245,11 @@ const styles = StyleSheet.create({
   },
   placeholderContainer: {
     width: "100%",
-    height: 300,
+    height: 375,
     borderRadius: BorderRadius.xl,
     overflow: "hidden",
     marginBottom: Spacing.m,
+    justifyContent: "center",
   },
   placeholderImage: {
     width: "100%",
