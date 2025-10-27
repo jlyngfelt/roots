@@ -31,6 +31,7 @@ export default function ViewPlantScreen() {
   const [readyToAdopt, setReadyToAdopt] = useState(false);
   const [id, setId] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [userId, setUserId] = useState("");
   const [userProfileName, setUserProfileName] = useState("");
   const [userProfileImageUrl, setUserProfileImageUrl] = useState("");
@@ -51,6 +52,7 @@ export default function ViewPlantScreen() {
           setReadyToAdopt(plant.readyToAdopt || false);
           setId(plant.id || "");
           setImageUrl(plant.imageUrl || "");
+          setImageUrls(plant.imageUrls || [plant.imageUrl] || []);
           setUserId(plant.userId || "");
         }
       }
@@ -99,6 +101,7 @@ export default function ViewPlantScreen() {
         name={plantName}
         description={description}
         image={imageUrl}
+        imageUrls={imageUrls}
         readyToAdopt={readyToAdopt}
         userLat={userProfileLat}
         userLon={userProfileLon}
