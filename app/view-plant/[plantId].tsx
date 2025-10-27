@@ -117,7 +117,11 @@ export default function ViewPlantScreen() {
         <View style={styles.uploaderInfo}>
           <Image
             style={styles.profileImage}
-            source={{ uri: userProfileImageUrl }}
+            source={
+              userProfileImageUrl
+                ? { uri: userProfileImageUrl }
+                : require("../../assets/profilePicture.png")
+            }
           />
           <Pressable onPress={() => router.push(`/view-profile/${userId}`)}>
             <Text style={styles.uploaderName}>{userProfileName}</Text>
