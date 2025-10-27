@@ -1,9 +1,8 @@
-import { Image } from "react-native";
-import { ReadyToAdoptProps} from "../../../interfaces/index"
-
-const readyToAdoptIcon = require("../../../assets/icons/readyToAdopt.png");
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { ReadyToAdoptProps } from "../../../interfaces/index";
 
 export const ReadyToAdopt = ({ readyToAdopt }: ReadyToAdoptProps) => {
   if (!readyToAdopt) return null;
-  return <Image source={readyToAdoptIcon} style={{ width: 24, height: 24 }} />;
+
+  return <IconSymbol name="stroller.fill" size={32} color="#ff9730" />;
 };

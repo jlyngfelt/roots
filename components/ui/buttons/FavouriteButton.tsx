@@ -1,3 +1,4 @@
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/design-system";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet } from "react-native";
@@ -7,7 +8,6 @@ import {
   isPlantFavorited,
   removeFromFavorites,
 } from "../../../services/favoritesService";
-import { IconSymbol } from "../icon-symbol";
 
 export const FavoriteButton = ({
   userId,
