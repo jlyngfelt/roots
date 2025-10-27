@@ -123,9 +123,7 @@ export default function ViewPlantScreen() {
             <Text style={styles.uploaderName}>{userProfileName}</Text>
           </Pressable>
         </View>
-      ) : (
-        " "
-      )}
+      ) : null}
     </ScrollView>
   );
 }
