@@ -1,12 +1,12 @@
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { Colors } from "@/constants/design-system";
 import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { Plant } from "../../interfaces/index";
+import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -42,23 +42,11 @@ export default function FavoritesScreen() {
 
   return (
     <ScrollView style={styles.bgColor}>
-      <Text style={{ fontSize: 50, padding: 40 }}>FAVORITES</Text>
-
-      <View style={styles.feed}>
-        {plants.map((plant) => (
-          <ProductCard
-            variant="small"
-            key={plant.id}
-            userId={user?.uid!}
-            plantId={plant.id}
-            name={plant.name}
-            description={plant.description}
-            image={plant.imageUrl}
-            readyToAdopt={plant.readyToAdopt}
-            onPress={() => router.push(`/view-plant/${plant.id}`)}
-          />
-        ))}
-      </View>
+      <ProfileFeed
+        plants={plants}
+        userId={user?.uid!}
+        onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
+      />
     </ScrollView>
   );
 }
