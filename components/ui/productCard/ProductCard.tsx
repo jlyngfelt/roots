@@ -48,7 +48,6 @@ export const ProductCard = ({
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  // Use imageUrls if available, otherwise fall back to single image
   const images: string[] =
     imageUrls && imageUrls.length > 0 ? imageUrls : [image || ""];
 
@@ -58,9 +57,21 @@ export const ProductCard = ({
     setActiveIndex(index);
   };
 
+  const isViewVariant = variant === "view";
+  const isSmallVariant = variant === "small";
+  const hasMultipleImages = images.length > 1;
+  const shouldShowCarousel = isViewVariant && hasMultipleImages;
+
+  const cardStyle = isSmallVariant ? styles.cardSmall : styles.cardBig;
+  const imageStyle = isSmallVariant ? styles.imageSmall : styles.imageBig;
+  const headingStyle = isSmallVariant ? Styles.heading2 : Styles.heading1;
+  const descriptionStyle = isSmallVariant ? Styles.bodyS : Styles.bodyM;
+  const infoStyle = isViewVariant ? styles.viewCardInfo : styles.cardInfo;
+  const iconsStyle = isViewVariant ? styles.reverseIcons : styles.icons;
+
   return (
-    <View style={variant === "small" ? styles.cardSmall : styles.cardBig}>
-      {variant === "view" && images.length > 1 ? (
+    <View style={cardStyle}>
+      {shouldShowCarousel ? (
         <>
           <View>
             <ScrollView
@@ -85,7 +96,6 @@ export const ProductCard = ({
               ))}
             </ScrollView>
 
-            {/* Pagination Dots */}
             <View style={styles.paginationContainer}>
               {images.map((_, index) => (
                 <View
@@ -101,7 +111,7 @@ export const ProductCard = ({
             </View>
           </View>
 
-          <View style={styles.viewCardInfo}>
+          <View style={infoStyle}>
             <View style={styles.texts}>
               <Text style={Styles.heading1}>{name}</Text>
               <View style={styles.locationRow}>
@@ -112,14 +122,14 @@ export const ProductCard = ({
               </View>
             </View>
 
-            <View style={styles.reverseIcons}>
+            <View style={iconsStyle}>
               <FavoriteButton userId={userId} plantId={plantId} />
               <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
             </View>
           </View>
 
           {description && (
-            <Text style={[styles.description, Styles.bodyM]}>
+            <Text style={[styles.description, descriptionStyle]}>
               {description}
             </Text>
           )}
@@ -127,39 +137,29 @@ export const ProductCard = ({
       ) : (
         <Pressable onPress={onPress} style={{ width: "100%" }}>
           <Image
-            style={[
-              styles.image,
-              variant === "small" ? styles.imageSmall : styles.imageBig,
-            ]}
+            style={[styles.image, imageStyle]}
             source={{ uri: image }}
             resizeMode="cover"
           />
 
-          <View
-            style={variant === "view" ? styles.viewCardInfo : styles.cardInfo}
-          >
+          <View style={infoStyle}>
             <View style={styles.texts}>
               <Text
-                style={variant === "small" ? Styles.heading2 : Styles.heading1}
+                style={[headingStyle, isSmallVariant && styles.plantName]}
+                numberOfLines={isSmallVariant ? 2 : undefined}
               >
                 {name}
               </Text>
             </View>
 
-            <View
-              style={variant === "view" ? styles.reverseIcons : styles.icons}
-            >
+            <View style={iconsStyle}>
               <FavoriteButton userId={userId} plantId={plantId} />
               <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
             </View>
           </View>
+
           {description && (
-            <Text
-              style={[
-                styles.description,
-                variant === "small" ? Styles.bodyS : Styles.bodyM,
-              ]}
-            >
+            <Text style={[styles.description, descriptionStyle]}>
               {description}
             </Text>
           )}
@@ -217,6 +217,10 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.s,
     width: "100%",
     gap: Spacing.s,
+  },
+  plantName: {
+    minHeight: 40,
+    lineHeight: 20,
   },
   texts: {
     flexDirection: "column",
