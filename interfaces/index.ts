@@ -94,3 +94,42 @@ export interface Category {
   id: string;
   name: string;
 }
+
+export interface CredentialsStepProps {
+  email: string;
+  setEmail: (value: string) => void;
+  password1: string;
+  setPassword1: (value: string) => void;
+  password2: string;
+  setPassword2: (value: string) => void;
+  error: string;
+  setError: (value: string) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+  setStep: (step: "verification") => void;
+  router: any;
+}
+export interface VerificationStepProps {
+  email: string;
+  checkingVerification: boolean;
+  setCheckingVerification: (value: boolean) => void;
+  setStep: (step: "profile") => void;
+}
+export interface ProfileStepProps {
+  user: any;
+  username: string;
+  setUsername: (value: string) => void;
+  postalCode: string;
+  setPostalCode: (value: string) => void;
+  bio: string;
+  setBio: (value: string) => void;
+  profileImageUrl: string;
+  setProfileImageUrl: (value: string) => void;
+  error: string;
+  setError: (value: string) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+  uploading: boolean;
+  setUploading: (value: boolean) => void;
+  router: any;
+}
