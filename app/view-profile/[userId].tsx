@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   fullWidthButton: {
     alignSelf: "stretch",
     marginHorizontal: 16,
+    marginBottom: 16,
   },
   feed: {
     flexDirection: "row",
