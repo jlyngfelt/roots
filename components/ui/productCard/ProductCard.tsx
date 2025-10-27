@@ -1,25 +1,25 @@
-import { useRef, useState } from "react";
 import {
-  Dimensions,
   Image,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
+  Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
+import { useState, useRef } from "react";
 import {
   BorderRadius,
   Colors,
   Spacing,
   Styles,
 } from "../../../constants/design-system";
-import { ProductCardProps } from "../../../interfaces/index";
-import { calculateDistance } from "../../../utils/distanceCalculator";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
+import { ProductCardProps } from "../../../interfaces/index";
+import { calculateDistance } from "../../../utils/distanceCalculator";
 
 const { width } = Dimensions.get("window");
 
@@ -126,6 +126,7 @@ export const ProductCard = ({
               variant === "small" ? styles.imageSmall : styles.imageBig,
             ]}
             source={{ uri: image }}
+            resizeMode="cover"
           />
 
           <View

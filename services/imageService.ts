@@ -1,9 +1,8 @@
-import * as ImagePicker from "expo-image-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { Alert } from "react-native";
 import { storage } from "../firebaseConfig";
-
 
 export interface OptimizationOptions {
   maxWidth?: number;
@@ -12,26 +11,54 @@ export interface OptimizationOptions {
   format?: SaveFormat;
 }
 
-/**
- * Optimizes an image by resizing and compressing it
- */
 export async function optimizeImage(
   imageUri: string,
   options: OptimizationOptions = {}
 ): Promise<string> {
-  const {
-    maxWidth = 1200,
-    maxHeight = 1200,
-    quality = 0.7,
-    format = SaveFormat.JPEG,
-  } = options;
+  const { maxWidth = 1200, quality = 0.8, format = SaveFormat.JPEG } = options;
 
   try {
+    const imageInfo = await manipulateAsync(imageUri, [], { compress: 1 });
+    const { width, height } = imageInfo;
+
+    const targetRatio = 4 / 5;
+    const currentRatio = width / height;
+
+    let cropWidth = width;
+    let cropHeight = height;
+    let originX = 0;
+    let originY = 0;
+
+    if (currentRatio > targetRatio) {
+      cropWidth = height * targetRatio;
+      originX = (width - cropWidth) / 2;
+    } else {
+      cropHeight = width / targetRatio;
+      originY = (height - cropHeight) / 2;
+    }
+
+    const manipulateActions: any[] = [
+      {
+        crop: {
+          originX,
+          originY,
+          width: cropWidth,
+          height: cropHeight,
+        },
+      },
+      {
+        resize: {
+          width: maxWidth,
+        },
+      },
+    ];
+
     const manipulatedImage = await manipulateAsync(
       imageUri,
-      [{ resize: { width: maxWidth, height: maxHeight } }],
+      manipulateActions,
       { compress: quality, format: format }
     );
+
     return manipulatedImage.uri;
   } catch (error) {
     console.error("Error optimizing image:", error);
@@ -39,9 +66,6 @@ export async function optimizeImage(
   }
 }
 
-/**
- * Shows alert to choose between camera or gallery
- */
 export async function chooseImageSource(): Promise<string | null> {
   return new Promise((resolve) => {
     Alert.alert(
@@ -73,9 +97,6 @@ export async function chooseImageSource(): Promise<string | null> {
   });
 }
 
-/**
- * Picks an image from library
- */
 export async function pickImageFromLibrary(): Promise<string | null> {
   try {
     const permissionResult =
@@ -89,12 +110,15 @@ export async function pickImageFromLibrary(): Promise<string | null> {
       return null;
     }
 
+    console.log("📸 Launching image picker");
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
       quality: 1,
     });
+
+    console.log("📸 Image picker result:", result);
 
     if (!result.canceled) {
       return result.assets[0].uri;
@@ -107,9 +131,6 @@ export async function pickImageFromLibrary(): Promise<string | null> {
   }
 }
 
-/**
- * Takes a photo with camera
- */
 export async function takePhoto(): Promise<string | null> {
   try {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -119,11 +140,14 @@ export async function takePhoto(): Promise<string | null> {
       return null;
     }
 
+    console.log("📸 Launching camera");
+
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [1, 1],
       quality: 1,
     });
+
+    console.log("📸 Camera result:", result);
 
     if (!result.canceled) {
       return result.assets[0].uri;
@@ -136,9 +160,6 @@ export async function takePhoto(): Promise<string | null> {
   }
 }
 
-/**
- * Uploads image to Firebase Storage
- */
 export async function uploadImage(
   imageUri: string,
   folder: string,
@@ -162,9 +183,6 @@ export async function uploadImage(
   }
 }
 
-/**
- * Complete flow: choose source and upload
- */
 export async function pickAndUploadImage(
   folder: string,
   fileName: string,
@@ -187,11 +205,8 @@ export async function pickAndUploadImage(
   }
 }
 
-/**
- * Optimization presets
- */
 export const OptimizationPresets = {
-  profile: { maxWidth: 800, maxHeight: 800, quality: 0.8 },
-  plant: { maxWidth: 1200, maxHeight: 1200, quality: 0.75 },
-  thumbnail: { maxWidth: 400, maxHeight: 400, quality: 0.7 },
+  profile: { maxWidth: 800, quality: 0.8 },
+  plant: { maxWidth: 1200, quality: 0.8 },
+  thumbnail: { maxWidth: 400, quality: 0.7 },
 };
