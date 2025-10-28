@@ -210,7 +210,7 @@ const [filter, setFilter] = useState({
           <ProductCard
             key={plant.id}
             variant="big"
-            userId={user?.uid!}
+            userId={plant.userId}
             plantId={plant.id}
             name={plant.name}
             description={plant.description}
