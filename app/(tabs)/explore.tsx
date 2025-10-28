@@ -14,7 +14,8 @@ import {
   PlantWithDistance,
 } from "../../interfaces/index";
 import { getCategories } from "../../services/categoryService";
-
+import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
+import { FilterSelect } from "@/components/ui/forms/FilterSelect";
 
 type SortOption = "nameAsc" | "nameDesc" | "newest" | "oldest" | "distance";
 
@@ -165,6 +166,19 @@ export default function ExploreScreen() {
   );
   const sortedAndFilteredPlants = getSortedPlants(filteredPlants, sortBy);
 
+
+  const sortData = [
+  { label: "Närmast", value: "distance" },
+  { label: "Senaste", value: "newest" },
+  { label: "Äldsta", value: "oldest" },
+  { label: "A-Ö", value: "nameAsc" },
+  { label: "Ö-A", value: "nameDesc" },
+];
+
+const [filter, setFilter] = useState({
+  readyToAdopt: false,
+  categoryId: "all"
+});
   return (
     <ScrollView 
       style={styles.bgColor}
@@ -177,73 +191,18 @@ export default function ExploreScreen() {
         />
       }
     >
-      <View>
-        <Button
-          onPress={() => setShowOnlyReadyToAdopt(!showOnlyReadyToAdopt)}
-          style={showOnlyReadyToAdopt ? styles.acitve : styles.inactive}
-        >
-          {showOnlyReadyToAdopt ? "✓ Redo att adopteras" : "Redo att adopteras"}
-        </Button>
-      </View>
 
-      <XStack gap="$2" padding="$2">
-        <Button
-          size="$2"
-          onPress={() => setFilterBy("all")}
-          theme={filterBy === "all" ? "active" : undefined}
-        >
-          Alla
-        </Button>
-        {categories.map((category) => (
-          <Button
-            key={category.id}
-            size="$2"
-            onPress={() => setFilterBy(category.id)}
-            theme={filterBy === category.id ? "active" : undefined}
-          >
-            {category.name}
-          </Button>
-        ))}
-      </XStack>
+<FilterSelect 
+  value={filter}
+  onValueChange={setFilter}
+  placeholder="Filtrera"
+/>
 
-      {/* Sorteringsknappar */}
-      <XStack gap="$2" flexWrap="wrap" padding="$2">
-        <Button
-          size="$3"
-          onPress={() => setSortBy("distance")}
-          theme={sortBy === "distance" ? "active" : undefined}
-        >
-          Närmast
-        </Button>
-        <Button
-          size="$3"
-          onPress={() => setSortBy("newest")}
-          theme={sortBy === "newest" ? "active" : undefined}
-        >
-          Senaste
-        </Button>
-        <Button
-          size="$3"
-          onPress={() => setSortBy("oldest")}
-          theme={sortBy === "oldest" ? "active" : undefined}
-        >
-          Äldsta
-        </Button>
-        <Button
-          size="$3"
-          onPress={() => setSortBy("nameAsc")}
-          theme={sortBy === "nameAsc" ? "active" : undefined}
-        >
-          A-Ö
-        </Button>
-        <Button
-          size="$3"
-          onPress={() => setSortBy("nameDesc")}
-          theme={sortBy === "nameDesc" ? "active" : undefined}
-        >
-          Ö-A
-        </Button>
-      </XStack>
+<DefaultSelect 
+  value={sortBy} 
+  onValueChange={(value) => setSortBy(value as SortOption)}
+  data={sortData}
+/>
 
       {/* Feed */}
       <View style={styles.feed}>
