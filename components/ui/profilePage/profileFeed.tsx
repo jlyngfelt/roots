@@ -18,8 +18,8 @@ export function ProfileFeed({
       {plants.map((plant) => (
         <ProductCard
           key={plant.id}
-          variant="small"
-          userId={userId}
+          variant="small" 
+          userId={plant.userId}
           plantId={plant.id}
           name={plant.name}
           description={plant.description}

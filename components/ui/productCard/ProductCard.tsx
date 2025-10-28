@@ -21,6 +21,7 @@ import { ProductCardProps } from "../../../interfaces/index";
 import { calculateDistance } from "../../../utils/distanceCalculator";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
 
@@ -47,6 +48,7 @@ export const ProductCard = ({
   );
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
+  const { user } = useAuth();
 
   const images: string[] =
     imageUrls && imageUrls.length > 0 ? imageUrls : [image || ""];
@@ -123,8 +125,9 @@ export const ProductCard = ({
             </View>
 
             <View style={iconsStyle}>
-              <FavoriteButton userId={userId} plantId={plantId} />
+               {userId === user?.uid ? "" : <FavoriteButton userId={user?.uid!} plantId={plantId} /> }
               <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
+              
             </View>
           </View>
 
@@ -153,7 +156,7 @@ export const ProductCard = ({
             </View>
 
             <View style={iconsStyle}>
-              <FavoriteButton userId={userId} plantId={plantId} />
+          {userId === user?.uid ? "" : <FavoriteButton userId={user?.uid!} plantId={plantId} /> }
               <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
             </View>
           </View>
