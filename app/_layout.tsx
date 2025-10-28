@@ -74,9 +74,9 @@ function NavigationHandler() {
       router.replace("/welcome");
     }
 
-// if (user && user.emailVerified && inAuthGroup) {
-//   router.replace("/(tabs)/explore");
-// }
+    // if (user && user.emailVerified && inAuthGroup) {
+    //   router.replace("/(tabs)/explore");
+    // }
   }, [user, loading, segments]);
 
   return (
@@ -121,6 +121,13 @@ function NavigationHandler() {
       />
       <Stack.Screen
         name="update-password"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="conversation/[chatId]"
         options={{
           headerShown: true,
           header: () => <TopBar showBackButton={true} />,
