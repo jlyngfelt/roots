@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, Pressable, Modal } from 'react-native';
 import { useState, useEffect } from 'react';
 import { getCategories } from '@/services/categoryService';
 import { Category, FilterSelectProps, FilterState, CheckboxItemProps, RadioItemProps } from '@/interfaces';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { Colors, Styles, BorderRadius, Spacing } from "@/constants/design-system";
 
 function CheckboxItem({ checked, onPress, label }: CheckboxItemProps) {
@@ -44,25 +44,6 @@ export function FilterSelect({
     setTempFilter(value);
   }, [value]);
 
-  const getDisplayText = () => {
-    const parts: string[] = [];
-    
-    if (value.readyToAdopt) {
-      parts.push("Redo att adopteras");
-    }
-    
-    if (value.categoryId === "all") {
-      parts.push("Alla");
-    } else {
-      const selectedCategory = categories.find(cat => cat.id === value.categoryId);
-      if (selectedCategory) {
-        parts.push(selectedCategory.name);
-      }
-    }
-    
-    return parts.length > 0 ? parts.join(", ") : placeholder;
-  };
-
   const handleApply = () => {
     onValueChange(tempFilter);
     setIsOpen(false);
@@ -75,19 +56,25 @@ export function FilterSelect({
 
   const toggleReadyToAdopt = () => {
     setTempFilter(prev => ({ ...prev, readyToAdopt: !prev.readyToAdopt }));
+    console.log("adopti vald")
   };
 
   const selectCategory = (categoryId: string) => {
     setTempFilter(prev => ({ ...prev, categoryId }));
+    console.log("kategori vald")
   };
 
+  const hasActiveFilters = () => {
+  return tempFilter.readyToAdopt || tempFilter.categoryId !== "all";
+};
+
   return (
-    <View>
-      <Pressable style={styles.dropdown} onPress={() => setIsOpen(true)}>
-        <Text style={[Styles.bodyM, styles.dropdownText]}>
-          {getDisplayText()}
+    <>
+      <Pressable style={[styles.dropdown, hasActiveFilters() && styles.dropdownActive]} onPress={() => setIsOpen(true)}>
+        <Text style={[Styles.bodyM, styles.dropdownText, hasActiveFilters() && styles.dropdownTextActive]}>
+          Filtrera
         </Text>
-        <AntDesign name="down" size={15} color={Colors.details} />
+          <Ionicons name="filter" size={15} color={hasActiveFilters() ? Colors.accent : Colors.details} />
       </Pressable>
 
       <Modal
@@ -95,7 +82,7 @@ export function FilterSelect({
         transparent
         animationType="fade"
         onRequestClose={handleClose}
-      >
+        >
         <Pressable style={styles.modalOverlay} onPress={handleClose}>
           <View style={styles.modalContent} onStartShouldSetResponder={() => true}>
             
@@ -103,7 +90,7 @@ export function FilterSelect({
               checked={tempFilter.readyToAdopt}
               onPress={toggleReadyToAdopt}
               label="Redo att adopteras"
-            />
+              />
 
             <View style={styles.divider} />
 
@@ -113,14 +100,14 @@ export function FilterSelect({
               selected={tempFilter.categoryId === "all"}
               onPress={() => selectCategory("all")}
               label="Alla"
-            />
+              />
 
             {categories.map((category) => (
               <RadioItem
-                key={category.id}
-                selected={tempFilter.categoryId === category.id}
-                onPress={() => selectCategory(category.id)}
-                label={category.name}
+              key={category.id}
+              selected={tempFilter.categoryId === category.id}
+              onPress={() => selectCategory(category.id)}
+              label={category.name}
               />
             ))}
 
@@ -132,15 +119,16 @@ export function FilterSelect({
           </View>
         </Pressable>
       </Modal>
-    </View>
+  
+            </>
   );
 }
 
 const styles = StyleSheet.create({
   dropdown: {
-    width: "100%",
+    flex: 1,
     height: 46,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: Colors.details,
     borderRadius: BorderRadius.m,
     paddingHorizontal: Spacing.l,
@@ -151,6 +139,7 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     color: Colors.details,
+    fontWeight: "bold",
     flex: 1,
   },
   modalOverlay: {
@@ -226,4 +215,11 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontWeight: "bold",
   },
+  dropdownActive: {
+  borderColor: Colors.accent,
+  backgroundColor: Colors.accent + '10', 
+},
+dropdownTextActive: {
+  color: Colors.accent,
+},
 });
