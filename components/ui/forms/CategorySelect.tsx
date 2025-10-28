@@ -1,24 +1,35 @@
 import { Dropdown } from 'react-native-element-dropdown';
 import { StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { getCategories } from '@/services/categoryService';
+import { Category } from '@/interfaces';
 import { AntDesign } from '@expo/vector-icons';
 import { Colors, Styles, BorderRadius} from "../../../constants/design-system"
 
-export type SelectOption = {
-  label: string;
-  value: string;
-};
-
-export function DefaultSelect({ 
+export function CategorySelect({ 
   value, 
   onValueChange,
-  data,
-  placeholder = "Välj"
+  placeholder = "Välj kategori"
 }: { 
   value: string; 
   onValueChange: (value: string) => void;
-  data: SelectOption[];
   placeholder?: string;
 }) {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function fetchCats() {
+      const cats = await getCategories();
+      setCategories(cats);
+    }
+    fetchCats();
+  }, []);
+
+  const data = categories.map(cat => ({
+    label: cat.name,
+    value: cat.id
+  }));
+
   return (
     <Dropdown
       style={styles.dropdown}

@@ -133,3 +133,25 @@ export interface ProfileStepProps {
   setUploading: (value: boolean) => void;
   router: any;
 }
+
+export interface FilterState {
+  readyToAdopt: boolean;
+  categoryId: string;
+}
+export interface FilterSelectProps {
+  value: FilterState;
+  onValueChange: (value: FilterState) => void;
+  placeholder?: string;
+}
+
+export interface CheckboxItemProps {
+  checked: boolean;
+  onPress: () => void;
+  label: string;
+}
+
+export interface RadioItemProps {
+  selected: boolean;
+  onPress: () => void;
+  label: string;
+}
