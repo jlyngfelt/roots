@@ -1,6 +1,6 @@
 import { Dropdown } from 'react-native-element-dropdown';
 import { StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Colors, Styles, BorderRadius} from "../../../constants/design-system"
 
 export type SelectOption = {
@@ -12,7 +12,7 @@ export function DefaultSelect({
   value, 
   onValueChange,
   data,
-  placeholder = "Välj"
+  placeholder = "Sortera"
 }: { 
   value: string; 
   onValueChange: (value: string) => void;
@@ -35,7 +35,10 @@ export function DefaultSelect({
       value={value}
       onChange={item => onValueChange(item.value)}
       renderRightIcon={() => (
-        <AntDesign name="down" size={15} color={Colors.details} />
+        <Ionicons name="swap-vertical" size={15} color={Colors.details} />
+
+
+       
       )}
     />
   );
@@ -43,7 +46,7 @@ export function DefaultSelect({
 
 const styles = StyleSheet.create({
   dropdown: {
-    width: "100%",
+    flex: 1,
     height: 46,
     borderWidth: 1,
     borderColor: Colors.details,
