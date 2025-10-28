@@ -64,13 +64,17 @@ export function FilterSelect({
     console.log("kategori vald")
   };
 
+  const hasActiveFilters = () => {
+  return tempFilter.readyToAdopt || tempFilter.categoryId !== "all";
+};
+
   return (
     <>
-      <Pressable style={styles.dropdown} onPress={() => setIsOpen(true)}>
-        <Text style={[Styles.bodyM, styles.dropdownText]}>
+      <Pressable style={[styles.dropdown, hasActiveFilters() && styles.dropdownActive]} onPress={() => setIsOpen(true)}>
+        <Text style={[Styles.bodyM, styles.dropdownText, hasActiveFilters() && styles.dropdownTextActive]}>
           Filtrera
         </Text>
-          <Ionicons name="filter" size={15} color={Colors.details} />
+          <Ionicons name="filter" size={15} color={hasActiveFilters() ? Colors.accent : Colors.details} />
       </Pressable>
 
       <Modal
@@ -124,7 +128,7 @@ const styles = StyleSheet.create({
   dropdown: {
     flex: 1,
     height: 46,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: Colors.details,
     borderRadius: BorderRadius.m,
     paddingHorizontal: Spacing.l,
@@ -135,6 +139,7 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     color: Colors.details,
+    fontWeight: "bold",
     flex: 1,
   },
   modalOverlay: {
@@ -210,4 +215,11 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontWeight: "bold",
   },
+  dropdownActive: {
+  borderColor: Colors.accent,
+  backgroundColor: Colors.accent + '10', 
+},
+dropdownTextActive: {
+  color: Colors.accent,
+},
 });
