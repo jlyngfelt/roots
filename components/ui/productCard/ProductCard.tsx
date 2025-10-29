@@ -66,10 +66,11 @@ export const ProductCard = ({
 
   const cardStyle = isSmallVariant ? styles.cardSmall : styles.cardBig;
   const imageStyle = isSmallVariant ? styles.imageSmall : styles.imageBig;
-  const headingStyle = isSmallVariant ? Styles.heading2 : Styles.heading1;
+  const headingStyle = isSmallVariant ? Styles.heading3 : Styles.heading1;
   const descriptionStyle = isSmallVariant ? Styles.bodyS : Styles.bodyM;
   const infoStyle = isViewVariant ? styles.viewCardInfo : styles.cardInfo;
   const iconsStyle = isViewVariant ? styles.reverseIcons : styles.icons;
+  const descriptionPadding = isViewVariant ? styles.descriptionView : styles.description;
 
   return (
     <View style={cardStyle}>
@@ -144,6 +145,10 @@ export const ProductCard = ({
             source={{ uri: image }}
             resizeMode="cover"
           />
+            <View style={iconsStyle}>
+          {userId === user?.uid ? "" : <FavoriteButton userId={user?.uid!} plantId={plantId} /> }
+              <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
+            </View>
 
           <View style={infoStyle}>
             <View style={styles.texts}>
@@ -155,14 +160,10 @@ export const ProductCard = ({
               </Text>
             </View>
 
-            <View style={iconsStyle}>
-          {userId === user?.uid ? "" : <FavoriteButton userId={user?.uid!} plantId={plantId} /> }
-              <ReadyToAdopt readyToAdopt={readyToAdopt || false} />
-            </View>
           </View>
 
           {description && (
-            <Text style={[styles.description, descriptionStyle]}>
+            <Text style={[descriptionPadding, descriptionStyle]}>
               {description}
             </Text>
           )}
@@ -200,15 +201,18 @@ const styles = StyleSheet.create({
   imageBig: {},
   imageSmall: {},
   description: {
-    marginVertical: Spacing.s,
+    marginVertical: Spacing.xs,
+    paddingHorizontal: Spacing.xs,
+  },
+  descriptionView: {
     paddingHorizontal: Spacing.m,
   },
   cardInfo: {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    paddingHorizontal: Spacing.m,
-    paddingVertical: Spacing.s,
+    paddingHorizontal: Spacing.xs,
+    paddingTop: Spacing.s,
     width: "100%",
     gap: Spacing.s,
   },
@@ -222,8 +226,8 @@ const styles = StyleSheet.create({
     gap: Spacing.s,
   },
   plantName: {
-    minHeight: 40,
-    lineHeight: 20,
+    minHeight: 20,
+    // lineHeight: 20,
   },
   texts: {
     flexDirection: "column",
@@ -238,11 +242,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: Spacing.s,
     alignItems: "center",
+    paddingHorizontal: Spacing.xs
   },
   reverseIcons: {
     flexDirection: "row-reverse",
     gap: Spacing.s,
     alignItems: "center",
+    paddingHorizontal: Spacing.m
   },
   paginationContainer: {
     flexDirection: "row",
