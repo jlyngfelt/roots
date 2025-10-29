@@ -40,16 +40,23 @@ export const ProductCardBig = ({
     <View style={styles.card}>
       {hasMultipleImages ? (
         <>
-        <Pressable onPress={onPress} style={{ width: "100%" }}>
-
           <ImageCarousel
             images={images}
             activeIndex={activeIndex}
             scrollViewRef={scrollViewRef}
             onScroll={handleScroll}
             imageStyle={styles.image}
+            onPress={onPress}
             />
+<Pressable onPress={onPress} style={{ width: "100%" }}>
 
+<View style={styles.cardInfo}>
+
+<CardInfo
+  name={name}
+  headingStyle={Styles.heading1}
+  textContainerStyle={{flex: 1}}
+  />
           <CardActions
             showFavoriteButton={showFavoriteButton}
             userId={user?.uid}
@@ -57,17 +64,13 @@ export const ProductCardBig = ({
             readyToAdopt={readyToAdopt || false}
             style={styles.icons}
             />
+            </View>
 
-          <CardInfo
-            name={name}
-            headingStyle={Styles.heading1}
-            textContainerStyle={styles.cardInfo}
-            />
-            </Pressable>
 
           {description && (
-            <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
-          )}
+              <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
+            )}
+            </Pressable>
         </>
       ) : (
         <Pressable onPress={onPress} style={{ width: "100%" }}>
@@ -76,20 +79,22 @@ export const ProductCardBig = ({
             source={{ uri: image }}
             resizeMode="cover"
           />
+<View style={styles.cardInfo}>
 
+            <CardInfo
+              name={name}
+              headingStyle={Styles.heading1}
+              textContainerStyle={{ flex: 1 }}
+              />
           <CardActions
             showFavoriteButton={showFavoriteButton}
             userId={user?.uid}
             plantId={plantId}
             readyToAdopt={readyToAdopt || false}
             style={styles.icons}
-          />
+            />
+            </View>
 
-          <CardInfo
-            name={name}
-            headingStyle={Styles.heading1}
-            textContainerStyle={styles.cardInfo}
-          />
 
           {description && (
             <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
@@ -115,21 +120,20 @@ const styles = StyleSheet.create({
   },
   description: {
     marginVertical: Spacing.xs,
-    paddingHorizontal: Spacing.xs,
+    paddingHorizontal: Spacing.m,
   },
   cardInfo: {
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    paddingHorizontal: Spacing.xs,
-    paddingTop: Spacing.s,
+    paddingHorizontal: Spacing.m,
+    paddingVertical: Spacing.s,
     width: "100%",
     gap: Spacing.s,
   },
   icons: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: Spacing.s,
     alignItems: "center",
-    paddingHorizontal: Spacing.xs,
   },
 });

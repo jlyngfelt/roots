@@ -4,6 +4,7 @@ import {
   Image,
   ScrollView,
   StyleSheet,
+  Pressable,
   Text,
   View,
   ViewStyle,
@@ -14,7 +15,9 @@ import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 import { ImageCarouselProps, CardActionsProps, CardInfoProps } from "@/interfaces";
 
+
 const { width } = Dimensions.get("window");
+
 
 export const ImageCarousel = ({
   images,
@@ -22,6 +25,7 @@ export const ImageCarousel = ({
   scrollViewRef,
   onScroll,
   imageStyle,
+  onPress,
 }: ImageCarouselProps) => (
   <View>
     <ScrollView
@@ -37,11 +41,14 @@ export const ImageCarousel = ({
     >
       {images.map((imageUrl, index) => (
         <View key={index} style={styles.imageWrapper}>
+             <Pressable onPress={onPress}>
+
           <Image
             style={[styles.image, imageStyle]}
             source={{ uri: imageUrl }}
             resizeMode="cover"
-          />
+            />
+            </Pressable>
         </View>
       ))}
     </ScrollView>

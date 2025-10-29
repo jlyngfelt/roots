@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     gap: Spacing.s,
   },
   icons: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: Spacing.s,
     alignItems: "center",
   },

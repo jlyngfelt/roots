@@ -173,6 +173,7 @@ export interface ImageCarouselProps {
   scrollViewRef: React.RefObject<ScrollView | null>;
   onScroll: (event: any) => void;
   imageStyle: ImageStyle;
+  onPress?: () => void;
 }
 
 export interface CardActionsProps {
