@@ -27,8 +27,10 @@ export default function ExploreScreen() {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-  const [filterBy, setFilterBy] = useState<string>("all");
-  const [showOnlyReadyToAdopt, setShowOnlyReadyToAdopt] = useState(false);
+const [filter, setFilter] = useState({
+  readyToAdopt: false,
+  categoryId: "all"
+});
   const [myCoordinates, setMyCoordinates] = useState<Coordinates | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -101,7 +103,6 @@ export default function ExploreScreen() {
     await fetchPlantsWithDistance();
     setRefreshing(false);
   };
-
   
   const getFilteredPlants = (
     plants: PlantWithDistance[],
@@ -158,10 +159,10 @@ export default function ExploreScreen() {
     }
   };
 
-  const filteredPlants = getFilteredPlants(
+    const filteredPlants = getFilteredPlants(
     plants,
-    filterBy,
-    showOnlyReadyToAdopt
+    filter.categoryId,
+    filter.readyToAdopt
   );
   const sortedAndFilteredPlants = getSortedPlants(filteredPlants, sortBy);
 
@@ -174,10 +175,7 @@ export default function ExploreScreen() {
   { label: "Ö-A", value: "nameDesc" },
 ];
 
-const [filter, setFilter] = useState({
-  readyToAdopt: false,
-  categoryId: "all"
-});
+
   return (
     <ScrollView 
       style={styles.bgColor}
