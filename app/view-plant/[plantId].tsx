@@ -36,10 +36,10 @@ export default function ViewPlantScreen() {
   const [userId, setUserId] = useState("");
   const [userProfileName, setUserProfileName] = useState("");
   const [userProfileImageUrl, setUserProfileImageUrl] = useState("");
-  const [userProfileLat, setUserProfileLat] = useState("");
-  const [userProfileLon, setUserProfileLon] = useState("");
-  const [plantOwnerLat, setPlantOwnerLat] = useState("");
-  const [plantOwnerLon, setPlantOwnerLon] = useState("");
+  const [userProfileLat, setUserProfileLat] = useState<number>(0);
+  const [userProfileLon, setUserProfileLon] = useState<number>(0);
+  const [plantOwnerLat, setPlantOwnerLat] = useState<number>(0);
+  const [plantOwnerLon, setPlantOwnerLon] = useState<number>(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
