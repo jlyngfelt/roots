@@ -1,5 +1,5 @@
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, useWindowDimensions } from "react-native";
 import { Plant } from "../../../interfaces/index";
 
 interface ProfileFeedProps {
@@ -13,6 +13,7 @@ export function ProfileFeed({
   userId,
   onPlantPress,
 }: ProfileFeedProps) {
+
   return (
     <View style={styles.feed}>
       {plants.map((plant) => (
@@ -28,6 +29,8 @@ export function ProfileFeed({
           onPress={() => onPlantPress(plant.id)}
         />
       ))}
+            <View style={styles.filler} />
+      <View style={styles.filler} />
     </View>
   );
 }
@@ -36,8 +39,13 @@ const styles = StyleSheet.create({
   feed: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-start",
-    gap: 2,
-    marginBottom: 70
+    justifyContent: "center",
+    gap: 8,
+    marginBottom: 70,
+    paddingHorizontal: 10,
+  },
+    filler: {
+    width: "45%", 
+    height: 0,
   },
 });

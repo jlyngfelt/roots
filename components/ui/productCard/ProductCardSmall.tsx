@@ -59,11 +59,11 @@ export const ProductCardSmall = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.secondary,
-    width: "47%",
-    padding: Spacing.s,
+    width: "48%",
+    // padding: Spacing.s,
     borderRadius: BorderRadius.m,
     marginVertical: 5,
-    marginHorizontal: 2,
+    // marginHorizontal: 2,
   },
   image: {
     width: "95%",
@@ -93,6 +93,6 @@ const styles = StyleSheet.create({
     gap: Spacing.s,
     alignItems: "flex-end",
     paddingHorizontal: Spacing.xs,
-    width: "100%",
+    width: "100%"
   },
 });
