@@ -158,7 +158,6 @@ export default function ExploreScreen() {
     }
   };
 
-  // Filtrera och sortera
   const filteredPlants = getFilteredPlants(
     plants,
     filterBy,
@@ -191,6 +190,7 @@ const [filter, setFilter] = useState({
         />
       }
     >
+<View style={styles.filterAndSort}>
 
 <FilterSelect 
   value={filter}
@@ -203,14 +203,15 @@ const [filter, setFilter] = useState({
   onValueChange={(value) => setSortBy(value as SortOption)}
   data={sortData}
 />
+  </View>
 
-      {/* Feed */}
+
       <View style={styles.feed}>
         {sortedAndFilteredPlants.map((plant) => (
           <ProductCard
             key={plant.id}
             variant="big"
-            userId={user?.uid!}
+            userId={plant.userId}
             plantId={plant.id}
             name={plant.name}
             description={plant.description}
@@ -239,4 +240,11 @@ const styles = StyleSheet.create({
   inactive: {
     backgroundColor: "#313170",
   },
+  filterAndSort: {
+    flexDirection: "row",
+    width: "100%",
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    gap: 20,
+  }
 });

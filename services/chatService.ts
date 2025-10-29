@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
@@ -126,6 +127,24 @@ export async function sendMessage(
     });
   } catch (error) {
     console.error("Error sending message:", error);
+    throw error;
+  }
+}
+
+export async function deleteChat(chatId: string): Promise<void> {
+  try {
+    const messagesRef = collection(db, "chats", chatId, "messages");
+    const messagesSnapshot = await getDocs(messagesRef);
+    
+    const deletePromises = messagesSnapshot.docs.map((messageDoc) =>
+      deleteDoc(messageDoc.ref)
+    );
+    await Promise.all(deletePromises);
+    await deleteDoc(doc(db, "chats", chatId));
+    
+    console.log("Chat and all messages deleted!");
+  } catch (error) {
+    console.error("Error deleting chat:", error);
     throw error;
   }
 }

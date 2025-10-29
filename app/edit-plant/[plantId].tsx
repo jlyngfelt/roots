@@ -1,6 +1,6 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
+import { CategorySelect } from "@/components/ui/forms/CategorySelect";
 import { DefaultInput } from "@/components/ui/forms/DefaultInput";
-import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
 import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
@@ -55,7 +55,7 @@ export default function EditPlantScreen() {
         imageUrl: plantImages[0] || "",
         imageUrls: plantImages,
       });
-      router.replace(`/view-plant/${plantId}`);
+      router.replace("/(tabs)");
     } catch (err) {
       console.error(err);
       setError("Kunde inte uppdatera planta");
@@ -96,12 +96,13 @@ export default function EditPlantScreen() {
         placeholder="Beskrivning..."
       />
 
-      <DefaultSelect
+      <CategorySelect
         value={categoryId}
         onValueChange={(newValue) => {
           setCategoryId(newValue);
           console.log("Vald kategori:", newValue);
         }}
+        placeholder="Välj kategori"
       />
 
       <View style={styles.adoptWrapper}>

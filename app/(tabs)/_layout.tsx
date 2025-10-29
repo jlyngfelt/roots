@@ -114,7 +114,7 @@ export default function TabLayout() {
               <IconSymbol
                 size={focused ? 34 : 32}
                 name={focused ? "heart.fill" : "heart"}
-                color={focused ? "#ff7abd" : color}
+                color={focused ? Colors.accent : color}
               />
             </View>
           ),
