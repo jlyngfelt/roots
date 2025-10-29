@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@/constants/design-system";
 import { db } from "@/firebaseConfig";
+import { createChat, getChatBetweenUsers } from "@/services/chatService";
 import { getPlantById } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -92,6 +93,22 @@ export default function ViewPlantScreen() {
     }
   }, [user?.uid]);
 
+  const handleContact = async () => {
+    if (!user?.uid || !userId) return;
+
+    try {
+      let existingChatId = await getChatBetweenUsers(user.uid, userId);
+
+      if (!existingChatId) {
+        existingChatId = await createChat(user.uid, userId);
+      }
+
+      router.push(`/conversation/${existingChatId}`);
+    } catch (error) {
+      console.error("Error opening chat:", error);
+    }
+  };
+
   return (
     <ScrollView style={styles.bgColor}>
       <ProductCard
@@ -108,11 +125,19 @@ export default function ViewPlantScreen() {
         plantOwnerLat={plantOwnerLat}
         plantOwnerLon={plantOwnerLon}
       ></ProductCard>
+
       <View style={styles.buttonContainer}>
-        <DefaultButton onPress={() => router.push(`/edit-plant/${plantId}`)}>
+        <DefaultButton
+          onPress={
+            userId === user?.uid
+              ? () => router.push(`/edit-plant/${plantId}`)
+              : handleContact
+          }
+        >
           {userId === user?.uid ? "Ändra" : "Kontakta"}
         </DefaultButton>
       </View>
+
       {userId !== user?.uid ? (
         <View style={styles.uploaderInfo}>
           <Image

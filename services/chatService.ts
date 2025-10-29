@@ -21,17 +21,21 @@ function getChatId(userId1: string, userId2: string): string {
 // Check if chat exists between two users
 export async function getChatBetweenUsers(userId1: string, userId2: string) {
   try {
-    const chatId = getChatId(userId1, userId2);
-
     const chatsRef = collection(db, "chats");
-    const q = query(chatsRef, where("chatId", "==", chatId));
+    const q = query(chatsRef, where("participants", "array-contains", userId1));
     const snapshot = await getDocs(q);
 
-    if (snapshot.empty) {
-      return null;
+    // Now filter to find the chat that has BOTH users
+    const chat = snapshot.docs.find((doc) => {
+      const participants = doc.data().participants;
+      return participants.includes(userId1) && participants.includes(userId2);
+    });
+
+    if (chat) {
+      return chat.id;
     }
 
-    return snapshot.docs[0].id;
+    return null;
   } catch (error) {
     console.error("Error checking for existing chat:", error);
     throw error;
