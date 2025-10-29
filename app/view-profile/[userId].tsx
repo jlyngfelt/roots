@@ -2,6 +2,7 @@ import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { FeedToggle } from "@/components/ui/profilePage/feedToggle";
 import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
 import { Colors } from "@/constants/design-system";
+import { createChat, getChatBetweenUsers } from "@/services/chatService";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -63,11 +64,31 @@ export default function ViewProfileScreen() {
     }
   }, [userId]);
 
+  const handleContact = async () => {
+    if (!user?.uid || !userId) return;
+
+    try {
+      let existingChatId = await getChatBetweenUsers(user.uid, userId);
+
+      if (!existingChatId) {
+        existingChatId = await createChat(user.uid, userId);
+      }
+
+      router.push(`/conversation/${existingChatId}`);
+    } catch (error) {
+      console.error("Error opening chat:", error);
+    }
+  };
+
   return (
     <ScrollView style={styles.bgColor}>
       <ProfileCard userProfile={userProfile} />
 
-      <DefaultButton variant="secondary" style={styles.fullWidthButton}>
+      <DefaultButton
+        onPress={handleContact}
+        variant="secondary"
+        style={styles.fullWidthButton}
+      >
         Kontakta
       </DefaultButton>
 
