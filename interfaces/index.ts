@@ -1,3 +1,14 @@
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+  ImageStyle
+} from "react-native";
+
 export interface Plant {
   id: string;
   name: string;
@@ -58,10 +69,10 @@ export interface ProductCardProps {
   image?: string;
   readyToAdopt?: boolean;
   variant?: "big" | "small" | "view";
-  plantOwnerLat?: string;
-  plantOwnerLon?: string;
-  userLat?: string;
-  userLon?: string;
+  plantOwnerLat?: number;
+  plantOwnerLon?: number;
+  userLat?: number;
+  userLon?: number;
   imageUrls?: string[];
   onPress?: () => void;
 }
@@ -154,4 +165,30 @@ export interface RadioItemProps {
   selected: boolean;
   onPress: () => void;
   label: string;
+}
+
+export interface ImageCarouselProps {
+  images: string[];
+  activeIndex: number;
+  scrollViewRef: React.RefObject<ScrollView | null>;
+  onScroll: (event: any) => void;
+  imageStyle: ImageStyle;
+  onPress?: () => void;
+}
+
+export interface CardActionsProps {
+  showFavoriteButton: boolean;
+  userId?: string;
+  plantId: string;
+  readyToAdopt: boolean;
+  style?: ViewStyle;
+}
+
+export interface CardInfoProps {
+  name: string;
+  distance?: number;
+  showLocation?: boolean;
+  headingStyle: any;
+  textContainerStyle: ViewStyle;
+  numberOfLines?: number;
 }

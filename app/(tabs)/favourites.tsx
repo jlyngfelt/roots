@@ -52,6 +52,7 @@ export default function FavoritesScreen() {
 
   return (
     <ScrollView
+
       style={styles.bgColor}
       refreshControl={
         <RefreshControl
@@ -75,10 +76,11 @@ const styles = StyleSheet.create({
   bgColor: {
     backgroundColor: Colors.secondary,
   },
-  feed: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    marginBottom: 80,
-  },
+//   feed: {
+// flexDirection: "row",
+//     flexWrap: "wrap",
+//     justifyContent: "center", // Ändra från "flex-start" till "center"
+//     gap: 8,
+//     marginBottom: 70
+//   },
 });
