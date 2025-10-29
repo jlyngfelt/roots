@@ -216,6 +216,7 @@ const [filter, setFilter] = useState({
             name={plant.name}
             description={plant.description}
             image={plant.imageUrl}
+            imageUrls={plant.imageUrls} 
             readyToAdopt={plant.readyToAdopt}
             onPress={() => router.push(`/view-plant/${plant.id}`)}
           />

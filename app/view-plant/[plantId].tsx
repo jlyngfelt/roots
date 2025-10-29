@@ -96,7 +96,7 @@ export default function ViewPlantScreen() {
     <ScrollView style={styles.bgColor}>
       <ProductCard
         variant="view"
-        userId={user?.uid!}
+        userId={userId}
         plantId={id}
         name={plantName}
         description={description}
