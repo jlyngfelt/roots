@@ -4,10 +4,12 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
   setDoc,
+  Unsubscribe,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -135,16 +137,32 @@ export async function deleteChat(chatId: string): Promise<void> {
   try {
     const messagesRef = collection(db, "chats", chatId, "messages");
     const messagesSnapshot = await getDocs(messagesRef);
-    
+
     const deletePromises = messagesSnapshot.docs.map((messageDoc) =>
       deleteDoc(messageDoc.ref)
     );
     await Promise.all(deletePromises);
     await deleteDoc(doc(db, "chats", chatId));
-    
+
     console.log("Chat and all messages deleted!");
   } catch (error) {
     console.error("Error deleting chat:", error);
     throw error;
   }
+}
+
+export function subscribeToConversation(
+  chatId: string,
+  callback: (messages: any[]) => void
+): Unsubscribe {
+  const messagesRef = collection(db, "chats", chatId, "messages");
+  const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+  return onSnapshot(q, (snapshot) => {
+    const messages: any[] = [];
+    snapshot.forEach((doc) => {
+      messages.push({ id: doc.id, ...doc.data() });
+    });
+    callback(messages);
+  });
 }
