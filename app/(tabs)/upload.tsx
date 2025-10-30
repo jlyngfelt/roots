@@ -1,9 +1,9 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { CategorySelect } from "@/components/ui/selects/CategorySelect";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { DefaultInput } from "@/components/ui/inputs/DefaultInput";
 import { DefaultTextArea } from "@/components/ui/inputs/DefaultTextArea";
 import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
+import { CategorySelect } from "@/components/ui/selects/CategorySelect";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
@@ -109,7 +109,11 @@ export default function UploadScreen() {
         />
       </View>
 
-      <DefaultButton onPress={handleCreatePlant} disabled={loading}>
+      <DefaultButton
+        onPress={handleCreatePlant}
+        disabled={loading}
+        style={styles.padding}
+      >
         {loading ? "Sparar..." : "Spara"}
       </DefaultButton>
 
@@ -124,5 +128,8 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
     gap: Spacing.m,
+  },
+  padding: {
+    marginBottom: Spacing["4xl"],
   },
 });
