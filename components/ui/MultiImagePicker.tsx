@@ -92,7 +92,11 @@ export function MultiImagePicker({
         >
           {images.map((imageUrl, index) => (
             <View key={index} style={styles.imageContainer}>
-              <Image source={{ uri: imageUrl }} style={styles.image} />
+              <Image
+                source={{ uri: imageUrl }}
+                style={styles.image}
+                resizeMode="cover"
+              />
 
               {index === 0 && (
                 <View style={styles.primaryBadge}>
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.m,
   },
   scrollContent: {
-    paddingRight: Spacing.m,
+    paddingHorizontal: Spacing.m,
   },
   imageContainer: {
     marginRight: Spacing.m,
@@ -198,7 +202,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   image: {
-    width: "100%",
+    width: 300,
     height: 375,
     borderRadius: BorderRadius.xl,
   },
