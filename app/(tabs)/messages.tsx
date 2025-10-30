@@ -1,3 +1,4 @@
+import { SearchInput } from "@/components/ui/forms/SearchInput";
 import { Colors } from "@/constants/design-system";
 import { useAuth } from "@/contexts/AuthContext";
 import { getChats } from "@/services/chatService";
@@ -14,10 +15,12 @@ import {
 } from "react-native";
 import { Image } from "tamagui";
 
+
 export default function MessagesScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const [conversations, setConversations] = useState<any[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -59,6 +62,24 @@ export default function MessagesScreen() {
     }
   };
 
+  const getSearchedConversations = (conversations: any[], query: string) => {
+      if (!query.trim()) return searchedConversations;
+  
+      const lowerQuery = query.toLowerCase();
+  
+      return conversations.filter((conversation) => {
+        const nameMatch = conversation.otherUserName.toLowerCase().includes(lowerQuery);
+        
+  
+        return nameMatch ;
+      });
+    };
+
+ const searchedConversations: any[] = getSearchedConversations(
+  conversations, 
+  searchQuery
+);
+
   if (loading) {
     return (
       <View style={styles.container}>
@@ -69,8 +90,13 @@ export default function MessagesScreen() {
 
   return (
     <View style={styles.container}>
+       <SearchInput
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Sök bland konversationer..."
+      />
       <FlatList
-        data={conversations}
+        data={searchedConversations}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Pressable
