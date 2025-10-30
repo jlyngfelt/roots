@@ -7,7 +7,7 @@ import {
 } from "@/constants/design-system";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebaseConfig";
-import { getConversation, sendMessage } from "@/services/chatService";
+import { sendMessage, subscribeToConversation } from "@/services/chatService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
@@ -34,8 +34,14 @@ export default function ConversationScreen() {
   const [otherUser, setOtherUser] = useState<any>(null);
 
   useEffect(() => {
-    loadMessages();
     loadOtherUser();
+
+    const unsubscribe = subscribeToConversation(chatId, (newMessages) => {
+      setMessages(newMessages);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, [chatId]);
 
   const loadOtherUser = async () => {
@@ -55,22 +61,12 @@ export default function ConversationScreen() {
     }
   };
 
-  const loadMessages = async () => {
-    try {
-      const msgs = await getConversation(chatId);
-      setMessages(msgs);
-    } catch (error) {
-      console.error("Error loading messages:", error);
-    }
-  };
-
   const handleSend = async () => {
     if (!newMessage.trim() || !user?.uid) return;
 
     try {
       await sendMessage(chatId, user.uid, newMessage.trim());
       setNewMessage("");
-      await loadMessages();
     } catch (error) {
       console.error("Error sending message:", error);
     }
