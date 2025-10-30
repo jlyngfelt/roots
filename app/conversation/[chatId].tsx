@@ -11,7 +11,7 @@ import { sendMessage, subscribeToConversation } from "@/services/chatService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FlatList,
   Image,
@@ -32,6 +32,10 @@ export default function ConversationScreen() {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [otherUser, setOtherUser] = useState<any>(null);
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
+    null
+  );
+  const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
     loadOtherUser();
@@ -43,6 +47,15 @@ export default function ConversationScreen() {
 
     return () => unsubscribe();
   }, [chatId]);
+
+  // Scroll to bottom when messages update
+  useEffect(() => {
+    if (messages.length > 0 && flatListRef.current) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages.length]);
 
   const loadOtherUser = async () => {
     try {
@@ -72,6 +85,43 @@ export default function ConversationScreen() {
     }
   };
 
+  const shouldShowDateHeader = (currentMessage: any, previousMessage: any) => {
+    if (!previousMessage?.timestamp) return true;
+    if (!currentMessage?.timestamp) return false;
+
+    const currentDate = currentMessage.timestamp.toDate().toDateString();
+    const previousDate = previousMessage.timestamp.toDate().toDateString();
+
+    return currentDate !== previousDate;
+  };
+
+  const formatDateHeader = (timestamp: any) => {
+    if (!timestamp) return "";
+
+    const date = timestamp.toDate();
+    const day = date.getDate();
+    const month = date
+      .toLocaleString("sv-SE", { month: "short" })
+      .toUpperCase();
+    const time = date.toLocaleTimeString("sv-SE", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    return `${day} ${month} ${time}`;
+  };
+
+  const formatMessageTime = (timestamp: any) => {
+    if (!timestamp) return "";
+
+    return timestamp.toDate().toLocaleTimeString("sv-SE", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -94,52 +144,75 @@ export default function ConversationScreen() {
       </View>
 
       <View style={styles.divider} />
+
       <FlatList
+        ref={flatListRef}
         data={messages}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
+        onContentSizeChange={() =>
+          flatListRef.current?.scrollToEnd({ animated: false })
+        }
+        renderItem={({ item, index }) => {
           const isMyMessage = item.senderId === user?.uid;
+          const showDateHeader = shouldShowDateHeader(
+            item,
+            messages[index - 1]
+          );
 
           return (
-            <View
-              style={[
-                styles.messageBubbleContainer,
-                isMyMessage
-                  ? styles.myMessageContainer
-                  : styles.theirMessageContainer,
-              ]}
-            >
-              <View
+            <View>
+              {showDateHeader && (
+                <View style={styles.dateHeaderContainer}>
+                  <Text style={styles.dateHeaderText}>
+                    {formatDateHeader(item.timestamp)}
+                  </Text>
+                </View>
+              )}
+
+              <Pressable
+                onPress={() =>
+                  setSelectedMessageId(
+                    selectedMessageId === item.id ? null : item.id
+                  )
+                }
                 style={[
-                  styles.messageBubble,
+                  styles.messageBubbleContainer,
                   isMyMessage
-                    ? styles.myMessageBubble
-                    : styles.theirMessageBubble,
+                    ? styles.myMessageContainer
+                    : styles.theirMessageContainer,
                 ]}
               >
-                <Text
+                <View
                   style={[
-                    styles.messageText,
+                    styles.messageBubble,
                     isMyMessage
-                      ? styles.myMessageText
-                      : styles.theirMessageText,
+                      ? styles.myMessageBubble
+                      : styles.theirMessageBubble,
                   ]}
                 >
-                  {item.text}
-                </Text>
-              </View>
-              <Text style={[Styles.bodyXS, styles.time]}>
-                {item.timestamp.toDate().toLocaleTimeString("se", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </Text>
+                  <Text
+                    style={[
+                      styles.messageText,
+                      isMyMessage
+                        ? styles.myMessageText
+                        : styles.theirMessageText,
+                    ]}
+                  >
+                    {item.text}
+                  </Text>
+                </View>
+
+                {selectedMessageId === item.id && item.timestamp && (
+                  <Text style={[Styles.bodyXS, styles.time]}>
+                    {formatMessageTime(item.timestamp)}
+                  </Text>
+                )}
+              </Pressable>
             </View>
           );
         }}
       />
 
-      {/* Input Area */}
       <View style={styles.inputContainer}>
         <TextInput
           value={newMessage}
@@ -181,6 +254,15 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: Colors.grey,
     marginBottom: Spacing.m,
+  },
+  dateHeaderContainer: {
+    alignItems: "center",
+    marginVertical: Spacing.m,
+  },
+  dateHeaderText: {
+    ...Styles.bodyS,
+    color: Colors.details,
+    fontWeight: "600",
   },
   messageBubbleContainer: {
     paddingHorizontal: Spacing.m,
