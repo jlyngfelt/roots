@@ -1,3 +1,5 @@
+import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
+import { FilterSelect } from "@/components/ui/forms/FilterSelect";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { Colors } from "@/constants/design-system";
 import { getOtherUsersPlants } from "@/services/plantService";
@@ -5,8 +7,8 @@ import { getUserProfile } from "@/services/userService";
 import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, RefreshControl } from "react-native";
-import { Button, XStack } from "tamagui";
+import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
+import { SearchInput } from "../../components/ui/forms/SearchInput";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   Category,
@@ -14,8 +16,6 @@ import {
   PlantWithDistance,
 } from "../../interfaces/index";
 import { getCategories } from "../../services/categoryService";
-import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
-import { FilterSelect } from "@/components/ui/forms/FilterSelect";
 
 type SortOption = "nameAsc" | "nameDesc" | "newest" | "oldest" | "distance";
 
@@ -27,25 +27,24 @@ export default function ExploreScreen() {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-const [filter, setFilter] = useState({
-  readyToAdopt: false,
-  categoryId: "all"
-});
+  const [filter, setFilter] = useState({
+    readyToAdopt: false,
+    categoryId: "all",
+  });
   const [myCoordinates, setMyCoordinates] = useState<Coordinates | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  
-  const fetchPlantsWithDistance = async () => {
+  const fetchPlantsWithDistanceAndUser = async () => {
     if (!user?.uid || !myCoordinates) return;
 
     try {
       setLoading(true);
       const allPlants = await getOtherUsersPlants(user.uid);
 
-      const plantsWithDistance: PlantWithDistance[] = await Promise.all(
+      const plantsWithDistanceAndUser: PlantWithDistance[] = await Promise.all(
         allPlants.map(async (plant) => {
           const ownerProfile = await getUserProfile(plant.userId);
-
           const distance =
             ownerProfile?.lat && ownerProfile?.lon
               ? calculateDistance(
@@ -56,11 +55,16 @@ const [filter, setFilter] = useState({
                 )
               : null;
 
-          return { ...plant, distance };
+          return {
+            ...plant,
+            distance,
+            username: ownerProfile?.username,
+            ownerProfileImageUrl: ownerProfile?.profileImageUrl || "",
+          };
         })
       );
 
-      setPlants(plantsWithDistance);
+      setPlants(plantsWithDistanceAndUser);
     } catch (err: any) {
       setError(err.message);
       console.error("Error fetching plants:", err);
@@ -68,7 +72,6 @@ const [filter, setFilter] = useState({
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     async function fetchCategories() {
@@ -94,16 +97,28 @@ const [filter, setFilter] = useState({
   }, [user?.uid]);
 
   useEffect(() => {
-    fetchPlantsWithDistance();
+    fetchPlantsWithDistanceAndUser();
   }, [user?.uid, myCoordinates]);
-
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await fetchPlantsWithDistance();
+    await fetchPlantsWithDistanceAndUser();
     setRefreshing(false);
   };
-  
+
+  const getSearchedPlants = (plants: PlantWithDistance[], query: string) => {
+    if (!query.trim()) return plants;
+
+    const lowerQuery = query.toLowerCase();
+
+    return plants.filter((plant) => {
+      const nameMatch = plant.name.toLowerCase().includes(lowerQuery);
+      const usernameMatch = plant.username?.toLowerCase().includes(lowerQuery);
+
+      return nameMatch || usernameMatch;
+    });
+  };
+
   const getFilteredPlants = (
     plants: PlantWithDistance[],
     categoryFilter: string,
@@ -122,7 +137,6 @@ const [filter, setFilter] = useState({
 
     return filtered;
   };
-
 
   const getSortedPlants = (
     plants: PlantWithDistance[],
@@ -159,53 +173,57 @@ const [filter, setFilter] = useState({
     }
   };
 
-    const filteredPlants = getFilteredPlants(
-    plants,
+  const searchedPlants = getSearchedPlants(plants, searchQuery);
+
+  const filteredPlants = getFilteredPlants(
+    searchedPlants,
     filter.categoryId,
     filter.readyToAdopt
   );
-  const sortedAndFilteredPlants = getSortedPlants(filteredPlants, sortBy);
-
+  const finalPlants = getSortedPlants(filteredPlants, sortBy);
 
   const sortData = [
-  { label: "Närmast", value: "distance" },
-  { label: "Senaste", value: "newest" },
-  { label: "Äldsta", value: "oldest" },
-  { label: "A-Ö", value: "nameAsc" },
-  { label: "Ö-A", value: "nameDesc" },
-];
-
+    { label: "Närmast", value: "distance" },
+    { label: "Senaste", value: "newest" },
+    { label: "Äldsta", value: "oldest" },
+    { label: "A-Ö", value: "nameAsc" },
+    { label: "Ö-A", value: "nameDesc" },
+  ];
 
   return (
-    <ScrollView 
+    <ScrollView
       style={styles.bgColor}
       refreshControl={
-        <RefreshControl 
-          refreshing={refreshing} 
+        <RefreshControl
+          refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={[Colors.accent]} 
+          colors={[Colors.accent]}
           tintColor={Colors.accent}
         />
       }
     >
-<View style={styles.filterAndSort}>
+      <SearchInput
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Sök plantor eller användare..."
+      />
 
-<FilterSelect 
-  value={filter}
-  onValueChange={setFilter}
-  placeholder="Filtrera"
-/>
+      <View style={styles.filterAndSort}>
+        <FilterSelect
+          value={filter}
+          onValueChange={setFilter}
+          placeholder="Filtrera"
+        />
 
-<DefaultSelect 
-  value={sortBy} 
-  onValueChange={(value) => setSortBy(value as SortOption)}
-  data={sortData}
-/>
-  </View>
-
+        <DefaultSelect
+          value={sortBy}
+          onValueChange={(value) => setSortBy(value as SortOption)}
+          data={sortData}
+        />
+      </View>
 
       <View style={styles.feed}>
-        {sortedAndFilteredPlants.map((plant) => (
+        {finalPlants.map((plant) => (
           <ProductCard
             key={plant.id}
             variant="big"
@@ -214,7 +232,7 @@ const [filter, setFilter] = useState({
             name={plant.name}
             description={plant.description}
             image={plant.imageUrl}
-            imageUrls={plant.imageUrls} 
+            imageUrls={plant.imageUrls}
             readyToAdopt={plant.readyToAdopt}
             onPress={() => router.push(`/view-plant/${plant.id}`)}
           />
@@ -245,5 +263,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 15,
     gap: 20,
-  }
+  },
 });

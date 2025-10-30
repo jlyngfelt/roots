@@ -99,6 +99,8 @@ export interface Coordinates {
 
 export interface PlantWithDistance extends Plant {
   distance: number | null;
+  username?: string; 
+  ownerProfileImageUrl?: string; 
 }
 
 export interface Category {
@@ -191,4 +193,11 @@ export interface CardInfoProps {
   headingStyle: any;
   textContainerStyle: ViewStyle;
   numberOfLines?: number;
+}
+
+export interface SearchInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  debounceMs?: number; 
 }
