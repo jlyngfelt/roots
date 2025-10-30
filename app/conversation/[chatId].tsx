@@ -128,6 +128,12 @@ export default function ConversationScreen() {
                   {item.text}
                 </Text>
               </View>
+              <Text style={[Styles.bodyXS, styles.time]}>
+                {item.timestamp.toDate().toLocaleTimeString("se", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </Text>
             </View>
           );
         }}
@@ -226,5 +232,9 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     padding: Spacing.s,
+  },
+  time: {
+    paddingHorizontal: Spacing.s,
+    color: Colors.details,
   },
 });
