@@ -32,6 +32,7 @@ export default function ConversationScreen() {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [otherUser, setOtherUser] = useState<any>(null);
+  const [userId, setUserId] = useState("");
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null
   );
@@ -129,18 +130,27 @@ export default function ConversationScreen() {
       keyboardVerticalOffset={0}
     >
       <View style={styles.header}>
-        <Image
-          source={
-            otherUser?.profileImageUrl
-              ? { uri: otherUser.profileImageUrl }
-              : require("@/assets/profilePicture.png")
-          }
-          style={styles.headerProfileImage}
-        />
-
-        <Text style={styles.headerUsername}>
-          {otherUser?.username || "Loading..."}
-        </Text>
+        <Pressable
+          onPress={() => {
+            const otherUserId = otherUser?.id;
+            if (otherUserId) {
+              router.push(`/view-profile/${otherUserId}`);
+            }
+          }}
+          style={styles.headerContent}
+        >
+          <Image
+            source={
+              otherUser?.profileImageUrl
+                ? { uri: otherUser.profileImageUrl }
+                : require("@/assets/profilePicture.png")
+            }
+            style={styles.headerProfileImage}
+          />
+          <Text style={styles.headerUsername}>
+            {otherUser?.username || "Loading..."}
+          </Text>
+        </Pressable>
       </View>
 
       <View style={styles.divider} />
@@ -240,6 +250,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: Spacing.m,
     paddingHorizontal: Spacing.m,
+  },
+  headerContent: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   headerProfileImage: {
     width: 32,
