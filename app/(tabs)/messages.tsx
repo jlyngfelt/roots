@@ -63,7 +63,7 @@ export default function MessagesScreen() {
   };
 
   const getSearchedConversations = (conversations: any[], query: string) => {
-      if (!query.trim()) return searchedConversations;
+      if (!query.trim()) return conversations;
   
       const lowerQuery = query.toLowerCase();
   
