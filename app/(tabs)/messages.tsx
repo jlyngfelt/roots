@@ -62,7 +62,7 @@ export default function MessagesScreen() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color={Colors.accent} />
+        <ActivityIndicator size="large" style={{paddingVertical: 20}} />
       </View>
     );
   }
