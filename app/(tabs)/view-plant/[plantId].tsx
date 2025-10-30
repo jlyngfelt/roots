@@ -21,7 +21,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function ViewPlantScreen() {
   const router = useRouter();
@@ -145,7 +145,7 @@ export default function ViewPlantScreen() {
             source={
               userProfileImageUrl
                 ? { uri: userProfileImageUrl }
-                : require("../../assets/profilePicture.png")
+                : require("../../../assets/profilePicture.png")
             }
           />
           <Pressable onPress={() => router.push(`/view-profile/${userId}`)}>

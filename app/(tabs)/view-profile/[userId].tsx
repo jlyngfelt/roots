@@ -8,9 +8,9 @@ import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { ProfileCard } from "../../components/ui/profilePage/profileCard";
-import { useAuth } from "../../contexts/AuthContext";
-import { UserProfile } from "../../interfaces/index";
+import { ProfileCard } from "../../../components/ui/profilePage/profileCard";
+import { useAuth } from "../../../contexts/AuthContext";
+import { UserProfile } from "../../../interfaces/index";
 
 export default function ViewProfileScreen() {
   const router = useRouter();
