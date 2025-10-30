@@ -163,6 +163,30 @@ export default function TabLayout() {
           header: () => <TopBar showBackButton={true} />,
         }}
       />
+      <Tabs.Screen
+        name="edit-plant/[plantId]"
+        options={{
+          title: "Edit Plant",
+          href: null,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Tabs.Screen
+        name="view-plant/[plantId]"
+        options={{
+          title: "View Plant",
+          href: null,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Tabs.Screen
+        name="view-profile/[userId]"
+        options={{
+          title: "View Profile",
+          href: null,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
     </Tabs>
   );
 }
