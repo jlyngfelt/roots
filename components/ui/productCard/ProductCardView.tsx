@@ -1,8 +1,12 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { BorderRadius, Spacing, Styles } from "../../../constants/design-system";
+import {
+  BorderRadius,
+  Spacing,
+  Styles,
+} from "../../../constants/design-system";
 import { ProductCardProps } from "../../../interfaces/index";
-import { useProductCardLogic } from "./useProductCardLogic";
 import { CardActions, CardInfo, ImageCarousel } from "./ProductCardContent";
+import { useProductCardLogic } from "./useProductCardLogic";
 
 export const ProductCardView = ({
   userId,
@@ -55,7 +59,7 @@ export const ProductCardView = ({
               distance={distance}
               showLocation={true}
               headingStyle={Styles.heading1}
-            textContainerStyle={{ flex: 1 }}
+              textContainerStyle={{ flex: 1 }}
             />
 
             <CardActions
@@ -68,7 +72,9 @@ export const ProductCardView = ({
           </View>
 
           {description && (
-            <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
+            <Text style={[styles.description, Styles.bodyM]}>
+              {description}
+            </Text>
           )}
         </>
       ) : (
@@ -100,7 +106,9 @@ export const ProductCardView = ({
           </View>
 
           {description && (
-            <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
+            <Text style={[styles.description, Styles.bodyM]}>
+              {description}
+            </Text>
           )}
         </>
       )}
@@ -124,7 +132,6 @@ const styles = StyleSheet.create({
   description: {
     paddingHorizontal: Spacing.m,
     paddingVertical: Spacing.s,
-
   },
   cardInfo: {
     flexDirection: "row",

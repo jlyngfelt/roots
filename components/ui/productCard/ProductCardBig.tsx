@@ -1,8 +1,12 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { BorderRadius, Spacing, Styles } from "../../../constants/design-system";
+import {
+  BorderRadius,
+  Spacing,
+  Styles,
+} from "../../../constants/design-system";
 import { ProductCardProps } from "../../../interfaces/index";
-import { useProductCardLogic } from "./useProductCardLogic";
 import { CardActions, CardInfo, ImageCarousel } from "./ProductCardContent";
+import { useProductCardLogic } from "./useProductCardLogic";
 
 export const ProductCardBig = ({
   userId,
@@ -47,30 +51,29 @@ export const ProductCardBig = ({
             onScroll={handleScroll}
             imageStyle={styles.image}
             onPress={onPress}
-            />
-<Pressable onPress={onPress} style={{ width: "100%" }}>
-
-<View style={styles.cardInfo}>
-
-<CardInfo
-  name={name}
-  headingStyle={Styles.heading1}
-  textContainerStyle={{flex: 1}}
-  />
-          <CardActions
-            showFavoriteButton={showFavoriteButton}
-            userId={user?.uid}
-            plantId={plantId}
-            readyToAdopt={readyToAdopt || false}
-            style={styles.icons}
-            />
+          />
+          <Pressable onPress={onPress} style={{ width: "100%" }}>
+            <View style={styles.cardInfo}>
+              <CardInfo
+                name={name}
+                headingStyle={Styles.heading1}
+                textContainerStyle={{ flex: 1 }}
+              />
+              <CardActions
+                showFavoriteButton={showFavoriteButton}
+                userId={user?.uid}
+                plantId={plantId}
+                readyToAdopt={readyToAdopt || false}
+                style={styles.icons}
+              />
             </View>
 
-
-          {description && (
-              <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
+            {description && (
+              <Text style={[styles.description, Styles.bodyM]}>
+                {description}
+              </Text>
             )}
-            </Pressable>
+          </Pressable>
         </>
       ) : (
         <Pressable onPress={onPress} style={{ width: "100%" }}>
@@ -79,25 +82,25 @@ export const ProductCardBig = ({
             source={{ uri: image }}
             resizeMode="cover"
           />
-<View style={styles.cardInfo}>
-
+          <View style={styles.cardInfo}>
             <CardInfo
               name={name}
               headingStyle={Styles.heading1}
               textContainerStyle={{ flex: 1 }}
-              />
-          <CardActions
-            showFavoriteButton={showFavoriteButton}
-            userId={user?.uid}
-            plantId={plantId}
-            readyToAdopt={readyToAdopt || false}
-            style={styles.icons}
             />
-            </View>
-
+            <CardActions
+              showFavoriteButton={showFavoriteButton}
+              userId={user?.uid}
+              plantId={plantId}
+              readyToAdopt={readyToAdopt || false}
+              style={styles.icons}
+            />
+          </View>
 
           {description && (
-            <Text style={[styles.description, Styles.bodyM]}>{description}</Text>
+            <Text style={[styles.description, Styles.bodyM]}>
+              {description}
+            </Text>
           )}
         </Pressable>
       )}

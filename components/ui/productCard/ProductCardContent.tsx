@@ -1,23 +1,28 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import {
+  CardActionsProps,
+  CardInfoProps,
+  ImageCarouselProps,
+} from "@/interfaces";
+import {
   Dimensions,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
-  Pressable,
   Text,
   View,
-  ViewStyle,
-  ImageStyle
 } from "react-native";
-import { BorderRadius, Colors, Spacing, Styles } from "../../../constants/design-system";
+import {
+  BorderRadius,
+  Colors,
+  Spacing,
+  Styles,
+} from "../../../constants/design-system";
 import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
-import { ImageCarouselProps, CardActionsProps, CardInfoProps } from "@/interfaces";
-
 
 const { width } = Dimensions.get("window");
-
 
 export const ImageCarousel = ({
   images,
@@ -41,14 +46,13 @@ export const ImageCarousel = ({
     >
       {images.map((imageUrl, index) => (
         <View key={index} style={styles.imageWrapper}>
-             <Pressable onPress={onPress}>
-
-          <Image
-            style={[styles.image, imageStyle]}
-            source={{ uri: imageUrl }}
-            resizeMode="cover"
+          <Pressable onPress={onPress}>
+            <Image
+              style={[styles.image, imageStyle]}
+              source={{ uri: imageUrl }}
+              resizeMode="cover"
             />
-            </Pressable>
+          </Pressable>
         </View>
       ))}
     </ScrollView>
@@ -66,7 +70,6 @@ export const ImageCarousel = ({
     </View>
   </View>
 );
-
 
 export const CardActions = ({
   showFavoriteButton,
