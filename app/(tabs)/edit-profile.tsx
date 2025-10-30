@@ -1,8 +1,8 @@
 import { ImagePickerPreview } from "@/components/ui/ImagePickerPreview";
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/forms/DefaultInput";
-import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { DefaultInput } from "@/components/ui/inputs/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/inputs/DefaultTextArea";
 import { Colors, Styles } from "@/constants/design-system";
 import { useAuth } from "@/contexts/AuthContext";
 import { pickAndUploadImage } from "@/services/imageService";

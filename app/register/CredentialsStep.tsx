@@ -1,11 +1,11 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/forms/DefaultInput";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { DefaultInput } from "@/components/ui/inputs/DefaultInput";
 import { Colors, Styles } from "@/constants/design-system";
+import { CredentialsStepProps } from "@/interfaces";
 import { Alert, Image, Linking } from "react-native";
 import { Text } from "tamagui";
 import { signUp } from "../../auth";
-import { CredentialsStepProps } from "@/interfaces";
 
 export default function CredentialsStep({
   email,
