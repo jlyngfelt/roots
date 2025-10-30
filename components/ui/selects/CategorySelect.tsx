@@ -1,14 +1,14 @@
-import { DefaultSelect } from './DefaultSelect';
-import { useEffect, useState } from 'react';
-import { getCategories } from '@/services/categoryService';
-import { Category } from '@/interfaces';
+import { Category } from "@/interfaces";
+import { getCategories } from "@/services/categoryService";
+import { useEffect, useState } from "react";
+import { DefaultSelect } from "../selects/DefaultSelect";
 
-export function CategorySelect({ 
-  value, 
+export function CategorySelect({
+  value,
   onValueChange,
-  placeholder = "Välj kategori"
-}: { 
-  value: string; 
+  placeholder = "Välj kategori",
+}: {
+  value: string;
   onValueChange: (value: string) => void;
   placeholder?: string;
 }) {
@@ -22,13 +22,13 @@ export function CategorySelect({
     fetchCats();
   }, []);
 
-  const data = categories.map(cat => ({
+  const data = categories.map((cat) => ({
     label: cat.name,
-    value: cat.id
+    value: cat.id,
   }));
 
   return (
-    <DefaultSelect 
+    <DefaultSelect
       value={value}
       onValueChange={onValueChange}
       data={data}

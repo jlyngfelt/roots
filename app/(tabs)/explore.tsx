@@ -1,6 +1,6 @@
-import { DefaultSelect } from "@/components/ui/forms/DefaultSelect";
-import { FilterSelect } from "@/components/ui/forms/FilterSelect";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
+import { DefaultSelect } from "@/components/ui/selects/DefaultSelect";
+import { FilterSelect } from "@/components/ui/selects/FilterSelect";
 import { Colors } from "@/constants/design-system";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
@@ -8,7 +8,7 @@ import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
-import { SearchInput } from "../../components/ui/forms/SearchInput";
+import { SearchInput } from "../../components/ui/inputs/SearchInput";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   Category,
