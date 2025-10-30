@@ -75,7 +75,7 @@ export default function EditPlantScreen() {
   }
 
   return (
-    <FormLayout>
+    <FormLayout centered={false}>
       <MultiImagePicker
         images={plantImages}
         onImagesChange={setPlantImages}
