@@ -1,4 +1,4 @@
-import { SearchInput } from "@/components/ui/forms/SearchInput";
+import { SearchInput } from "@/components/ui/inputs/SearchInput";
 import { Colors } from "@/constants/design-system";
 import { useAuth } from "@/contexts/AuthContext";
 import { getChats } from "@/services/chatService";
@@ -15,12 +15,11 @@ import {
 } from "react-native";
 import { Image } from "tamagui";
 
-
 export default function MessagesScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const [conversations, setConversations] = useState<any[]>([]);
-    const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -63,34 +62,35 @@ export default function MessagesScreen() {
   };
 
   const getSearchedConversations = (conversations: any[], query: string) => {
-      if (!query.trim()) return searchedConversations;
-  
-      const lowerQuery = query.toLowerCase();
-  
-      return conversations.filter((conversation) => {
-        const nameMatch = conversation.otherUserName.toLowerCase().includes(lowerQuery);
-        
-  
-        return nameMatch ;
-      });
-    };
+    if (!query.trim()) return searchedConversations;
 
- const searchedConversations: any[] = getSearchedConversations(
-  conversations, 
-  searchQuery
-);
+    const lowerQuery = query.toLowerCase();
+
+    return conversations.filter((conversation) => {
+      const nameMatch = conversation.otherUserName
+        .toLowerCase()
+        .includes(lowerQuery);
+
+      return nameMatch;
+    });
+  };
+
+  const searchedConversations: any[] = getSearchedConversations(
+    conversations,
+    searchQuery
+  );
 
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" style={{paddingVertical: 20}} />
+        <ActivityIndicator size="large" style={{ paddingVertical: 20 }} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-       <SearchInput
+      <SearchInput
         value={searchQuery}
         onChangeText={setSearchQuery}
         placeholder="Sök bland konversationer..."

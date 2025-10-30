@@ -1,8 +1,8 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
-import { DefaultInput } from "@/components/ui/forms/DefaultInput";
-import { CategorySelect } from "@/components/ui/forms/CategorySelect";
-import { DefaultTextArea } from "@/components/ui/forms/DefaultTextArea";
+import { CategorySelect } from "@/components/ui/selects/CategorySelect";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
+import { DefaultInput } from "@/components/ui/inputs/DefaultInput";
+import { DefaultTextArea } from "@/components/ui/inputs/DefaultTextArea";
 import { MultiImagePicker } from "@/components/ui/MultiImagePicker";
 import { DefaultSwitch } from "@/components/ui/switch/DefaultSwitch";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
@@ -92,14 +92,14 @@ export default function UploadScreen() {
         placeholder="Beskrivning..."
       />
 
-<CategorySelect
-  value={categoryId}
-  onValueChange={(newValue) => {
-    setCategoryId(newValue);
-    console.log("Vald kategori:", newValue);
-  }}
-  placeholder="Välj kategori"
-/>
+      <CategorySelect
+        value={categoryId}
+        onValueChange={(newValue) => {
+          setCategoryId(newValue);
+          console.log("Vald kategori:", newValue);
+        }}
+        placeholder="Välj kategori"
+      />
 
       <View style={styles.adoptWrapper}>
         <Text style={Styles.heading4}>Redo att adopteras?</Text>
