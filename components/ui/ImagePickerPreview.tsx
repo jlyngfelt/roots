@@ -8,7 +8,6 @@ export function ImagePickerPreview({
   isUploading,
   size = 240,
 }: ImagePickerPreviewProps) {
-  // Calculate height based on 4:5 aspect ratio
   const height = size * 1.25;
 
   return (
@@ -16,7 +15,8 @@ export function ImagePickerPreview({
       {imageUrl ? (
         <Image
           source={{ uri: imageUrl }}
-          style={{ width: size, height: height }}
+          style={{ width: size, height: height, borderRadius: 16 }}
+          resizeMode="cover"
         />
       ) : (
         <View
