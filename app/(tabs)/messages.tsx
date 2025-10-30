@@ -62,17 +62,14 @@ export default function MessagesScreen() {
   };
 
   const getSearchedConversations = (conversations: any[], query: string) => {
-      if (!query.trim()) return conversations;
-  
-      const lowerQuery = query.toLowerCase();
-  
-      return conversations.filter((conversation) => {
-        const nameMatch = conversation.otherUserName.toLowerCase().includes(lowerQuery);
-        
-  
-        return nameMatch ;
-      });
-    };
+    if (!query.trim()) return conversations;
+
+    const lowerQuery = query.toLowerCase();
+
+    return conversations.filter((conversation) => {
+      const nameMatch = conversation.otherUserName
+        .toLowerCase()
+        .includes(lowerQuery);
 
       return nameMatch;
     });
