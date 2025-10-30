@@ -1,8 +1,13 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { BorderRadius, Colors, Spacing, Styles } from "../../../constants/design-system";
+import {
+  BorderRadius,
+  Colors,
+  Spacing,
+  Styles,
+} from "../../../constants/design-system";
 import { ProductCardProps } from "../../../interfaces/index";
-import { useProductCardLogic } from "./useProductCardLogic";
 import { CardActions, CardInfo } from "./ProductCardContent";
+import { useProductCardLogic } from "./useProductCardLogic";
 
 export const ProductCardSmall = ({
   userId,
@@ -31,7 +36,11 @@ export const ProductCardSmall = ({
   return (
     <View style={styles.card}>
       <Pressable onPress={onPress} style={{ width: "100%" }}>
-        <Image style={styles.image} source={{ uri: image }} resizeMode="cover" />
+        <Image
+          style={styles.image}
+          source={{ uri: image }}
+          resizeMode="cover"
+        />
 
         <CardActions
           showFavoriteButton={showFavoriteButton}
@@ -60,10 +69,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.secondary,
     width: "48%",
-    // padding: Spacing.s,
     borderRadius: BorderRadius.m,
     marginVertical: 5,
-    // marginHorizontal: 2,
   },
   image: {
     width: "95%",
@@ -93,6 +100,6 @@ const styles = StyleSheet.create({
     gap: Spacing.s,
     alignItems: "flex-end",
     paddingHorizontal: Spacing.xs,
-    width: "100%"
+    width: "100%",
   },
 });

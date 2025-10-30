@@ -6,8 +6,8 @@ import {
   ScrollView,
 } from "react-native";
 import { Spacing } from "../../../constants/design-system";
-import { calculateDistance } from "../../../utils/distanceCalculator";
 import { useAuth } from "../../../contexts/AuthContext";
+import { calculateDistance } from "../../../utils/distanceCalculator";
 
 const { width } = Dimensions.get("window");
 
