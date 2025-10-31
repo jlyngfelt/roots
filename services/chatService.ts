@@ -209,3 +209,32 @@ export async function getTotalUnreadCount(userId: string): Promise<number> {
     return 0;
   }
 }
+
+export async function migrateExistingChats() {
+  try {
+    const chatsRef = collection(db, "chats");
+    const snapshot = await getDocs(chatsRef);
+
+    const updatePromises = snapshot.docs.map(async (chatDoc) => {
+      const data = chatDoc.data();
+
+      // Only update if unreadCounts doesn't exist
+      if (!data.unreadCounts) {
+        const participants = data.participants || [];
+        const unreadCounts: any = {};
+
+        participants.forEach((userId: string) => {
+          unreadCounts[userId] = 0;
+        });
+
+        await updateDoc(chatDoc.ref, { unreadCounts });
+        console.log(`✅ Migrated chat ${chatDoc.id}`);
+      }
+    });
+
+    await Promise.all(updatePromises);
+    console.log("🎉 All chats migrated!");
+  } catch (error) {
+    console.error("Error migrating chats:", error);
+  }
+}

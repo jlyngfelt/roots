@@ -2,11 +2,30 @@ import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { TopBar } from "@/components/ui/TopBar";
 import { Colors } from "@/constants/design-system";
+import { useAuth } from "@/contexts/AuthContext";
+import { getTotalUnreadCount } from "@/services/chatService";
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 
 export default function TabLayout() {
+  const { user } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const fetchUnread = async () => {
+      const count = await getTotalUnreadCount(user.uid);
+      setUnreadCount(count);
+    };
+
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 5000);
+
+    return () => clearInterval(interval);
+  }, [user?.uid]);
+
   return (
     <Tabs
       screenOptions={{
@@ -57,6 +76,13 @@ export default function TabLayout() {
         options={{
           title: "Messages",
           header: () => <TopBar showBackButton={false} />,
+          tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: Colors.accent,
+            color: Colors.light,
+            fontSize: 12,
+            fontWeight: "bold",
+          },
           tabBarIcon: ({ color, focused }) => (
             <View
               style={{
