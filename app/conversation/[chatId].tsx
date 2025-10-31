@@ -32,7 +32,7 @@ export default function ConversationScreen() {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [otherUser, setOtherUser] = useState<any>(null);
-  const [userId, setUserId] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null
   );
@@ -76,13 +76,16 @@ export default function ConversationScreen() {
   };
 
   const handleSend = async () => {
-    if (!newMessage.trim() || !user?.uid) return;
+    if (!newMessage.trim() || !user?.uid || isSending) return;
 
     try {
+      setIsSending(true);
       await sendMessage(chatId, user.uid, newMessage.trim());
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -231,8 +234,18 @@ export default function ConversationScreen() {
           style={styles.input}
           multiline
         />
-        <Pressable onPress={handleSend} style={styles.sendButton}>
-          <IconSymbol name="paperplane.fill" size={28} color={Colors.details} />
+        <Pressable
+          onPress={handleSend}
+          style={styles.sendButton}
+          disabled={isSending || !newMessage.trim()}
+        >
+          <IconSymbol
+            name="paperplane.fill"
+            size={28}
+            color={
+              isSending || !newMessage.trim() ? Colors.grey : Colors.details
+            }
+          />
         </Pressable>
       </View>
     </KeyboardAvoidingView>
