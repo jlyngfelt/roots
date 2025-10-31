@@ -25,23 +25,27 @@ export default function RegisterScreen() {
   const [uploading, setUploading] = useState(false);
   const [checkingVerification, setCheckingVerification] = useState(false);
 
-  useEffect(() => {
-    let interval: any = null;
+useEffect(() => {
+  let interval: any = null;
 
-    if (step === "verification") {
-      interval = setInterval(async () => {
+  if (step === "verification") {
+    interval = setInterval(async () => {
+      try {
         const isVerified = await checkEmailVerified();
         if (isVerified) {
           setStep("profile");
           if (interval) clearInterval(interval);
         }
-      }, 3000);
-    }
+      } catch (error) {
+        console.log('Verification check failed, will retry:', error);
+              }
+    }, 3000);
+  }
 
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [step]);
+  return () => {
+    if (interval) clearInterval(interval);
+  };
+}, [step]);
 
   useEffect(() => {
     if (user && user.emailVerified) {
