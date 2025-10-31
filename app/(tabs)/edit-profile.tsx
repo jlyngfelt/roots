@@ -11,6 +11,7 @@ import { getUserProfile, updateUserProfile } from "@/services/userService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Text } from "react-native";
+import { OptimizationPresets } from "@/services/imageService";
 
 export default function EditProfileScreen() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function EditProfileScreen() {
     }
     try {
       setIsUploading(true);
-      const downloadURL = await pickAndUploadImage("profiles", user?.uid);
+      const downloadURL = await pickAndUploadImage("profiles", user?.uid, OptimizationPresets.profile );
 
       if (downloadURL) {
         setProfileImageUrl(downloadURL);

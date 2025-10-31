@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
   BorderRadius,
   Colors,
@@ -8,6 +8,8 @@ import {
 import { ProductCardProps } from "../../../interfaces/index";
 import { CardActions, CardInfo } from "./ProductCardContent";
 import { useProductCardLogic } from "./useProductCardLogic";
+import { Image } from "expo-image";
+
 
 export const ProductCardSmall = ({
   userId,
@@ -40,6 +42,7 @@ export const ProductCardSmall = ({
           style={styles.image}
           source={{ uri: image }}
           resizeMode="cover"
+          cachePolicy="memory-disk"
         />
 
         <CardActions

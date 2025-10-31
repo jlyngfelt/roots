@@ -15,7 +15,7 @@ export async function optimizeImage(
   imageUri: string,
   options: OptimizationOptions = {}
 ): Promise<string> {
-  const { maxWidth = 1200, quality = 0.8, format = SaveFormat.JPEG } = options;
+  const { maxWidth = 1200, quality = 0.7, format = SaveFormat.JPEG } = options;
 
   try {
     const imageInfo = await manipulateAsync(imageUri, [], { compress: 1 });
@@ -206,7 +206,41 @@ export async function pickAndUploadImage(
 }
 
 export const OptimizationPresets = {
-  profile: { maxWidth: 800, quality: 0.8 },
-  plant: { maxWidth: 1200, quality: 0.8 },
-  thumbnail: { maxWidth: 400, quality: 0.7 },
+  profile: { maxWidth: 600, quality: 0.8 },
+  plant: { maxWidth: 1000, quality: 0.8 },
+  thumbnail: { maxWidth: 300, quality: 0.7 },
 };
+
+export async function createThumbnail(imageUri: string): Promise<string> {
+  return optimizeImage(imageUri, OptimizationPresets.thumbnail);
+}
+
+export async function uploadImageWithThumbnail(
+  imageUri: string,
+  folder: string,
+  fileName: string
+): Promise<{ fullUrl: string; thumbnailUrl: string }> {
+  try {
+    // Ladda upp full-size (optimerad)
+    const fullUrl = await uploadImage(
+      imageUri,
+      folder,
+      fileName,
+      OptimizationPresets.plant
+    );
+
+    // Skapa och ladda upp thumbnail
+    const thumbnailUri = await createThumbnail(imageUri);
+    const thumbnailResponse = await fetch(thumbnailUri);
+    const thumbnailBlob = await thumbnailResponse.blob();
+
+    const thumbnailRef = ref(storage, `${folder}/thumbnails/${fileName}_thumb.jpg`);
+    await uploadBytes(thumbnailRef, thumbnailBlob);
+    const thumbnailUrl = await getDownloadURL(thumbnailRef);
+
+    return { fullUrl, thumbnailUrl };
+  } catch (error) {
+    console.error("Error uploading image with thumbnail:", error);
+    throw error;
+  }
+}

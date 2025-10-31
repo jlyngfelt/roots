@@ -1,4 +1,5 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { Image } from "expo-image";
 import {
   CardActionsProps,
   CardInfoProps,
@@ -6,7 +7,6 @@ import {
 } from "@/interfaces";
 import {
   Dimensions,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -51,6 +51,7 @@ export const ImageCarousel = ({
               style={[styles.image, imageStyle]}
               source={{ uri: imageUrl }}
               resizeMode="cover"
+              cachePolicy="memory-disk"
             />
           </Pressable>
         </View>
