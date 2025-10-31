@@ -14,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { increment, getDoc } from "firebase/firestore";
 
 // Helper function to create a consistent chatId
 function getChatId(userId1: string, userId2: string): string {
@@ -48,13 +49,17 @@ export async function getChatBetweenUsers(userId1: string, userId2: string) {
 export async function createChat(userId1: string, userId2: string) {
   try {
     const chatId = getChatId(userId1, userId2);
-
     const chatRef = doc(collection(db, "chats"));
+
     await setDoc(chatRef, {
       chatId,
       participants: [userId1, userId2],
       lastMessage: "",
       lastMessageTime: serverTimestamp(),
+      unreadCounts: {
+        [userId1]: 0,
+        [userId2]: 0,
+      },
     });
 
     return chatRef.id;
