@@ -1,7 +1,8 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Styles } from "@/constants/design-system";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { UserProfile } from "../../../interfaces/index";
+import { Image } from "expo-image";
 
 interface ProfileCardProps {
   userProfile: Partial<UserProfile> | null;
@@ -16,6 +17,7 @@ export function ProfileCard({ userProfile }: ProfileCardProps) {
           <Image
             source={{ uri: userProfile.profileImageUrl }}
             style={styles.profilePicture}
+            cachePolicy="memory-disk"
           />
         ) : (
           <Image source={profilePictureLink} style={styles.profilePicture} />

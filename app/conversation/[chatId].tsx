@@ -5,6 +5,7 @@ import {
   Spacing,
   Styles,
 } from "@/constants/design-system";
+import { Image } from "expo-image";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebaseConfig";
 import { sendMessage, subscribeToConversation } from "@/services/chatService";
@@ -14,7 +15,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import {
   FlatList,
-  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -149,6 +149,7 @@ export default function ConversationScreen() {
                 : require("@/assets/profilePicture.png")
             }
             style={styles.headerProfileImage}
+             cachePolicy="memory-disk"
           />
           <Text style={styles.headerUsername}>
             {otherUser?.username || "Loading..."}

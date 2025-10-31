@@ -13,7 +13,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { Image } from "tamagui";
+import { Image } from "expo-image";
 
 export default function MessagesScreen() {
   const router = useRouter();
@@ -110,6 +110,7 @@ export default function MessagesScreen() {
                   : require("@/assets/profilePicture.png")
               }
               style={styles.profileImage}
+              cachePolicy="memory-disk"
             />
             <View style={styles.conversationText}>
               <Text style={styles.username}>{item.otherUserName}</Text>

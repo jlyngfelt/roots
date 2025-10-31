@@ -4,7 +4,7 @@ import {
   Spacing,
   Typography,
 } from "@/constants/design-system";
-import { chooseImageSource, uploadImage } from "@/services/imageService";
+import { chooseImageSource, uploadImage, OptimizationPresets } from "@/services/imageService";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -37,7 +37,7 @@ export function MultiImagePicker({
       if (!imageUri) return;
 
       const fileName = `${fileNamePrefix}_${Date.now()}_${images.length}`;
-      const downloadURL = await uploadImage(imageUri, folder, fileName);
+      const downloadURL = await uploadImage(imageUri, folder, fileName, OptimizationPresets.plant );
 
       if (downloadURL) {
         onImagesChange([...images, downloadURL]);
