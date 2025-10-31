@@ -76,13 +76,16 @@ export default function ConversationScreen() {
   };
 
   const handleSend = async () => {
-    if (!newMessage.trim() || !user?.uid) return;
+    if (!newMessage.trim() || !user?.uid || isSending) return;
 
     try {
+      setIsSending(true);
       await sendMessage(chatId, user.uid, newMessage.trim());
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
+    } finally {
+      setIsSending(false);
     }
   };
 
