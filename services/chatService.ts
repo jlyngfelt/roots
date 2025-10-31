@@ -45,7 +45,6 @@ export async function getChatBetweenUsers(userId1: string, userId2: string) {
   }
 }
 
-// Create a chat between to users if no chat exists
 export async function createChat(userId1: string, userId2: string) {
   try {
     const chatId = getChatId(userId1, userId2);
@@ -111,14 +110,16 @@ export async function getConversation(chatId: string) {
   }
 }
 
-//Send a message to another user
 export async function sendMessage(
   chatId: string,
   senderId: string,
   text: string
 ) {
   try {
-    // Step 1: Add message to subcollection
+    const chatDocSnap = await getDoc(doc(db, "chats", chatId));
+    const participants = chatDocSnap.data()?.participants || [];
+    const recipientId = participants.find((id: string) => id !== senderId);
+
     const messagesRef = collection(db, "chats", chatId, "messages");
     await addDoc(messagesRef, {
       senderId: senderId,
@@ -126,11 +127,11 @@ export async function sendMessage(
       timestamp: serverTimestamp(),
     });
 
-    // Step 2: Update the chat document
     const chatRef = doc(db, "chats", chatId);
     await updateDoc(chatRef, {
       lastMessage: text,
       lastMessageTime: serverTimestamp(),
+      [`unreadCounts.${recipientId}`]: increment(1),
     });
   } catch (error) {
     console.error("Error sending message:", error);
@@ -170,4 +171,19 @@ export function subscribeToConversation(
     });
     callback(messages);
   });
+}
+
+export async function markChatAsRead(
+  chatId: string,
+  userId: string
+): Promise<void> {
+  try {
+    const chatRef = doc(db, "chats", chatId);
+    await updateDoc(chatRef, {
+      [`unreadCounts.${userId}`]: 0,
+    });
+  } catch (error) {
+    console.error("Error marking chat as read:", error);
+    throw error;
+  }
 }
