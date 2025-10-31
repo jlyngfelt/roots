@@ -32,7 +32,7 @@ export default function ConversationScreen() {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [otherUser, setOtherUser] = useState<any>(null);
-  const [userId, setUserId] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null
   );
