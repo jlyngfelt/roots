@@ -187,3 +187,25 @@ export async function markChatAsRead(
     throw error;
   }
 }
+
+export async function getTotalUnreadCount(userId: string): Promise<number> {
+  try {
+    const q = query(
+      collection(db, "chats"),
+      where("participants", "array-contains", userId)
+    );
+
+    const querySnapshot = await getDocs(q);
+    let totalUnread = 0;
+
+    querySnapshot.forEach((doc) => {
+      const unreadCounts = doc.data().unreadCounts || {};
+      totalUnread += unreadCounts[userId] || 0;
+    });
+
+    return totalUnread;
+  } catch (error) {
+    console.error("Error getting unread count:", error);
+    return 0;
+  }
+}
