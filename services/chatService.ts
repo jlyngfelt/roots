@@ -14,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { increment, getDoc } from "firebase/firestore";
 
 // Helper function to create a consistent chatId
 function getChatId(userId1: string, userId2: string): string {
@@ -44,17 +45,20 @@ export async function getChatBetweenUsers(userId1: string, userId2: string) {
   }
 }
 
-// Create a chat between to users if no chat exists
 export async function createChat(userId1: string, userId2: string) {
   try {
     const chatId = getChatId(userId1, userId2);
-
     const chatRef = doc(collection(db, "chats"));
+
     await setDoc(chatRef, {
       chatId,
       participants: [userId1, userId2],
       lastMessage: "",
       lastMessageTime: serverTimestamp(),
+      unreadCounts: {
+        [userId1]: 0,
+        [userId2]: 0,
+      },
     });
 
     return chatRef.id;
@@ -106,14 +110,16 @@ export async function getConversation(chatId: string) {
   }
 }
 
-//Send a message to another user
 export async function sendMessage(
   chatId: string,
   senderId: string,
   text: string
 ) {
   try {
-    // Step 1: Add message to subcollection
+    const chatDocSnap = await getDoc(doc(db, "chats", chatId));
+    const participants = chatDocSnap.data()?.participants || [];
+    const recipientId = participants.find((id: string) => id !== senderId);
+
     const messagesRef = collection(db, "chats", chatId, "messages");
     await addDoc(messagesRef, {
       senderId: senderId,
@@ -121,11 +127,11 @@ export async function sendMessage(
       timestamp: serverTimestamp(),
     });
 
-    // Step 2: Update the chat document
     const chatRef = doc(db, "chats", chatId);
     await updateDoc(chatRef, {
       lastMessage: text,
       lastMessageTime: serverTimestamp(),
+      [`unreadCounts.${recipientId}`]: increment(1),
     });
   } catch (error) {
     console.error("Error sending message:", error);
@@ -165,4 +171,70 @@ export function subscribeToConversation(
     });
     callback(messages);
   });
+}
+
+export async function markChatAsRead(
+  chatId: string,
+  userId: string
+): Promise<void> {
+  try {
+    const chatRef = doc(db, "chats", chatId);
+    await updateDoc(chatRef, {
+      [`unreadCounts.${userId}`]: 0,
+    });
+  } catch (error) {
+    console.error("Error marking chat as read:", error);
+    throw error;
+  }
+}
+
+export async function getTotalUnreadCount(userId: string): Promise<number> {
+  try {
+    const q = query(
+      collection(db, "chats"),
+      where("participants", "array-contains", userId)
+    );
+
+    const querySnapshot = await getDocs(q);
+    let totalUnread = 0;
+
+    querySnapshot.forEach((doc) => {
+      const unreadCounts = doc.data().unreadCounts || {};
+      totalUnread += unreadCounts[userId] || 0;
+    });
+
+    return totalUnread;
+  } catch (error) {
+    console.error("Error getting unread count:", error);
+    return 0;
+  }
+}
+
+export async function migrateExistingChats() {
+  try {
+    const chatsRef = collection(db, "chats");
+    const snapshot = await getDocs(chatsRef);
+
+    const updatePromises = snapshot.docs.map(async (chatDoc) => {
+      const data = chatDoc.data();
+
+      // Only update if unreadCounts doesn't exist
+      if (!data.unreadCounts) {
+        const participants = data.participants || [];
+        const unreadCounts: any = {};
+
+        participants.forEach((userId: string) => {
+          unreadCounts[userId] = 0;
+        });
+
+        await updateDoc(chatDoc.ref, { unreadCounts });
+        console.log(`✅ Migrated chat ${chatDoc.id}`);
+      }
+    });
+
+    await Promise.all(updatePromises);
+    console.log("🎉 All chats migrated!");
+  } catch (error) {
+    console.error("Error migrating chats:", error);
+  }
 }

@@ -8,7 +8,11 @@ import {
 import { Image } from "expo-image";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebaseConfig";
-import { sendMessage, subscribeToConversation } from "@/services/chatService";
+import {
+  markChatAsRead,
+  sendMessage,
+  subscribeToConversation,
+} from "@/services/chatService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
@@ -39,6 +43,11 @@ export default function ConversationScreen() {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
+    if (!user?.uid) return;
+
+    // Mark chat as read when opening
+    markChatAsRead(chatId, user.uid);
+
     loadOtherUser();
 
     const unsubscribe = subscribeToConversation(chatId, (newMessages) => {
@@ -47,7 +56,7 @@ export default function ConversationScreen() {
     });
 
     return () => unsubscribe();
-  }, [chatId]);
+  }, [chatId, user?.uid]);
 
   // Scroll to bottom when messages update
   useEffect(() => {
