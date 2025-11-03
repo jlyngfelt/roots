@@ -6,8 +6,10 @@ import {
   Text,
   View,
   ViewStyle,
-  ImageStyle
+  ImageStyle,
 } from "react-native";
+
+import { Timestamp } from "firebase/firestore";
 
 export interface Plant {
   id: string;
@@ -200,4 +202,16 @@ export interface SearchInputProps {
   onChangeText: (text: string) => void;
   placeholder?: string;
   debounceMs?: number; 
+}
+export interface Transfer {
+  code: string;
+  plantId: string;
+  plantName: string;
+  giverId: string;
+  credits: number;
+  createdAt: Timestamp;
+  expiresAt: Timestamp;
+  used: boolean;
+  redeemedBy?: string;
+  redeemedAt?: Timestamp;
 }
