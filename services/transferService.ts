@@ -22,10 +22,11 @@ export async function createTransfer(
 ): Promise<string> {
   try {
     const code = generateCode();
+
     const now = new Date();
     const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24h
 
-    await setDoc(doc(db, "transfers", code), {
+    const transferData = {
       code,
       plantId,
       plantName,
@@ -34,17 +35,16 @@ export async function createTransfer(
       createdAt: serverTimestamp(),
       expiresAt: Timestamp.fromDate(expiresAt),
       used: false,
-    });
+    };
+    await setDoc(doc(db, "transfers", code), transferData);
 
-    console.log("Transfer created with code:", code);
     return code;
-  } catch (error) {
-    console.error("Error creating transfer:", error);
+  } catch (error: any) {
+    console.error("❌ Error message:", error.message);
     throw error;
   }
 }
 
-// Validera och lös in en transfer-kod
 export async function redeemTransfer(
   code: string,
   receiverId: string
@@ -60,6 +60,7 @@ export async function redeemTransfer(
       }
 
       const transferData = transferDoc.data() as Transfer;
+      console.log("🔍 Transfer data:", transferData);
 
       if (transferData.used) {
         throw new Error("Koden är redan använd");
@@ -76,7 +77,10 @@ export async function redeemTransfer(
       // Tilldela credits till givaren
       const giverRef = doc(db, "users", transferData.giverId);
       const giverDoc = await transaction.get(giverRef);
+      console.log("Giver doc exists:", giverDoc.exists());
+      
       const currentCredits = giverDoc.data()?.credits || 0;
+      console.log("Current credits:", currentCredits);
 
       transaction.update(giverRef, {
         credits: currentCredits + transferData.credits,
@@ -89,28 +93,17 @@ export async function redeemTransfer(
         redeemedAt: serverTimestamp(),
       });
 
-      // Spara i historik (optional men rekommenderat)
-      // const historyRef = doc(db, "transactions", `${code}_${Date.now()}`);
-      // transaction.set(historyRef, {
-      //   type: "plant_transfer",
-      //   transferCode: code,
-      //   plantId: transferData.plantId,
-      //   plantName: transferData.plantName,
-      //   giverId: transferData.giverId,
-      //   receiverId: receiverId,
-      //   credits: transferData.credits,
-      //   timestamp: serverTimestamp(),
-      // });
-
+      console.log("Transaction complete");
       return { credits: transferData.credits };
     });
 
     return { success: true, credits: result.credits };
   } catch (error: any) {
-    console.error("Error redeeming transfer:", error);
+    console.error("❌ Error message:", error.message);
     return { success: false, error: error.message };
   }
 }
+
 
 export async function getTransfer(code: string): Promise<Transfer | null> {
   try {
@@ -123,11 +116,4 @@ export async function getTransfer(code: string): Promise<Transfer | null> {
     console.error("Error getting transfer:", error);
     throw error;
   }
-}
-
-// Hämta alla aktiva transfers för en användare
-export async function getUserTransfers(userId: string): Promise<Transfer[]> {
-  // Detta kan du implementera senare med en query
-  // För nu kan du bara returnera en tom array
-  return [];
 }

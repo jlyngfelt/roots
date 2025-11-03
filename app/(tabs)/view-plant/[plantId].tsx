@@ -23,6 +23,7 @@ import {
 } from "react-native";
 import { useAuth } from "../../../contexts/AuthContext";
 import { GiveAwayPlant } from "../../../components/GiveAwayPlant"
+import ScanTransferCode from "@/components/ScanTransferCode";
 
 export default function ViewPlantScreen() {
   const router = useRouter();
@@ -154,15 +155,22 @@ export default function ViewPlantScreen() {
           </Pressable>
         </View>
       ) : null}
-{userId === user?.uid && id && plantName && user?.uid && (
-      <GiveAwayPlant 
-  plantId={id} 
-  plantName={plantName} 
-  userId={user?.uid!} 
-/>
- )}
+
+{userId === user?.uid && id && plantName && user?.uid ? (
+  <GiveAwayPlant 
+    plantId={id} 
+    plantName={plantName} 
+    userId={user?.uid!} 
+  />
+) : (
+  <DefaultButton
+  onPress={() => router.push('/scanner')}
+  >Byt till dig denna planta</DefaultButton>
+)}
+
+
     </ScrollView>
-  );
+);
 }
 
 const styles = StyleSheet.create({

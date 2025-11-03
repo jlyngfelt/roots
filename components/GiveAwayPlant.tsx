@@ -15,9 +15,6 @@ export function GiveAwayPlant({ plantId, plantName, userId }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleGenerateCode = async () => {
-    console.log("🔍 DEBUG - plantId:", plantId);
-  console.log("🔍 DEBUG - plantName:", plantName);
-  console.log("🔍 DEBUG - userId:", userId);
     setLoading(true);
     try {
       const code = await createTransfer(plantId, plantName, userId);
