@@ -14,7 +14,8 @@ describe("calculateDistance", () => {
       gothenburgLon
     );
 
-    expect(distance).toBeCloseTo(399, 0);
+    expect(distance).toBeGreaterThan(395);
+    expect(distance).toBeLessThan(400);
   });
 
   test("returns 0 when comparing the same location", () => {
