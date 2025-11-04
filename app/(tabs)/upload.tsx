@@ -109,6 +109,7 @@ export default function UploadScreen() {
         />
       </View>
 
+ {error && <Text style={[Styles.actionL, { textAlign: "center" }]}>{error}</Text>} 
       <DefaultButton
         onPress={handleCreatePlant}
         disabled={loading}
@@ -117,7 +118,6 @@ export default function UploadScreen() {
         {loading ? "Sparar..." : "Spara"}
       </DefaultButton>
 
-      <Text style={[Styles.bodyS, { color: Colors.warning }]}>{error}</Text>
     </FormLayout>
   );
 }

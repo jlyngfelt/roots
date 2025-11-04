@@ -1,13 +1,13 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { FeedToggle } from "@/components/ui/profilePage/feedToggle";
 import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
-import { Colors } from "@/constants/design-system";
+import { Colors, Styles } from "@/constants/design-system";
 import { createChat, getChatBetweenUsers } from "@/services/chatService";
 import { getUserPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, Text, StyleSheet } from "react-native";
 import { ProfileCard } from "../../../components/ui/profilePage/profileCard";
 import { useAuth } from "../../../contexts/AuthContext";
 import { UserProfile } from "../../../interfaces/index";
@@ -35,7 +35,7 @@ export default function ViewProfileScreen() {
             setUserProfile(profile);
           }
         } catch (err) {
-          setError("Could not load profile");
+          setError("Kunde inte ladda profil");
           console.error(err);
         } finally {
           setLoading(false);
@@ -49,6 +49,7 @@ export default function ViewProfileScreen() {
     if (userId) {
       async function fetchPlants() {
         try {
+          setLoading(true);
           const userPlants: any[] = await getUserPlants(userId);
           setPlants(userPlants);
 
@@ -57,7 +58,9 @@ export default function ViewProfileScreen() {
           );
           setReadyToAdoptPlants(readyPlants);
         } catch (err) {
+          setError("Kunde inte hämta plantor");
           console.error("Error fetching plants:", err);
+          setLoading(false);
         }
       }
       fetchPlants();
@@ -76,6 +79,7 @@ export default function ViewProfileScreen() {
 
       router.push(`/conversation/${existingChatId}`);
     } catch (error) {
+      setError("Kunde inte öppna chatten. Försök igen.");
       console.error("Error opening chat:", error);
     }
   };
@@ -92,9 +96,18 @@ export default function ViewProfileScreen() {
         Kontakta
       </DefaultButton>
 
-      <FeedToggle showAll={showAll} onToggle={setShowAll} />
+       {error && (
+            <Text
+            style={Styles.actionL}>
+              {error}
+            </Text>
+          )}
 
-      {showAll ? (
+      <FeedToggle showAll={showAll} onToggle={setShowAll} />
+{loading ? (
+      <Text style={[Styles.bodyXL, { textAlign: 'center' }]}>Laddar profil...</Text>
+    ) : (
+      showAll ? (
         <ProfileFeed
           plants={plants}
           userId={user?.uid!}
@@ -106,8 +119,9 @@ export default function ViewProfileScreen() {
           userId={user?.uid!}
           onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
         />
-      )}
-    </ScrollView>
+      )
+    )}
+      </ScrollView>
   );
 }
 

@@ -5,7 +5,6 @@ import {
   Spacing,
   Styles,
 } from "@/constants/design-system";
-import { Image } from "expo-image";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebaseConfig";
 import {
@@ -14,6 +13,7 @@ import {
   subscribeToConversation,
 } from "@/services/chatService";
 import { getUserProfile } from "@/services/userService";
+import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
@@ -158,7 +158,7 @@ export default function ConversationScreen() {
                 : require("@/assets/profilePicture.png")
             }
             style={styles.headerProfileImage}
-             cachePolicy="memory-disk"
+            cachePolicy="memory-disk"
           />
           <Text style={styles.headerUsername}>
             {otherUser?.username || "Loading..."}
@@ -168,6 +168,11 @@ export default function ConversationScreen() {
 
       <View style={styles.divider} />
 
+      {loading && (
+        <Text style={[Styles.bodyXL, { textAlign: "center" }]}>
+          Laddar meddelanden...
+        </Text>
+      )}
       <FlatList
         ref={flatListRef}
         data={messages}

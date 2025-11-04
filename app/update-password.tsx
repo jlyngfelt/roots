@@ -4,8 +4,8 @@ import { DefaultInput } from "@/components/ui/inputs/DefaultInput";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
-import { Image, Text } from "tamagui";
+import { StyleSheet, Text } from "react-native";
+import { Image } from "tamagui";
 import { changePassword } from "../auth";
 
 export default function UpdatePasswordScreen() {
@@ -24,17 +24,17 @@ export default function UpdatePasswordScreen() {
   ) => {
     try {
       if (newPassword !== confirmPassword) {
-        throw new Error("Lösenorden matchar inte");
+        setError("Lösenorden matchar inte");
       }
-      if (currentPassword === newPassword) {
-        throw new Error("Lösenordet får inte vara samma som tidigare");
+      if (currentPassword && currentPassword === newPassword) {
+        setError("Lösenordet får inte vara samma som tidigare");
       }
 
       await changePassword(currentPassword, newPassword);
       console.log("Password changed successfully!");
       setSuccess(true);
     } catch (error) {
-      throw error;
+      setError("Något gick fel")
     }
   };
 
@@ -82,7 +82,7 @@ export default function UpdatePasswordScreen() {
         Tillbaka
       </DefaultButton>
 
-      <Text style={[Styles.bodyS, { color: Colors.warning }]}>{error}</Text>
+      {error && <Text style={[Styles.actionL]}>{error}</Text>}
 
       <Text style={[styles.success, Styles.actionM]}>
         {success ? "Lösenordet uppdaterat!" : ""}

@@ -1,13 +1,19 @@
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { DefaultSelect } from "@/components/ui/selects/DefaultSelect";
 import { FilterSelect } from "@/components/ui/selects/FilterSelect";
-import { Colors } from "@/constants/design-system";
+import { Colors, Styles } from "@/constants/design-system";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SearchInput } from "../../components/ui/inputs/SearchInput";
 import { useAuth } from "../../contexts/AuthContext";
 import {
@@ -66,7 +72,7 @@ export default function ExploreScreen() {
 
       setPlants(plantsWithDistanceAndUser);
     } catch (err: any) {
-      setError(err.message);
+      setError("Fel vid hämtande av plantor");
       console.error("Error fetching plants:", err);
     } finally {
       setLoading(false);
@@ -202,42 +208,52 @@ export default function ExploreScreen() {
         />
       }
     >
-      <SearchInput
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        placeholder="Sök plantor eller användare..."
-      />
+      {error && <Text style={Styles.actionL}>{error}</Text>}
 
-      <View style={styles.filterAndSort}>
-        <FilterSelect
-          value={filter}
-          onValueChange={setFilter}
-          placeholder="Filtrera"
-        />
-
-        <DefaultSelect
-          value={sortBy}
-          onValueChange={(value) => setSortBy(value as SortOption)}
-          data={sortData}
-        />
-      </View>
-
-      <View style={styles.feed}>
-        {finalPlants.map((plant) => (
-          <ProductCard
-            key={plant.id}
-            variant="big"
-            userId={plant.userId}
-            plantId={plant.id}
-            name={plant.name}
-            description={plant.description}
-            image={plant.imageUrl}
-            imageUrls={plant.imageUrls}
-            readyToAdopt={plant.readyToAdopt}
-            onPress={() => router.push(`/view-plant/${plant.id}`)}
+      {loading ? (
+        <Text style={[Styles.bodyXL, { textAlign: "center" }]}>
+          Laddar flöde...
+        </Text>
+      ) : (
+        <>
+          <SearchInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Sök plantor eller användare..."
           />
-        ))}
-      </View>
+
+          <View style={styles.filterAndSort}>
+            <FilterSelect
+              value={filter}
+              onValueChange={setFilter}
+              placeholder="Filtrera"
+            />
+
+            <DefaultSelect
+              value={sortBy}
+              onValueChange={(value) => setSortBy(value as SortOption)}
+              data={sortData}
+            />
+          </View>
+
+          <View style={styles.feed}>
+            {finalPlants.map((plant) => (
+              <ProductCard
+                key={plant.id}
+                variant="big"
+                userId={plant.userId}
+                plantId={plant.id}
+                name={plant.name}
+                description={plant.description}
+                image={plant.imageUrl}
+                imageUrls={plant.imageUrls}
+                readyToAdopt={plant.readyToAdopt}
+                onPress={() => router.push(`/view-plant/${plant.id}`)}
+              />
+            ))}
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 }

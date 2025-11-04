@@ -121,6 +121,7 @@ export const Styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["m"],
     color: Colors.warning,
+    marginVertical: Spacing.xs 
   },
   actionM: {
     fontFamily: "Poppins_600SemiBold",

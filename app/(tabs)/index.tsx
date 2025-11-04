@@ -15,7 +15,7 @@ import TabLayout from "./_layout";
 export default function ProfileScreen() {
   const router = useRouter();
   const [showAll, setShowAll] = useState(true);
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const [userProfile, setUserProfile] = useState<Partial<UserProfile> | null>(
     null
   );
