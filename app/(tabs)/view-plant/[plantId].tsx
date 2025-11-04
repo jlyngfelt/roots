@@ -73,8 +73,8 @@ export default function ViewPlantScreen() {
         const userProfile = docSnap.data();
         setUserProfileName(userProfile.username || "");
         setUserProfileImageUrl(userProfile.profileImageUrl || "");
-        setPlantOwnerLat(userProfile.lat || "");
-        setPlantOwnerLon(userProfile.lon || "");
+        setPlantOwnerLat(userProfile.lat || 0);
+        setPlantOwnerLon(userProfile.lon || 0);
       }
     });
 
@@ -87,8 +87,8 @@ export default function ViewPlantScreen() {
       async function fetchProfile() {
         const profile = await getUserProfile(user?.uid!);
         if (profile) {
-          setUserProfileLat(profile.latitude || "");
-          setUserProfileLon(profile.longitude || "");
+          setUserProfileLat(profile.lat || 0);
+          setUserProfileLon(profile.lon || 0);
         }
       }
       fetchProfile();

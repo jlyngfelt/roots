@@ -54,11 +54,18 @@ export const FavoriteButton = ({
   };
 
   if (loading) {
-    return <ActivityIndicator size="small" color={Colors.accent} />;
+    return (
+      <ActivityIndicator
+        testID="loading-indicator"
+        size="small"
+        color={Colors.accent}
+      />
+    );
   }
 
   return (
     <Pressable
+      testID="favorite-button"
       onPress={handleToggleFavorite}
       style={({ pressed }) => [pressed && styles.pressed]}
     >
