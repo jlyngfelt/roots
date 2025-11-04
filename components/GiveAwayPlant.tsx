@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { createTransfer } from '../services/transferService';
+import { DefaultButton } from './ui/buttons/DefaultButton';
+import { GiveAwayProps } from '@/interfaces';
+import { Colors, Spacing, Typography, Styles, BorderRadius } from '@/constants/design-system';
 
-interface Props {
-  plantId: string;
-  plantName: string;
-  userId: string;
-}
-
-export function GiveAwayPlant({ plantId, plantName, userId }: Props) {
+export function GiveAwayPlant({ plantId, plantName, userId }: GiveAwayProps) {
   const [transferCode, setTransferCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,15 +27,13 @@ export function GiveAwayPlant({ plantId, plantName, userId }: Props) {
 
   return (
     <View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleGenerateCode}
-        disabled={loading}
+      <DefaultButton
+       onPress={handleGenerateCode}
+      disabled={loading}
+      style={styles.button}
       >
-        <Text style={styles.buttonText}>
-          {loading ? 'Skapar kod...' : '🌱 Ge bort stickling'}
-        </Text>
-      </TouchableOpacity>
+        {loading ? 'Skapar kod...' : 'Ge bort stickling'}
+      </DefaultButton>
 
       <Modal
         visible={modalVisible}
@@ -68,12 +63,12 @@ export function GiveAwayPlant({ plantId, plantName, userId }: Props) {
               </>
             )}
 
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setModalVisible(false)}
+            <DefaultButton
+            onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.closeButtonText}>Stäng</Text>
-            </TouchableOpacity>
+              Stäng
+            </DefaultButton>
+
           </View>
         </View>
       </Modal>
@@ -83,15 +78,9 @@ export function GiveAwayPlant({ plantId, plantName, userId }: Props) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    alignSelf: "flex-start",
+    marginLeft: Spacing.xl,
+    marginVertical: Spacing.s,
   },
   modalOverlay: {
     flex: 1,
@@ -100,8 +89,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: 'white',
-    borderRadius: 20,
+    backgroundColor: Colors.secondary,
+    borderRadius: BorderRadius.xl,
     padding: 30,
     alignItems: 'center',
     width: '90%',
@@ -118,7 +107,7 @@ const styles = StyleSheet.create({
   },
   qrContainer: {
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: Colors.light,
     borderRadius: 10,
     marginBottom: 20,
   },

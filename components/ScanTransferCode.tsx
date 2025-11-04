@@ -1,21 +1,18 @@
+import { ScanProps } from '@/interfaces';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
   Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
 } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { Colors, Spacing, Styles, BorderRadius } from "../constants/design-system";
 import { redeemTransfer } from '../services/transferService';
+import { DefaultButton } from './ui/buttons/DefaultButton';
 
-interface Props {
-  userId: string;
-  onSuccess: () => void;
-}
-
-export default function ScanTransferCode({ userId, onSuccess }: Props) {
+export default function ScanTransferCode({ userId, onSuccess }: ScanProps) {
   const [scanned, setScanned] = useState(false);
   const [manualCode, setManualCode] = useState('');
   const [showManualInput, setShowManualInput] = useState(false);
@@ -58,12 +55,11 @@ export default function ScanTransferCode({ userId, onSuccess }: Props) {
         <Text style={styles.permissionText}>
           Vi behöver tillgång till kameran för att skanna QR-koder
         </Text>
-        <TouchableOpacity
-          style={styles.permissionButton}
+        <DefaultButton
           onPress={requestPermission}
         >
-          <Text style={styles.permissionButtonText}>Ge tillstånd</Text>
-        </TouchableOpacity>
+          Ge tillstånd
+        </DefaultButton>
       </View>
     );
   }
@@ -95,14 +91,12 @@ export default function ScanTransferCode({ userId, onSuccess }: Props) {
               Rikta kameran mot QR-koden
             </Text>
 
-            <TouchableOpacity
-              style={styles.manualButton}
-              onPress={() => setShowManualInput(true)}
+            <DefaultButton
+            onPress={() => setShowManualInput(true)}
+            style={styles.button}
             >
-              <Text style={styles.manualButtonText}>
-                Ange kod manuellt
-              </Text>
-            </TouchableOpacity>
+              Ange kod manuellt
+            </DefaultButton>
           </View>
         </>
       ) : (
@@ -117,18 +111,22 @@ export default function ScanTransferCode({ userId, onSuccess }: Props) {
             autoCapitalize="characters"
             autoCorrect={false}
           />
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handleManualSubmit}
+
+          <DefaultButton
+          onPress={handleManualSubmit}
           >
-            <Text style={styles.submitButtonText}>Bekräfta</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setShowManualInput(false)}
+            Bekräfta
+          </DefaultButton>
+
+          <DefaultButton
+          variant='tertiary'
+          onPress={() => setShowManualInput(false)}
+          style={styles.button}
+          textColor={Colors.primary}
+        borderBottomColor={Colors.primary}
           >
-            <Text style={styles.backButtonText}>Tillbaka till skanning</Text>
-          </TouchableOpacity>
+            Tillbaka till skanning
+          </DefaultButton>
         </View>
       )}
     </View>
@@ -138,6 +136,7 @@ export default function ScanTransferCode({ userId, onSuccess }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.secondary,
   },
   permissionContainer: {
     flex: 1,
@@ -146,19 +145,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   permissionText: {
-    fontSize: 16,
+    ...Styles.bodyL,
     textAlign: 'center',
     marginBottom: 20,
-  },
-  permissionButton: {
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 10,
-  },
-  permissionButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   overlay: {
     flex: 1,
@@ -169,66 +158,40 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: Colors.light,
     borderRadius: 10,
   },
   instruction: {
-    color: 'white',
+    color: Colors.light,
     fontSize: 18,
     marginTop: 20,
     textAlign: 'center',
-  },
-  manualButton: {
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 30,
-  },
-  manualButtonText: {
-    color: '#2196F3',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   manualContainer: {
     flex: 1,
     justifyContent: 'center',
     padding: 30,
-    backgroundColor: 'white',
+    backgroundColor: Colors.light,
   },
   manualTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    ...Styles.heading1,
     marginBottom: 20,
     textAlign: 'center',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
+    borderColor: Colors.details,
+    borderRadius: BorderRadius.m,
     padding: 15,
     fontSize: 24,
     textAlign: 'center',
     letterSpacing: 2,
     marginBottom: 20,
   },
-  submitButton: {
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  submitButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  button: {
+marginVertical: Spacing.l,
   },
   backButton: {
     padding: 15,
-  },
-  backButtonText: {
-    color: '#2196F3',
-    fontSize: 16,
-    textAlign: 'center',
   },
 });
