@@ -1,10 +1,10 @@
 import { ProfileFeed } from "@/components/ui/profilePage/profileFeed";
-import { Colors } from "@/constants/design-system";
+import { Colors, Styles } from "@/constants/design-system";
 import { getUserFavorites } from "@/services/favoritesService";
 import { getPlantById } from "@/services/plantService";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { Plant } from "../../interfaces/index";
 
@@ -13,7 +13,7 @@ export default function FavoritesScreen() {
   const { user } = useAuth();
   const [plants, setPlants] = useState<Plant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchFavorites = async () => {
@@ -31,7 +31,7 @@ export default function FavoritesScreen() {
 
       setPlants(validPlants);
     } catch (err: any) {
-      setError(err.message);
+      setError("Fel vid hämtande av plantor");
       console.error("Error fetching favorites:", err);
     } finally {
       setLoading(false);
@@ -52,7 +52,6 @@ export default function FavoritesScreen() {
 
   return (
     <ScrollView
-
       style={styles.bgColor}
       refreshControl={
         <RefreshControl
@@ -63,11 +62,19 @@ export default function FavoritesScreen() {
         />
       }
     >
-      <ProfileFeed
-        plants={plants}
-        userId={user?.uid!}
-        onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
-      />
+      {error && <Text style={Styles.actionL}>{error}</Text>}
+
+      {loading ? (
+        <Text style={[Styles.bodyXL, { textAlign: "center" }]}>
+          Laddar flöde...
+        </Text>
+      ) : (
+        <ProfileFeed
+          plants={plants}
+          userId={user?.uid!}
+          onPlantPress={(plantId) => router.push(`/view-plant/${plantId}`)}
+        />
+      )}
     </ScrollView>
   );
 }
@@ -76,11 +83,4 @@ const styles = StyleSheet.create({
   bgColor: {
     backgroundColor: Colors.secondary,
   },
-//   feed: {
-// flexDirection: "row",
-//     flexWrap: "wrap",
-//     justifyContent: "center", // Ändra från "flex-start" till "center"
-//     gap: 8,
-//     marginBottom: 70
-//   },
 });

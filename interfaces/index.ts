@@ -225,3 +225,17 @@ export interface ScanProps {
   userId: string;
   onSuccess: () => void;
 }
+
+export interface FeedToggleProps {
+  showAll: boolean;
+  onToggle: (showAll: boolean) => void;
+}
+
+export interface ProfileCardProps {
+  userProfile: Partial<UserProfile> | null;
+}
+export interface ProfileFeedProps {
+  plants: Plant[];
+  userId: string;
+  onPlantPress: (plantId: string) => void;
+}

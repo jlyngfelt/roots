@@ -112,6 +112,7 @@ export default function EditPlantScreen() {
           onCheckedChange={setReadyToAdopt}
         />
       </View>
+       {error && <Text style={[Styles.actionL, { textAlign: "center" }]}>{error}</Text>} 
 
       <View style={styles.buttonWrapper}>
         <DefaultButton onPress={handleUpdatePlant} disabled={loading}>

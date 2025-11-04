@@ -1,12 +1,6 @@
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { StyleSheet, View, useWindowDimensions } from "react-native";
-import { Plant } from "../../../interfaces/index";
-
-interface ProfileFeedProps {
-  plants: Plant[];
-  userId: string;
-  onPlantPress: (plantId: string) => void;
-}
+import { ProfileFeedProps } from "../../../interfaces/index";
 
 export function ProfileFeed({
   plants,

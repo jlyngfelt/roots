@@ -1,11 +1,7 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors, Spacing } from "@/constants/design-system";
 import { Pressable, StyleSheet, View } from "react-native";
-
-interface FeedToggleProps {
-  showAll: boolean;
-  onToggle: (showAll: boolean) => void;
-}
+import { FeedToggleProps } from "@/interfaces";
 
 export function FeedToggle({ showAll, onToggle }: FeedToggleProps) {
   return (

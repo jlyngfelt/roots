@@ -5,6 +5,7 @@ import {
   Colors,
   Spacing,
   Typography,
+  Styles,
 } from "@/constants/design-system";
 import { db } from "@/firebaseConfig";
 import { createChat, getChatBetweenUsers } from "@/services/chatService";
@@ -42,7 +43,7 @@ export default function ViewPlantScreen() {
   const [userProfileLon, setUserProfileLon] = useState<number>(0);
   const [plantOwnerLat, setPlantOwnerLat] = useState<number>(0);
   const [plantOwnerLon, setPlantOwnerLon] = useState<number>(0);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -119,6 +120,7 @@ export default function ViewPlantScreen() {
 
       router.push(`/conversation/${existingChatId}`);
     } catch (error) {
+      setError("Kunde inte öppna chatten. Försök igen.");
       console.error("Error opening chat:", error);
     }
   };
@@ -138,6 +140,12 @@ export default function ViewPlantScreen() {
 
   return (
     <ScrollView style={styles.bgColor}>
+          {error && (
+      <Text
+      style={Styles.actionL}>
+        {error}
+      </Text>
+    )}
       <ProductCard
         variant="view"
         userId={userId}
