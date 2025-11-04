@@ -22,13 +22,14 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "../../../contexts/AuthContext";
-import { GiveAwayPlant } from "../../../components/GiveAwayPlant"
+import { GiveAwayPlant } from "../../../components/GiveAwayPlant";
 import ScanTransferCode from "@/components/ScanTransferCode";
 
 export default function ViewPlantScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { plantId } = useLocalSearchParams<{ plantId: string }>();
+
   const [plantName, setPlantName] = useState("");
   const [description, setDescription] = useState("");
   const [readyToAdopt, setReadyToAdopt] = useState(false);
@@ -46,7 +47,20 @@ export default function ViewPlantScreen() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user?.uid) {
+    setPlantName("");
+    setDescription("");
+    setReadyToAdopt(false);
+    setId("");
+    setImageUrl("");
+    setImageUrls([]);
+    setUserId("");
+    setUserProfileName("");
+    setUserProfileImageUrl("");
+    setPlantOwnerLat(0);
+    setPlantOwnerLon(0);
+    setLoading(true);
+
+    if (user?.uid && plantId) {
       async function fetchPlant() {
         const plant: any = await getPlantById(plantId);
         if (plant) {
@@ -58,12 +72,12 @@ export default function ViewPlantScreen() {
           setImageUrls(plant.imageUrls || [plant.imageUrl] || []);
           setUserId(plant.userId || "");
         }
+        setLoading(false);
       }
       fetchPlant();
     }
   }, [user?.uid, plantId]);
 
-  //Hämta plantans ägares koordinater
   useEffect(() => {
     if (!userId) return;
 
@@ -79,9 +93,8 @@ export default function ViewPlantScreen() {
     });
 
     return () => unsubscribe();
-  }, [userId]);
+  }, [userId, plantId]);
 
-  //Hämta mina kordinater
   useEffect(() => {
     if (user?.uid) {
       async function fetchProfile() {
@@ -111,6 +124,19 @@ export default function ViewPlantScreen() {
     }
   };
 
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.bgColor,
+          { justifyContent: "center", alignItems: "center", flex: 1 },
+        ]}
+      >
+        <Text>Laddar...</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.bgColor}>
       <ProductCard
@@ -126,7 +152,7 @@ export default function ViewPlantScreen() {
         userLon={userProfileLon}
         plantOwnerLat={plantOwnerLat}
         plantOwnerLon={plantOwnerLon}
-      ></ProductCard>
+      />
 
       <View style={styles.buttonContainer}>
         <DefaultButton
@@ -156,21 +182,15 @@ export default function ViewPlantScreen() {
         </View>
       ) : null}
 
-{userId === user?.uid && id && plantName && user?.uid ? (
-  <GiveAwayPlant 
-    plantId={id} 
-    plantName={plantName} 
-    userId={user?.uid!} 
-  />
-) : (
-  <DefaultButton
-  onPress={() => router.push('/scanner')}
-  >Byt till dig denna planta</DefaultButton>
-)}
-
-
+      {userId === user?.uid && id && plantName && user?.uid ? (
+        <GiveAwayPlant plantId={id} plantName={plantName} userId={user?.uid!} />
+      ) : (
+        <DefaultButton onPress={() => router.push("/scanner")}>
+          Byt till dig denna planta
+        </DefaultButton>
+      )}
     </ScrollView>
-);
+  );
 }
 
 const styles = StyleSheet.create({
