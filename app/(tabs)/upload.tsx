@@ -41,6 +41,11 @@ export default function UploadScreen() {
       return;
     }
 
+    if (plantImages.length === 0) {
+      setError("Minst en bild krävs");
+      return;
+    }
+
     setLoading(true);
 
     try {
