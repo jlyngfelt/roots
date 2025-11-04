@@ -59,14 +59,27 @@ export default function SettingsScreen() {
 
         <View style={styles.divider} />
 
-        <SettingItem title="Uppdatera e-postadress" onPress={() => router.push("/update-email")} />
+        <SettingItem
+          title="Uppdatera e-postadress"
+          onPress={() => router.push("/update-email")}
+        />
 
         <View style={styles.divider} />
 
-        <SettingItem title="Byt lösenord" onPress={() => router.push("/update-password")} />
+        <SettingItem
+          title="Byt lösenord"
+          onPress={() => router.push("/update-password")}
+        />
 
         <View style={styles.divider} />
 
+        <SettingItem
+          title="Kontakta oss"
+          // iconName="envelope"
+          onPress={() => router.push("/contact")}
+        />
+
+        <View style={styles.divider} />
         <SettingItem
           title="Logga ut"
           onPress={() => logOut()}
