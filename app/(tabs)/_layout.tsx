@@ -213,6 +213,14 @@ export default function TabLayout() {
           header: () => <TopBar showBackButton={true} />,
         }}
       />
+      <Tabs.Screen
+        name="contact"
+        options={{
+          title: "Contact",
+          href: null,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
     </Tabs>
   );
 }
