@@ -52,6 +52,12 @@ export default function SettingsScreen() {
         />
 
         <View style={styles.divider} />
+        <SettingItem
+          title="Hur fungerar roots?"
+          onPress={() => router.push("/about")}
+        />
+
+        <View style={styles.divider} />
 
         <SettingItem title="Uppdatera e-postadress" onPress={() => router.push("/update-email")} />
 
