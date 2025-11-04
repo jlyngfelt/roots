@@ -21,9 +21,8 @@ import {
   Text,
   View,
 } from "react-native";
-import { useAuth } from "../../../contexts/AuthContext";
 import { GiveAwayPlant } from "../../../components/GiveAwayPlant";
-import ScanTransferCode from "@/components/ScanTransferCode";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function ViewPlantScreen() {
   const router = useRouter();
@@ -156,6 +155,7 @@ export default function ViewPlantScreen() {
 
       <View style={styles.buttonContainer}>
         <DefaultButton
+          style={styles.button}
           onPress={
             userId === user?.uid
               ? () => router.push(`/edit-plant/${plantId}`)
@@ -164,6 +164,20 @@ export default function ViewPlantScreen() {
         >
           {userId === user?.uid ? "Ändra" : "Kontakta"}
         </DefaultButton>
+        {userId === user?.uid && id && plantName && user?.uid ? (
+          <GiveAwayPlant
+            plantId={id}
+            plantName={plantName}
+            userId={user?.uid!}
+          />
+        ) : (
+          <DefaultButton
+            onPress={() => router.push("/scanner")}
+            variant="secondary"
+          >
+            Föreslå byte
+          </DefaultButton>
+        )}
       </View>
 
       {userId !== user?.uid ? (
@@ -181,14 +195,6 @@ export default function ViewPlantScreen() {
           </Pressable>
         </View>
       ) : null}
-
-      {userId === user?.uid && id && plantName && user?.uid ? (
-        <GiveAwayPlant plantId={id} plantName={plantName} userId={user?.uid!} />
-      ) : (
-        <DefaultButton onPress={() => router.push("/scanner")}>
-          Byt till dig denna planta
-        </DefaultButton>
-      )}
     </ScrollView>
   );
 }
@@ -198,9 +204,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     marginBottom: 60,
   },
+  button: {
+    width: 136,
+  },
   buttonContainer: {
+    width: "100%",
     alignSelf: "flex-start",
     paddingHorizontal: Spacing.xl,
+    justifyContent: "space-evenly",
+    flexDirection: "row",
   },
   uploaderInfo: {
     flexDirection: "row",
