@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   intro: {
     ...Styles.bodyL,
     textAlign: "center",
-    marginBottom: Spacing.m,
+    marginBottom: Spacing.m,    
     lineHeight: 24,
   },
   sectionHeading: {

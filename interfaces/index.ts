@@ -215,3 +215,13 @@ export interface Transfer {
   redeemedBy?: string;
   redeemedAt?: Timestamp;
 }
+
+export interface GiveAwayProps {
+  plantId: string;
+  plantName: string;
+  userId: string;
+}
+export interface ScanProps {
+  userId: string;
+  onSuccess: () => void;
+}
