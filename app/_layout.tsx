@@ -133,6 +133,13 @@ function NavigationHandler() {
           header: () => <TopBar showBackButton={true} />,
         }}
       />
+      <Stack.Screen
+        name="about"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
     </Stack>
   );
 }

@@ -14,7 +14,7 @@ export default function AboutAppScreen() {
       <Text style={styles.mainHeading}>Om Roots  🌱</Text>
       
       <Text style={styles.intro}>
-        Välkommen till Roots - där människors växtintresse får växa, utan att dess plånböcker krymper! 
+        Välkommen till Roots - där människors växtintresse får gro, utan att dess plånböcker krymper! 
         Vi tror på att gröna hem är vackrare och att detta ska delas, en planta i taget.
       </Text>
 
@@ -105,7 +105,7 @@ export default function AboutAppScreen() {
       <View style={styles.footer}>
         <Text style={styles.footerText}>
           Har du fler frågor? Hör av dig via inställningar eller mejla oss. 
-          Tillsammans gör vi världen lite grönare! 
+          Tillsammans gör vi svenska hem lite grönare! 
         </Text>
       </View>
     </ScrollView>
