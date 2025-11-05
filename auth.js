@@ -9,17 +9,29 @@ import {
   verifyBeforeUpdateEmail,
   updatePassword,
 } from "firebase/auth";
-import { auth } from "./firebaseConfig";
+import { auth, db } from "./firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
-export const signUp = async (email, password) => {
+export const signUp = async (email, password, userData = {}) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
-    await sendEmailVerification(userCredential.user);
-    return userCredential.user;
+    
+    const user = userCredential.user;
+    
+    await setDoc(doc(db, 'users', user.uid), {
+      email: email,
+      createdAt: new Date(),
+      emailVerified: false,
+      ...userData 
+    });
+    
+    await sendEmailVerification(user);
+    
+    return user;
   } catch (error) {
     throw error;
   }

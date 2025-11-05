@@ -35,7 +35,7 @@ export default function CredentialsStep({
 
     setLoading(true);
     try {
-      await signUp(email.trim(), password1);
+      await signUp(email.trim(), password1, { email: email.trim() });
       setStep("verification");
       Alert.alert(
         "Verifiera din e-postadress",

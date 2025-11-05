@@ -11,7 +11,7 @@ import { UserData } from "../interfaces/index"
 
 export async function createUserProfile(uid: string, userData: UserData): Promise<void> {
   try {
-    await setDoc(doc(db, "users", uid), {
+    await updateDoc(doc(db, "users", uid), {
       username: userData.username,
       postalCode: userData.postalCode || "",
       lon: userData.lon || "",
