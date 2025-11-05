@@ -85,7 +85,6 @@ function NavigationHandler() {
       <Stack.Screen name="welcome" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="register/index" options={{ headerShown: false }} />
-      {/* <Stack.Screen name="create-profile" options={{ headerShown: false }} /> */}
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="modal"
@@ -93,20 +92,6 @@ function NavigationHandler() {
       />
       <Stack.Screen
         name="edit-plant/[plantId]"
-        options={{
-          headerShown: true,
-          header: () => <TopBar showBackButton={true} />,
-        }}
-      />
-      <Stack.Screen
-        name="view-plant/[plantId]"
-        options={{
-          headerShown: true,
-          header: () => <TopBar showBackButton={true} />,
-        }}
-      />
-      <Stack.Screen
-        name="view-profile/[userId]"
         options={{
           headerShown: true,
           header: () => <TopBar showBackButton={true} />,
@@ -138,6 +123,19 @@ function NavigationHandler() {
         options={{
           headerShown: true,
           header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="scanner"
+        options={{
+          headerShown: true,
+          header: () => <TopBar showBackButton={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="create-profile"
+        options={{
+          headerShown: false,
         }}
       />
     </Stack>
