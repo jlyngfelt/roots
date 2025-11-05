@@ -1,8 +1,17 @@
+import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { Colors, Spacing, Styles } from "@/constants/design-system";
+import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function AboutAppScreen() {
-  const FAQItem = ({ question, answer }: { question: string; answer: string }) => (
+  const router = useRouter();
+  const FAQItem = ({
+    question,
+    answer,
+  }: {
+    question: string;
+    answer: string;
+  }) => (
     <View style={styles.faqItem}>
       <Text style={styles.question}>{question}</Text>
       <Text style={styles.answer}>{answer}</Text>
@@ -11,11 +20,12 @@ export default function AboutAppScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.mainHeading}>Om Roots  🌱</Text>
-      
+      <Text style={styles.mainHeading}>Om Roots 🌱</Text>
+
       <Text style={styles.intro}>
-        Välkommen till Roots - där människors växtintresse får gro, utan att dess plånböcker krymper! 
-        Vi tror på att gröna hem är vackrare och att detta ska delas, en planta i taget.
+        Välkommen till Roots - där människors växtintresse får gro, utan att
+        plånböckerna krymper! Vi tror på att gröna hem är vackrare och att detta
+        ska delas, en planta i taget.
       </Text>
 
       <View style={styles.divider} />
@@ -39,12 +49,12 @@ export default function AboutAppScreen() {
 
       <FAQItem
         question="Hur hittar jag växter nära mig?"
-        answer="När du skapar din profil anger du ditt postnummer. Appen visar då hur långt det är till varje planta. Så kan du lätt hitta gröna grannar och slippa resa halva stan för en liten stickling."
+        answer="När du skapar din profil anger du ditt postnummer. Appen visar då hur långt det är till varje planta. Så kan du lätt hitta gröna grannar och slippa resa landet runt för en liten stickling."
       />
 
       <FAQItem
         question="Vad betyder 'redo att adoptera'?"
-        answer="När du markerar en planta som 'redo att adoptera' betyder det att den är redo att flytta till ett nytt hem direkt. Kanske har du tagit en stickling, eller så vill du bara hitta ett nytt hem åt en planta du inte längre har plats för."
+        answer="När du markerar en planta som 'redo att adoptera' betyder det att den är redo att flytta till ett nytt hem. Kanske har du tagit en stickling, eller så vill du bara hitta ett nytt hem åt en planta du inte längre har plats för."
       />
 
       <FAQItem
@@ -58,13 +68,13 @@ export default function AboutAppScreen() {
       />
 
       <FAQItem
-        question="Kan jag spara favoritväxter?"
+        question="Kan jag spara växter?"
         answer="Ja! Tryck på hjärtat på en växtannons så sparas den bland dina favoriter. Perfekt när du hittar något spännande men inte är redo att byta än."
       />
 
       <FAQItem
-        question="Vad händer om jag inte vill ha en växt längre?"
-        answer="Du kan när som helst redigera eller ta bort dina annonser i inställningarna. Ingen press. Dina växter, dina val!"
+        question="Vad händer om jag vill ta bort en annons"
+        answer="Du kan när som helst redigera eller ta bort dina annonser i inställningarna. Du går helt enkelt in på plantan och klickar på 'Redigera'"
       />
 
       <View style={styles.divider} />
@@ -73,17 +83,17 @@ export default function AboutAppScreen() {
 
       <FAQItem
         question="Vad är credits?"
-        answer="Credits är Roots egen valuta! Varje gång du lyckas ge bort eller adoptera en planta får du 100 credits som bevis på att du är en del av växtdelnings-communityn. I dagsläget är det mest en rolig badge of honor, men framöver kanske vi hittar på något spännande att använda dem till!"
+        answer="Credits är Roots egen valuta! Varje gång du lyckas adoptera bort en planta får du 100 credits som bevis på ett genomfört byte. I dagsläget är det mest en rolig badge of honor, men framöver kanske vi hittar på något spännande att använda dem till!"
       />
 
       <FAQItem
         question="Hur fungerar överlämningen?"
-        answer="När ni träffats och plantbytet sker: den som ger bort plantan trycker på 'Ge bort'-knappen på sin planta. Då dyker en 5-siffrig kod och en QR-kod upp. Den som tar emot plantan trycker också på 'Ta emot'-knappen, men får då upp kameran för att scanna QR-koden (eller skriva in koden manuellt). När koden matchat får den generösa givaren 100 credits direkt!"
+        answer="Först bestämmer ni en tid och plats för att genomföra ett byte. När ni har möts upp trycker den som ger bort plantan på 'Ge bort'-knappen på sin planta. Då dyker en 5-siffrig kod och en QR-kod upp. Den som tar emot plantan trycker också på 'Ta emot'-knappen, men får då upp kameran för att scanna QR-koden (eller skriva in koden manuellt). När koden matchat får den generösa givaren 100 credits direkt!"
       />
 
       <FAQItem
         question="Varför ska jag bry mig om credits?"
-        answer="Förutom att det känns riktigt bra att se sitt credits-saldo växa, visar det hur aktiv du är i Roots-gemenskapen. Det är som ett litet kvitto på alla plantor du hjälpt att hitta nya hem. Och vem vet, kanske blir de användbara för något coolt i framtiden!"
+        answer="Förutom att det känns riktigt bra att se sitt credits-saldo växa, visar det hur aktiv Roots-användare du är. Det är som ett litet kvitto på alla plantor du hjälpt att hitta nya hem. Och vem vet, kanske blir de användbara för något coolt i framtiden!"
       />
 
       <View style={styles.divider} />
@@ -92,21 +102,24 @@ export default function AboutAppScreen() {
 
       <FAQItem
         question="Är det säkert att mötas upp med främlingar?"
-        answer="Vi rekommenderar alltid att mötas på offentliga platser i dagsljus, precis som vid andra uppköp online. Lita på din magkänsla, och ta gärna med en vän om du känner dig osäker. De flesta i Roots-gemenskapen är där av samma anledning som du, men detta går aldrig att veta säkert!"
+        answer="Vi rekommenderar alltid att mötas på offentliga platser i dagsljus, precis som vid andra uppköp online. Lita på din magkänsla, och ta gärna med en vän om du känner dig osäker."
       />
 
       <FAQItem
         question="Kan jag använda Roots på landet?"
-        answer="Roots fungerar bäst i tätbefolkade områden där det finns fler användare nära varandra. Men ju fler som börjar använda appen, desto större chans att du hittar plantavänner även i mer glesbefolkade områden. Spread the root!"
+        answer="Roots fungerar bäst i tätbefolkade områden där det finns fler användare nära varandra. Men ju fler som börjar använda appen, desto större chans att du hittar plantavänner även i mer glesbefolkade områden."
       />
 
       <View style={styles.divider} />
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Har du fler frågor? Hör av dig via inställningar eller mejla oss. 
-          Tillsammans gör vi svenska hem lite grönare! 
-        </Text>
+        <Text style={styles.footerText}>Har du fler frågor?</Text>
+        <DefaultButton
+          onPress={() => router.replace("/(tabs)/contact")}
+          variant="primary"
+        >
+          Kontkta oss här!
+        </DefaultButton>
       </View>
     </ScrollView>
   );
@@ -127,7 +140,7 @@ const styles = StyleSheet.create({
   intro: {
     ...Styles.bodyL,
     textAlign: "center",
-    marginBottom: Spacing.m,    
+    marginBottom: Spacing.m,
     lineHeight: 24,
   },
   sectionHeading: {
@@ -153,15 +166,12 @@ const styles = StyleSheet.create({
     marginVertical: Spacing.l,
   },
   footer: {
-    backgroundColor: Colors.primary,
-    borderRadius: 12,
-    padding: Spacing.m,
-    marginVertical: Spacing.m,
     marginBottom: Spacing.xl,
   },
   footerText: {
-    ...Styles.bodyM,
+    ...Styles.heading2,
     textAlign: "center",
     lineHeight: 22,
+    marginBottom: Spacing.m,
   },
 });
