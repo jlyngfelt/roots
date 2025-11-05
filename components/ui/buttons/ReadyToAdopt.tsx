@@ -4,5 +4,5 @@ import { ReadyToAdoptProps } from "../../../interfaces/index";
 export const ReadyToAdopt = ({ readyToAdopt }: ReadyToAdoptProps) => {
   if (!readyToAdopt) return null;
 
-  return <IconSymbol name="stroller.fill" size={26} color="#ff9730" />;
+  return <IconSymbol name="stroller.fill" size={30} color="#ffab57" />;
 };

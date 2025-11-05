@@ -71,7 +71,7 @@ export const FavoriteButton = ({
     >
       <IconSymbol
         name={isFavorited ? "heart.fill" : "heart"}
-        size={26}
+        size={30}
         color={isFavorited ? Colors.accent : Colors.text}
       />
     </Pressable>
