@@ -37,7 +37,9 @@ export default function VerificationStep({
         resizeMode="contain"
       />
 
-      <Text>Verifiera din e-post</Text>
+      <Text
+      style={Styles.heading2}
+      >Verifiera din e-post</Text>
 
       <Text style={{ ...Styles.bodyM, textAlign: "center", marginBottom: 30 }}>
         Vi har skickat ett verifieringsmail till {email}. Klicka på länken i
@@ -54,8 +56,8 @@ export default function VerificationStep({
       <DefaultButton
         onPress={() => Linking.openURL("message:")}
         variant="tertiary"
-        textColor={Colors.details}
-        borderBottomColor={Colors.details}
+        textColor={Colors.primary}
+        borderBottomColor={Colors.primary}
       >
         Öppna e-post
       </DefaultButton>
