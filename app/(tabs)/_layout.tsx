@@ -189,14 +189,14 @@ export default function TabLayout() {
           header: () => <TopBar showBackButton={true} />,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="edit-plant/[plantId]"
         options={{
           title: "Edit Plant",
           href: null,
           header: () => <TopBar showBackButton={true} />,
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="view-plant/[plantId]"
         options={{

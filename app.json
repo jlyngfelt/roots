@@ -4,7 +4,7 @@
     "slug": "roots",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/roots_logo.png",
     "scheme": "roots",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
