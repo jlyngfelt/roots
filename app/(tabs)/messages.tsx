@@ -3,6 +3,7 @@ import { Colors } from "@/constants/design-system";
 import { useAuth } from "@/contexts/AuthContext";
 import { getChats } from "@/services/chatService";
 import { getUserProfile } from "@/services/userService";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -13,7 +14,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { Image } from "expo-image";
 
 export default function MessagesScreen() {
   const router = useRouter();
@@ -52,7 +52,9 @@ export default function MessagesScreen() {
         })
       );
       setConversations(
-        conversationsWithUserInfo.filter((conv) => conv !== null)
+        conversationsWithUserInfo.filter(
+          (conv) => conv !== null && conv.lastMessage
+        )
       );
     } catch (error) {
       console.error("Error loading conversations", error);
@@ -115,7 +117,7 @@ export default function MessagesScreen() {
             <View style={styles.conversationText}>
               <Text style={styles.username}>{item.otherUserName}</Text>
               <Text style={styles.lastMessage} numberOfLines={1}>
-                {item.lastMessage || "No messages yet"}
+                {item.lastMessage}
               </Text>
             </View>
           </Pressable>
