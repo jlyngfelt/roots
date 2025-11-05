@@ -47,7 +47,6 @@ export default function UpdateEmailScreen() {
     try {
       setLoading(true);
       await changeEmail(currentPassword, newEmail);
-      console.log("Email changed successfully!");
       setSuccess(true);
       setCurrentPassword("");
       setNewEmail("");

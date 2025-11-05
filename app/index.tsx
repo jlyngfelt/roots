@@ -1,7 +1,3 @@
-// här kommer laddningssidan vara, här ska vi kolla om anv är inloggad, då skicaks den till tabs, annars till welcome
-
-// eventuellt lägga en mer smooth animation??
-
 import { onAuthChange } from "@/auth";
 import { Colors } from "@/constants/design-system";
 import { getUserProfile } from "@/services/userService";
@@ -25,7 +21,6 @@ export default function StartScreen() {
     let authResolved = false;
     let authResult: { user: User | null; profile: any } | null = null;
 
-    // Minimum 2 second delay
     setTimeout(() => {
       minLoadingComplete = true;
       if (authResolved) {
@@ -33,7 +28,7 @@ export default function StartScreen() {
       }
     }, 3000);
 
-    // Auth check
+
     const unsubscribe = onAuthChange(async (user: User | null) => {
       if (user) {
         const profile = await getUserProfile(user.uid);
@@ -49,7 +44,6 @@ export default function StartScreen() {
     });
 
     function navigate(result: { user: User | null; profile: any } | null) {
-      console.log("Navigating from index...", result);
       clearInterval(loadingInterval);
       if (result?.user) {
         if (result.profile) {

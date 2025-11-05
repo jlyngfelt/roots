@@ -110,15 +110,11 @@ export async function pickImageFromLibrary(): Promise<string | null> {
       return null;
     }
 
-    console.log("📸 Launching image picker");
-
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
     });
-
-    console.log("📸 Image picker result:", result);
 
     if (!result.canceled) {
       return result.assets[0].uri;
@@ -140,14 +136,10 @@ export async function takePhoto(): Promise<string | null> {
       return null;
     }
 
-    console.log("📸 Launching camera");
-
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 1,
     });
-
-    console.log("📸 Camera result:", result);
 
     if (!result.canceled) {
       return result.assets[0].uri;

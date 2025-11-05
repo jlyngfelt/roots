@@ -27,7 +27,6 @@ export async function createPlant(userId: string, plantData: PlantData): Promise
       adoptedBy: null,
       imageUrls: plantData.imageUrls || [],
     });
-    console.log("Plant created!");
     return plantRef.id;
   } catch (error) {
     console.error("Error creating plant:", error);
@@ -74,7 +73,6 @@ export async function getPlantById(plantId: string): Promise<Plant | null> {
     if (docSnap.exists()) {
       return { id: docSnap.id, ...docSnap.data() } as Plant;
     } else {
-      console.log("No plant found");
       return null;
     }
   } catch (error) {
@@ -86,7 +84,6 @@ export async function getPlantById(plantId: string): Promise<Plant | null> {
 export async function updatePlant(plantId: string, updates: Partial<PlantData>): Promise<void> {
   try {
     await updateDoc(doc(db, "plants", plantId), updates);
-    console.log("Plant updated!");
   } catch (error) {
     console.error("Error updating plant:", error);
     throw error;
@@ -96,7 +93,6 @@ export async function updatePlant(plantId: string, updates: Partial<PlantData>):
 export async function deletePlant(plantId: string): Promise<void> {
   try {
     await deleteDoc(doc(db, "plants", plantId));
-    console.log("Plant deleted!");
   } catch (error) {
     console.error("Error deleting plant:", error);
     throw error;

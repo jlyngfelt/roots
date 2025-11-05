@@ -31,7 +31,6 @@ export default function UpdatePasswordScreen() {
       }
 
       await changePassword(currentPassword, newPassword);
-      console.log("Password changed successfully!");
       setSuccess(true);
     } catch (error) {
       setError("Något gick fel")

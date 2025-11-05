@@ -56,12 +56,10 @@ export function FilterSelect({
 
   const toggleReadyToAdopt = () => {
     setTempFilter(prev => ({ ...prev, readyToAdopt: !prev.readyToAdopt }));
-    console.log("adopti vald")
   };
 
   const selectCategory = (categoryId: string) => {
     setTempFilter(prev => ({ ...prev, categoryId }));
-    console.log("kategori vald")
   };
 
   const hasActiveFilters = () => {
