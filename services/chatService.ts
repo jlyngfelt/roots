@@ -150,7 +150,6 @@ export async function deleteChat(chatId: string): Promise<void> {
     await Promise.all(deletePromises);
     await deleteDoc(doc(db, "chats", chatId));
 
-    console.log("Chat and all messages deleted!");
   } catch (error) {
     console.error("Error deleting chat:", error);
     throw error;
@@ -228,12 +227,10 @@ export async function migrateExistingChats() {
         });
 
         await updateDoc(chatDoc.ref, { unreadCounts });
-        console.log(`✅ Migrated chat ${chatDoc.id}`);
       }
     });
 
     await Promise.all(updatePromises);
-    console.log("🎉 All chats migrated!");
   } catch (error) {
     console.error("Error migrating chats:", error);
   }

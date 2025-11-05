@@ -15,7 +15,6 @@ export async function addToFavorites(userId: string, plantId: string): Promise<v
       plantId: plantId,
       addedAt: serverTimestamp(),
     });
-    console.log("Added to favorites!");
   } catch (error) {
     console.error("Error adding to favorites:", error);
     throw error;
@@ -25,7 +24,6 @@ export async function addToFavorites(userId: string, plantId: string): Promise<v
 export async function removeFromFavorites(userId: string, plantId: string): Promise<void> {
   try {
     await deleteDoc(doc(db, "users", userId, "favorites", plantId));
-    console.log("Removed from favorites!");
   } catch (error) {
     console.error("Error removing from favorites:", error);
     throw error;

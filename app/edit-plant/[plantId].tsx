@@ -100,7 +100,6 @@ export default function EditPlantScreen() {
         value={categoryId}
         onValueChange={(newValue) => {
           setCategoryId(newValue);
-          console.log("Vald kategori:", newValue);
         }}
         placeholder="Välj kategori"
       />

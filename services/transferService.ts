@@ -60,7 +60,6 @@ export async function redeemTransfer(
       }
 
       const transferData = transferDoc.data() as Transfer;
-      console.log("🔍 Transfer data:", transferData);
 
       if (transferData.used) {
         throw new Error("Koden är redan använd");
@@ -77,10 +76,8 @@ export async function redeemTransfer(
       // Tilldela credits till givaren
       const giverRef = doc(db, "users", transferData.giverId);
       const giverDoc = await transaction.get(giverRef);
-      console.log("Giver doc exists:", giverDoc.exists());
       
       const currentCredits = giverDoc.data()?.credits || 0;
-      console.log("Current credits:", currentCredits);
 
       transaction.update(giverRef, {
         credits: currentCredits + transferData.credits,
@@ -93,7 +90,6 @@ export async function redeemTransfer(
         redeemedAt: serverTimestamp(),
       });
 
-      console.log("Transaction complete");
       return { credits: transferData.credits };
     });
 

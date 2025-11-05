@@ -21,7 +21,6 @@ export async function createUserProfile(uid: string, userData: UserData): Promis
       credits: 0,
       createdAt: serverTimestamp(),
     });
-    console.log("User profile created!");
   } catch (error) {
     console.error("Error creating user profile:", error);
     throw error;
@@ -34,7 +33,6 @@ export async function getUserProfile(uid: string): Promise<any> {
     if (docSnap.exists()) {
       return { id: docSnap.id, ...docSnap.data() };
     } else {
-      console.log("No user found");
       return null;
     }
   } catch (error) {
@@ -46,7 +44,6 @@ export async function getUserProfile(uid: string): Promise<any> {
 export async function updateUserProfile(uid: string, updates: Partial<UserData>): Promise<void> {
   try {
     await updateDoc(doc(db, "users", uid), updates);
-    console.log("Profile updated!");
   } catch (error) {
     console.error("Error updating profile:", error);
     throw error;
@@ -62,7 +59,6 @@ export async function addCredits(uid: string, amount: number): Promise<void> {
     await updateDoc(userRef, {
       credits: currentCredits + amount,
     });
-    console.log(`Added ${amount} credits!`);
   } catch (error) {
     console.error("Error adding credits:", error);
     throw error;

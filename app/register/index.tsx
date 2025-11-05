@@ -37,7 +37,7 @@ useEffect(() => {
           if (interval) clearInterval(interval);
         }
       } catch (error) {
-        console.log('Verification check failed, will retry:', error);
+        setError("Något gick fel i verifieringen, försök igen");
               }
     }, 3000);
   }
