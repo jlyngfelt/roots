@@ -25,7 +25,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthChange((user: User | null) => {
-      setUser(user);
+      if (user && user.emailVerified) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
     return unsubscribe;

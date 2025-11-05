@@ -111,7 +111,7 @@ export const changeEmail = async (currentPassword, newEmail) => {
 export const checkEmailVerified = async () => {
   const user = auth.currentUser;
   if (user) {
-    await user.reload(); // Uppdatera användarens data från Firebase
+    await user.reload(); 
     return user.emailVerified;
   }
   return false;
