@@ -6,6 +6,7 @@ import { Text } from "tamagui";
 import { checkEmailVerified } from "../../auth";
 import { VerificationStepProps } from "@/interfaces";
 
+
 export default function VerificationStep({
   email,
   checkingVerification,
@@ -52,6 +53,13 @@ export default function VerificationStep({
       >
         {checkingVerification ? "Kollar..." : "Jag har verifierat"}
       </DefaultButton>
+
+      {/* <DefaultButton
+        onPress={handleResendEmail}
+        disabled={checkingVerification}
+      >
+        Skicka nytt verifieringsmail
+      </DefaultButton> */}
 
       <DefaultButton
         onPress={() => Linking.openURL("message:")}
