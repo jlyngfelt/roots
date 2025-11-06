@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { checkEmailVerified } from "../../auth";
 import { useAuth } from "../../contexts/AuthContext";
@@ -11,9 +11,16 @@ type RegistrationStep = "credentials" | "verification" | "profile";
 export default function RegisterScreen() {
   const router = useRouter();
   const { user } = useAuth();
+  const params = useLocalSearchParams();
 
-  const [step, setStep] = useState<RegistrationStep>("credentials");
-  const [email, setEmail] = useState("");
+const [step, setStep] = useState<RegistrationStep>(() => {
+  if (params.fromLogin === 'true') return "verification";
+  if (user && user.emailVerified) return "profile";
+  return "credentials";
+});
+    const [email, setEmail] = useState(
+    typeof params.email === 'string' ? params.email : ""
+  );
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [username, setUsername] = useState("");
@@ -28,7 +35,7 @@ export default function RegisterScreen() {
 useEffect(() => {
   let interval: any = null;
 
-  if (step === "verification") {
+  if (step === "verification" && user) {
     interval = setInterval(async () => {
       try {
         const isVerified = await checkEmailVerified();
@@ -45,7 +52,7 @@ useEffect(() => {
   return () => {
     if (interval) clearInterval(interval);
   };
-}, [step]);
+}, [step, user]);
 
   useEffect(() => {
     if (user && user.emailVerified) {

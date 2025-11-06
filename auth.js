@@ -10,7 +10,7 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 export const signUp = async (email, password, userData = {}) => {
   try {
@@ -112,6 +112,17 @@ export const checkEmailVerified = async () => {
   const user = auth.currentUser;
   if (user) {
     await user.reload(); 
+    
+    if (user.emailVerified) {
+      try {
+        await updateDoc(doc(db, 'users', user.uid), {
+          emailVerified: true
+        });
+      } catch (error) {
+        console.error("Error updating emailVerified in Firestore:", error);
+      }
+    }
+    
     return user.emailVerified;
   }
   return false;

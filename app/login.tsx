@@ -58,12 +58,15 @@ const handleResendEmail = async () => {
     
     await sendEmailVerification(userCredential.user);
     
-    await signOut(auth);
-    
     Alert.alert(
       "E-post skickad",
       "Vi har skickat ett nytt verifieringsmail till " + email
     );
+
+    router.push({
+      pathname: '/register',
+      params: { fromLogin: 'true', email: email.trim() }
+    });
   } catch (error) {
     Alert.alert(
       "Fel",
