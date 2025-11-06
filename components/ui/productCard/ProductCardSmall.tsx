@@ -59,10 +59,6 @@ export const ProductCardSmall = ({
           textContainerStyle={styles.cardInfo}
           numberOfLines={2}
         />
-
-        {description && (
-          <Text style={[styles.description, Styles.bodyS]}>{description}</Text>
-        )}
       </Pressable>
     </View>
   );
