@@ -8,6 +8,7 @@ import { Image, StyleSheet, View } from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withRepeat,
   withSequence,
@@ -27,7 +28,7 @@ export default function StartScreen() {
       if (authResolved) {
         navigate(authResult);
       }
-    }, 300000);
+    }, 3000);
 
     const unsubscribe = onAuthChange(async (user: User | null) => {
       if (user) {
@@ -64,7 +65,7 @@ export default function StartScreen() {
     <View style={styles.container}>
       <Image
         source={require("../assets/roots_logo.png")}
-        style={{ width: 300 }}
+        style={{ height: 170, margin: 40 }}
         resizeMode="contain"
       />
       <FlyingBee />
@@ -72,43 +73,35 @@ export default function StartScreen() {
   );
 }
 
-function FlyingBee() {
-  // Shared values for animation
+export function FlyingBee() {
   const translateX = useSharedValue(-150);
-  const translateY = useSharedValue(0);
+  const progress = useSharedValue(0);
   const opacity1 = useSharedValue(0);
   const opacity2 = useSharedValue(0);
   const opacity3 = useSharedValue(0);
 
   useEffect(() => {
-    // Bee flying forward with restart
     translateX.value = withRepeat(
       withSequence(
         withTiming(150, {
-          duration: 3000,
-          easing: Easing.linear, // Smooth continuous forward motion
+          duration: 4000,
+          easing: Easing.linear,
         }),
-        withTiming(-100, { duration: 0 }) // Instant reset to start
+        withTiming(-150, { duration: 0 })
       ),
       -1,
       false
     );
 
-    // Vertical movement (smoother, continuous wave with 2 waves)
-    translateY.value = withRepeat(
-      withSequence(
-        withTiming(-25, { duration: 500, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0, { duration: 500, easing: Easing.inOut(Easing.sin) }),
-        withTiming(25, { duration: 500, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0, { duration: 500, easing: Easing.inOut(Easing.sin) }),
-        withTiming(25, { duration: 500, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0, { duration: 500, easing: Easing.inOut(Easing.sin) })
-      ),
+    progress.value = withRepeat(
+      withTiming(2 * Math.PI, {
+        duration: 2000,
+        easing: Easing.linear,
+      }),
       -1,
       false
     );
 
-    // Trail lines with staggered fade
     opacity1.value = withRepeat(
       withSequence(
         withTiming(0.8, { duration: 300 }),
@@ -139,6 +132,11 @@ function FlyingBee() {
     );
   }, []);
 
+  const translateY = useDerivedValue(() => {
+    const amplitude = 20;
+    return Math.sin(progress.value) * amplitude;
+  });
+
   const beeStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: translateX.value },
@@ -146,38 +144,24 @@ function FlyingBee() {
     ],
   }));
 
-  const trail1Style = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value - 20 },
-      { translateY: translateY.value },
-    ],
-    opacity: opacity1.value,
-  }));
+  const trailStyle = (offset: number, opacityValue: any) =>
+    useAnimatedStyle(() => ({
+      transform: [
+        { translateX: translateX.value - offset },
+        { translateY: translateY.value },
+      ],
+      opacity: opacityValue.value,
+    }));
 
-  const trail2Style = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value - 35 },
-      { translateY: translateY.value },
-    ],
-    opacity: opacity2.value,
-  }));
-
-  const trail3Style = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value - 50 },
-      { translateY: translateY.value },
-    ],
-    opacity: opacity3.value,
-  }));
+  const trail1Style = trailStyle(20, opacity1);
+  const trail2Style = trailStyle(35, opacity2);
+  const trail3Style = trailStyle(50, opacity3);
 
   return (
     <View style={styles.beeContainer}>
-      {/* Trail lines */}
       <Animated.View style={[styles.trailLine, trail3Style]} />
       <Animated.View style={[styles.trailLine, trail2Style]} />
       <Animated.View style={[styles.trailLine, trail1Style]} />
-
-      {/* The bee */}
       <Animated.Image
         source={require("../assets/bee.png")}
         style={[styles.bee, beeStyle]}
@@ -195,11 +179,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
   },
   beeContainer: {
-    width: 250,
-    height: 10,
-    marginTop: -80,
+    width: 400,
+    height: 100,
+    margin: 0,
     justifyContent: "center",
     alignItems: "center",
+    overflow: "visible",
   },
   bee: {
     width: 40,
@@ -209,7 +194,7 @@ const styles = StyleSheet.create({
   trailLine: {
     width: 15,
     height: 2,
-    backgroundColor: Colors.text,
+    backgroundColor: Colors.grey,
     borderRadius: 2,
     position: "absolute",
   },
