@@ -57,3 +57,24 @@ export async function isPlantFavorited(userId: string, plantId: string): Promise
     throw error;
   }
 }
+
+export async function getFavoriteCount(plantId: string): Promise<number> {
+  try {
+    let count = 0;
+    const usersSnapshot = await getDocs(collection(db, "users"));
+    
+    for (const userDoc of usersSnapshot.docs) {
+      const favoriteDoc = await getDoc(
+        doc(db, "users", userDoc.id, "favorites", plantId)
+      );
+      if (favoriteDoc.exists()) {
+        count++;
+      }
+    }
+    
+    return count;
+  } catch (error) {
+    console.error("Error getting favorite count:", error);
+    throw error;
+  }
+}
