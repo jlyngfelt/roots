@@ -15,7 +15,6 @@ export const ProductCardSmall = ({
   userId,
   plantId,
   name,
-  description,
   image,
   readyToAdopt,
   plantOwnerLat = 0,

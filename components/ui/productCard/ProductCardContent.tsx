@@ -20,6 +20,7 @@ import {
   Styles,
 } from "../../../constants/design-system";
 import { FavoriteButton } from "../buttons/FavouriteButton";
+import { FavoriteCount } from "../buttons/FavoriteCount";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 
 const { width } = Dimensions.get("window");
@@ -83,7 +84,7 @@ export const CardActions = ({
     {showFavoriteButton ? (
       <FavoriteButton userId={userId!} plantId={plantId} />
     ) : (
-      <View />
+      <FavoriteCount userId={userId!} plantId={plantId}/>
     )}
     <ReadyToAdopt readyToAdopt={readyToAdopt} />
   </View>
