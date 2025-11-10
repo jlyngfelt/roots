@@ -15,7 +15,6 @@ export const ProductCardSmall = ({
   userId,
   plantId,
   name,
-  description,
   image,
   readyToAdopt,
   plantOwnerLat = 0,
@@ -59,10 +58,6 @@ export const ProductCardSmall = ({
           textContainerStyle={styles.cardInfo}
           numberOfLines={2}
         />
-
-        {description && (
-          <Text style={[styles.description, Styles.bodyS]}>{description}</Text>
-        )}
       </Pressable>
     </View>
   );

@@ -231,3 +231,8 @@ export interface ProfileFeedProps {
   userId: string;
   onPlantPress: (plantId: string) => void;
 }
+
+export interface FavoriteCountProps {
+  plantId: string;
+  userId: string;
+}
