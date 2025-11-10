@@ -43,9 +43,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const inRegister = segments.some((segment) => segment === "register")
     const inWelcome = segments[0] === "welcome";
+    const inLogin = segments[0] === "login";
 
     if (!user) {
-      if (!inWelcome && !inRegister) {
+      if (!inWelcome && !inRegister && !inLogin) {
         router.replace("/welcome");
       }
     } else {
@@ -57,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           });
         }
       } else {
-        if ( inWelcome || inRegister) {
+        if ( inWelcome || inRegister || inLogin) {
           router.replace("/(tabs)/explore");
         }
       }

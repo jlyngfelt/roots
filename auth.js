@@ -102,7 +102,6 @@ export const changeEmail = async (currentPassword, newEmail) => {
 
    await verifyBeforeUpdateEmail(user, newEmail);
 
-    console.log("Email updated successfully! Verification email sent.");
   } catch (error) {
     throw error;
   }

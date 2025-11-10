@@ -32,7 +32,7 @@ const [step, setStep] = useState<RegistrationStep>(() => {
   const [uploading, setUploading] = useState(false);
   const [checkingVerification, setCheckingVerification] = useState(false);
 
-useEffect(() => {
+  useEffect(() => {
   let interval: any = null;
 
   if (step === "verification" && user) {
@@ -40,12 +40,12 @@ useEffect(() => {
       try {
         const isVerified = await checkEmailVerified();
         if (isVerified) {
-          setStep("profile");
           if (interval) clearInterval(interval);
+          setStep("profile");
         }
       } catch (error) {
-        setError("Något gick fel i verifieringen, försök igen");
-              }
+        console.error("Error checking email verification:", error);
+      }
     }, 3000);
   }
 
@@ -53,6 +53,7 @@ useEffect(() => {
     if (interval) clearInterval(interval);
   };
 }, [step, user]);
+
 
   useEffect(() => {
     if (user && user.emailVerified) {
