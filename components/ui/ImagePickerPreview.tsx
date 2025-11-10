@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/design-system";
 import { ActivityIndicator, Image, TouchableOpacity, View } from "react-native";
 import { ImagePickerPreviewProps } from "../../interfaces/index";
 
@@ -6,9 +5,9 @@ export function ImagePickerPreview({
   imageUrl,
   onPress,
   isUploading,
-  size = 240,
+  size = 300,
 }: ImagePickerPreviewProps) {
-  const height = size * 1.25;
+  const height = size;
 
   return (
     <TouchableOpacity onPress={onPress} disabled={isUploading}>
@@ -19,13 +18,10 @@ export function ImagePickerPreview({
           resizeMode="cover"
         />
       ) : (
-        <View
-          style={{
-            width: size,
-            height: height,
-            backgroundColor: Colors.grey,
-            borderRadius: 16,
-          }}
+        <Image
+          source={require("../../assets/profilePicture.png")}
+          style={{ width: size, height: height, borderRadius: 16 }}
+          resizeMode="cover"
         />
       )}
       {isUploading && (
