@@ -1,5 +1,5 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/design-system";
+import { Colors, Styles } from "@/constants/design-system";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import { FavoriteCountProps } from "@/interfaces";
@@ -33,7 +33,6 @@ export function FavoriteCount({ plantId, userId }: FavoriteCountProps) {
         name="heart.fill"
         size={30}
         color={Colors.accent}
-        style={styles.heart}
       />
       <Text style={styles.likeCount}>
         {loading ? "..." : likeCount}
@@ -44,14 +43,10 @@ export function FavoriteCount({ plantId, userId }: FavoriteCountProps) {
 
 
 const styles = StyleSheet.create({
-  heart: {
-    position: "relative",
-  },
   likeCount: {
-    position: "absolute",
-    fontSize:10,
-    fontWeight:600,
-    left:16,
-    top:9
+    ...Styles.bodyL,
+    marginLeft:-7,
+    alignSelf:"center",
+    padding:0,
   },
 });
