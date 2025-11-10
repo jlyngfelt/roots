@@ -63,8 +63,20 @@ export default function EditProfileScreen() {
 
   async function handleSave() {
     if (!user?.uid) return;
+
+     if (!newUsername.trim()) {
+    setError("Du måste ange ett användarnamn");
+    return;
+  }
+   if (!newPostalcode.trim()) {
+    setError("Du måste ange ett giltligt postnummer");
+    return;
+  }
+
+
     try {
       setLoading(true);
+      setError(""); 
 
       const coordinates = await getCoordinates(newPostalcode.trim());
 
@@ -75,7 +87,7 @@ export default function EditProfileScreen() {
       }
 
       await updateUserProfile(user?.uid!, {
-        username: newUsername,
+        username: newUsername.trim(),
         postalCode: newPostalcode,
         lat: coordinates.lat,
         lon: coordinates.lon,
