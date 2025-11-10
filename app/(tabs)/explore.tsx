@@ -2,10 +2,12 @@ import { ProductCard } from "@/components/ui/productCard/ProductCard";
 import { DefaultSelect } from "@/components/ui/selects/DefaultSelect";
 import { FilterSelect } from "@/components/ui/selects/FilterSelect";
 import { Colors, Styles } from "@/constants/design-system";
+import { db } from "@/firebaseConfig";
 import { getOtherUsersPlants } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { calculateDistance } from "@/utils/distanceCalculator";
 import { useRouter } from "expo-router";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   RefreshControl,
@@ -61,11 +63,22 @@ export default function ExploreScreen() {
                 )
               : null;
 
+          let categoryName = "";
+          if (plant.categoryId) {
+            const categoryDoc = await getDoc(
+              doc(db, "categories", plant.categoryId)
+            );
+            if (categoryDoc.exists()) {
+              categoryName = categoryDoc.data().name;
+            }
+          }
+
           return {
             ...plant,
             distance,
             username: ownerProfile?.username,
             ownerProfileImageUrl: ownerProfile?.profileImageUrl || "",
+            categoryName,
           };
         })
       );
@@ -247,6 +260,7 @@ export default function ExploreScreen() {
                 description={plant.description}
                 image={plant.imageUrl}
                 imageUrls={plant.imageUrls}
+                categoryName={plant.categoryName}
                 readyToAdopt={plant.readyToAdopt}
                 onPress={() => router.push(`/view-plant/${plant.id}`)}
               />

@@ -1,13 +1,4 @@
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-  ImageStyle,
-} from "react-native";
+import { ImageStyle, ScrollView, ViewStyle } from "react-native";
 
 import { Timestamp } from "firebase/firestore";
 
@@ -77,6 +68,7 @@ export interface ProductCardProps {
   userLon?: number;
   imageUrls?: string[];
   onPress?: () => void;
+  categoryName?: string;
 }
 
 export interface ImagePickerPreviewProps {
@@ -101,8 +93,8 @@ export interface Coordinates {
 
 export interface PlantWithDistance extends Plant {
   distance: number | null;
-  username?: string; 
-  ownerProfileImageUrl?: string; 
+  username?: string;
+  ownerProfileImageUrl?: string;
 }
 
 export interface Category {
@@ -201,7 +193,7 @@ export interface SearchInputProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
-  debounceMs?: number; 
+  debounceMs?: number;
 }
 export interface Transfer {
   code: string;

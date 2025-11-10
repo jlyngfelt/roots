@@ -4,15 +4,15 @@ import {
   BorderRadius,
   Colors,
   Spacing,
-  Typography,
   Styles,
+  Typography,
 } from "@/constants/design-system";
 import { db } from "@/firebaseConfig";
 import { createChat, getChatBetweenUsers } from "@/services/chatService";
 import { getPlantById } from "@/services/plantService";
 import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   Image,
@@ -45,6 +45,7 @@ export default function ViewPlantScreen() {
   const [plantOwnerLon, setPlantOwnerLon] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [categoryName, setCategoryName] = useState<string>("");
 
   useEffect(() => {
     setPlantName("");
@@ -108,6 +109,28 @@ export default function ViewPlantScreen() {
     }
   }, [user?.uid]);
 
+  useEffect(() => {
+    const fetchCategoryName = async () => {
+      try {
+        const plant = await getPlantById(plantId);
+        if (plant?.categoryId) {
+          const categoryDoc = await getDoc(
+            doc(db, "categories", plant.categoryId)
+          );
+          if (categoryDoc.exists()) {
+            setCategoryName(categoryDoc.data().name);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching category:", error);
+      }
+    };
+
+    if (plantId) {
+      fetchCategoryName();
+    }
+  }, [plantId]);
+
   const handleContact = async () => {
     if (!user?.uid || !userId) return;
 
@@ -140,12 +163,7 @@ export default function ViewPlantScreen() {
 
   return (
     <ScrollView style={styles.bgColor}>
-          {error && (
-      <Text
-      style={Styles.actionL}>
-        {error}
-      </Text>
-    )}
+      {error && <Text style={Styles.actionL}>{error}</Text>}
       <ProductCard
         variant="view"
         userId={userId}
@@ -159,6 +177,7 @@ export default function ViewPlantScreen() {
         userLon={userProfileLon}
         plantOwnerLat={plantOwnerLat}
         plantOwnerLon={plantOwnerLon}
+        categoryName={categoryName}
       />
 
       <View style={styles.buttonContainer}>
