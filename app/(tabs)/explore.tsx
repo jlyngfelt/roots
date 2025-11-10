@@ -221,10 +221,14 @@ export default function ExploreScreen() {
         />
       }
     >
-      {error && <Text style={Styles.actionL}>{error}</Text>}
+      {error && (
+        <Text style={[Styles.actionL, { textAlign: "center", marginTop: 10 }]}>
+          {error}
+        </Text>
+      )}
 
       {loading ? (
-        <Text style={[Styles.bodyXL, { textAlign: "center" }]}>
+        <Text style={[Styles.bodyXL, { textAlign: "center", marginTop: 20 }]}>
           Laddar flöde...
         </Text>
       ) : (
@@ -280,12 +284,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginBottom: 80,
     backgroundColor: Colors.secondary,
-  },
-  acitve: {
-    backgroundColor: "rgb(0, 128, 0)",
-  },
-  inactive: {
-    backgroundColor: "#313170",
   },
   filterAndSort: {
     flexDirection: "row",
