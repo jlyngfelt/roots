@@ -96,9 +96,13 @@ export default function EditProfileScreen() {
       });
 
       router.replace("/(tabs)");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating profile:", error);
+      if (error.message === "USERNAME_TAKEN") {
+      setError("Användarnamnet är redan taget");
+      } else {
       setError("Kunde inte uppdatera profil");
+      }
     } finally {
       setLoading(false);
     }
@@ -126,6 +130,7 @@ export default function EditProfileScreen() {
         value={newUsername}
         onChangeText={setNewUsername}
         placeholder="Användarnamn"
+        autoCapitalize="none"
       />
 
       <DefaultInput

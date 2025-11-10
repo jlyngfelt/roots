@@ -79,9 +79,13 @@ export default function ProfileStep({
       });
 
       router.replace("/(tabs)/explore");
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+        if (err.message === "USERNAME_TAKEN") {
+      setError("Användarnamnet är redan taget");
+    } else {
       setError("Kunde inte skapa profil");
+    }
     } finally {
       setLoading(false);
     }
