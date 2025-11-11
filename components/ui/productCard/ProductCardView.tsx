@@ -138,16 +138,13 @@ export const ProductCardView = ({
 const styles = StyleSheet.create({
   card: {
     marginVertical: Spacing.m,
-    marginHorizontal: Spacing.m,
-    borderRadius: BorderRadius.xl,
   },
   imageContainer: {
     position: "relative",
   },
   image: {
-    width: "95%",
+    width: "100%",
     aspectRatio: 4 / 5,
-    borderRadius: BorderRadius.xl,
     margin: Spacing.s,
     alignSelf: "center",
   },

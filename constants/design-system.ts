@@ -59,7 +59,7 @@ export const Spacing = {
 export const BorderRadius = {
   none: 0,
   s: 4,
-  m: 8,
+  m: 10,
   l: 12,
   xl: 16,
   full: 9999,
@@ -121,7 +121,7 @@ export const Styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     fontSize: Typography.fontSize["m"],
     color: Colors.warning,
-    marginVertical: Spacing.xs 
+    marginVertical: Spacing.xs,
   },
   actionM: {
     fontFamily: "Poppins_600SemiBold",

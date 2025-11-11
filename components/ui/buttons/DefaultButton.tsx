@@ -1,4 +1,9 @@
-import { Colors, Typography } from "@/constants/design-system";
+import {
+  BorderRadius,
+  Colors,
+  Typography,
+  Spacing,
+} from "@/constants/design-system";
 import {
   Pressable,
   PressableProps,
@@ -59,9 +64,9 @@ export const DefaultButton = ({
 const styles = StyleSheet.create({
   button: {
     alignSelf: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    paddingVertical: Spacing.s,
+    paddingHorizontal: Spacing.l,
+    borderRadius: BorderRadius.m,
     borderWidth: 1,
     borderColor: "transparent",
   },
