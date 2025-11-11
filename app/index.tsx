@@ -49,7 +49,7 @@ export default function StartScreen() {
         if (result.profile) {
           router.replace("/(tabs)/explore");
         } else {
-          router.replace("/create-profile");
+          router.replace("/register/ProfileStep");
         }
       } else {
         router.replace("/welcome");
