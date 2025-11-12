@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     ...Styles.actionL,
     paddingLeft: Spacing.s,
     textTransform: "lowercase",
+    color: Colors.text,
   },
   imageContainer: {
     position: "relative",
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   categoryBadge: {
     position: "absolute",
     top: Spacing.l,
-    left: Spacing.l,
+    right: Spacing.l,
     backgroundColor: "#627146",
     paddingHorizontal: Spacing.m,
     paddingVertical: Spacing.xs,
@@ -201,7 +202,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   description: {
-    marginVertical: Spacing.xs,
+    marginBottom: Spacing.l,
+    marginTop: Spacing.s,
     paddingHorizontal: Spacing.m,
   },
   cardInfo: {
