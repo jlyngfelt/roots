@@ -118,8 +118,9 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     aspectRatio: 4 / 5,
-    margin: Spacing.s,
     alignSelf: "center",
+    marginBottom: Spacing.s,
+    marginHorizontal: Spacing.s,
   },
   texts: {
     flexDirection: "column",
