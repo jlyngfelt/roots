@@ -73,8 +73,8 @@ export default function AboutAppScreen() {
       />
 
       <FAQItem
-        question="Vad händer om jag vill ta bort en annons"
-        answer="Du kan när som helst redigera eller ta bort dina annonser i inställningarna. Du går helt enkelt in på plantan och klickar på 'Redigera'"
+        question="Vad händer om jag vill ta bort en planta?"
+        answer="Du kan när som helst redigera eller ta bort dina plantor i inställningarna. Du går helt enkelt in på plantan och klickar på 'Redigera'"
       />
 
       <View style={styles.divider} />
@@ -88,7 +88,7 @@ export default function AboutAppScreen() {
 
       <FAQItem
         question="Hur fungerar överlämningen?"
-        answer="Först bestämmer ni en tid och plats för att genomföra ett byte. När ni har möts upp trycker den som ger bort plantan på 'Ge bort'-knappen på sin planta. Då dyker en 5-siffrig kod och en QR-kod upp. Den som tar emot plantan trycker också på 'Ta emot'-knappen, men får då upp kameran för att scanna QR-koden (eller skriva in koden manuellt). När koden matchat får den generösa givaren 100 credits direkt!"
+        answer="Först bestämmer ni en tid och plats för att genomföra ett byte. När ni har möts upp trycker den som ger bort plantan på 'Ge bort stickling'-knappen på sin planta. Då dyker en 5-siffrig kod och en QR-kod upp. Den som tar emot plantan trycker också på 'Föreslå byte'-knappen, men får då upp kameran för att scanna QR-koden (eller skriva in koden manuellt). När koden matchat får den generösa givaren 100 credits direkt!"
       />
 
       <FAQItem
