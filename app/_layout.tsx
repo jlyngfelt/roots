@@ -133,7 +133,7 @@ function NavigationHandler() {
         }}
       />
       <Stack.Screen
-        name="create-profile"
+        name="success"
         options={{
           headerShown: false,
         }}

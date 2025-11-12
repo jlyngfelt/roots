@@ -1,6 +1,6 @@
 import { ScanProps } from '@/interfaces';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Alert,
   StyleSheet,
@@ -11,28 +11,32 @@ import {
 import { Colors, Spacing, Styles, BorderRadius } from "../constants/design-system";
 import { redeemTransfer } from '../services/transferService';
 import { DefaultButton } from './ui/buttons/DefaultButton';
+import { useRouter } from "expo-router";
 
 export default function ScanTransferCode({ userId, onSuccess }: ScanProps) {
   const [scanned, setScanned] = useState(false);
+const isProcessingRef = useRef(false);
   const [manualCode, setManualCode] = useState('');
   const [showManualInput, setShowManualInput] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
+   const router = useRouter();
 
   const handleCodeScanned = async (code: string) => {
-    if (scanned) return;
+     if (isProcessingRef.current) return;
+     isProcessingRef.current = true;
     setScanned(true);
 
     const result = await redeemTransfer(code, userId);
 
     if (result.success) {
-      Alert.alert(
-        'Tjoho!!!',
-        `Givaren fick ${result.credits} credits!`,
-        [{ text: 'OK', onPress: onSuccess }]
-      );
+   router.push({
+  pathname: '/success',
+  params: { credits: result.credits }
+});
     } else {
       Alert.alert('Fel', result.error || 'Något gick fel');
       setScanned(false);
+      isProcessingRef.current = false;
     }
   };
 
@@ -71,15 +75,15 @@ export default function ScanTransferCode({ userId, onSuccess }: ScanProps) {
           <CameraView
             style={StyleSheet.absoluteFill}
             facing="back"
-            onBarcodeScanned={
-              scanned
-                ? undefined
-                : ({ data }) => {
-                    if (data) {
-                      handleCodeScanned(data);
-                    }
-                  }
-            }
+       onBarcodeScanned={
+  scanned
+    ? undefined
+    : ({ data }) => {
+        if (data) {
+          handleCodeScanned(data);
+        }
+      }
+}
             barcodeScannerSettings={{
               barcodeTypes: ['qr'],
             }}
