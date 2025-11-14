@@ -1,5 +1,5 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Styles } from "@/constants/design-system";
+import { Styles, Spacing, BorderRadius } from "@/constants/design-system";
 import { StyleSheet, Text, View } from "react-native";
 import { ProfileCardProps } from "../../../interfaces/index";
 import { Image } from "expo-image";
@@ -24,7 +24,7 @@ export function ProfileCard({ userProfile }: ProfileCardProps) {
             <IconSymbol size={34} name="star.circle.fill" color={"#f2b900"} />
             <Text style={Styles.bodyXL}>{userProfile?.credits}</Text>
           </View>
-          <Text>{userProfile?.bio}</Text>
+          <Text style={styles.bio}>{userProfile?.bio}</Text>
         </View>
       </View>
     </View>
@@ -34,24 +34,27 @@ export function ProfileCard({ userProfile }: ProfileCardProps) {
 const styles = StyleSheet.create({
   flex: {
     flexDirection: "row",
-    gap: 16,
+    gap: Spacing.m,
   },
   profileContainer: {
-    padding: 16,
+    padding: Spacing.m,
   },
   profilePicture: {
     width: 160,
     height: 160,
-    borderRadius: 16,
+    borderRadius: BorderRadius.xl,
   },
   creditContainer: {
     flexDirection: "row",
-    gap: 8,
+    gap: Spacing.s,
     alignItems: "center",
   },
   profileInformation: {
     flexDirection: "column",
-    gap: 8,
+    gap: Spacing.s,
     width: 200,
+  },
+  bio: {
+    marginRight: Spacing.m,
   },
 });
