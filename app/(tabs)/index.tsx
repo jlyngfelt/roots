@@ -86,6 +86,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   page: {
     backgroundColor: Colors.secondary,
-    paddingVertical: 40,
+    
   },
 });
