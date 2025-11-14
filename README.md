@@ -85,7 +85,6 @@ npm start
 Then open the app in:
 
 - iOS Simulator: `i`
-- Android Emulator: `a`
 - Expo Go: Scan QR code on your phone
 
 ## Key Features
@@ -175,14 +174,10 @@ All styling uses constants defined in `constants/design-system.ts`:
 
 ## Deployment
 
-### Build for iOS/Android
+### Build for iOS
 
 ```bash
-# Build locally
-eas build --platform ios
-eas build --platform android
-
-# Or use Expo Go for development
+# Use Expo Go for development
 npx expo start
 ```
 
