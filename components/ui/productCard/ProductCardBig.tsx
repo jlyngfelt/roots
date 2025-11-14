@@ -13,6 +13,7 @@ import {
 import { ProductCardProps } from "../../../interfaces/index";
 import { CardActions, CardInfo, ImageCarousel } from "./ProductCardContent";
 import { useProductCardLogic } from "./useProductCardLogic";
+import { useRouter } from "expo-router";
 
 export const ProductCardBig = ({
   userId,
@@ -49,6 +50,7 @@ export const ProductCardBig = ({
 
   const [userProfileName, setUserProfileName] = useState("");
   const [userProfileImageUrl, setUserProfileImageUrl] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (!userId) return;
@@ -77,7 +79,9 @@ export const ProductCardBig = ({
           }
           cachePolicy="memory-disk"
         />
-        <Text style={styles.username}>{userProfileName}</Text>
+        <Pressable onPress={() => router.push(`/view-profile/${userId}`)}>
+        <Text style={styles.username} >{userProfileName}</Text>
+        </Pressable>
       </View>
       {hasMultipleImages ? (
         <>

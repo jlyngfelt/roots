@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import {
   BorderRadius,
   Colors,
@@ -50,6 +51,7 @@ export const ProductCardView = ({
 
   const [userProfileName, setUserProfileName] = useState("");
   const [userProfileImageUrl, setUserProfileImageUrl] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (!userId) return;
@@ -78,7 +80,9 @@ export const ProductCardView = ({
           }
           cachePolicy="memory-disk"
         />
-        <Text style={styles.username}>{userProfileName}</Text>
+        <Pressable onPress={() => router.push(`/view-profile/${userId}`)}>
+        <Text style={styles.username} >{userProfileName}</Text>
+        </Pressable>
       </View>
       {hasMultipleImages ? (
         <>
