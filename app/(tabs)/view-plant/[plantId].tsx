@@ -1,12 +1,6 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { ProductCard } from "@/components/ui/productCard/ProductCard";
-import {
-  BorderRadius,
-  Colors,
-  Spacing,
-  Styles,
-  Typography,
-} from "@/constants/design-system";
+import { Colors, Spacing, Styles } from "@/constants/design-system";
 import { db } from "@/firebaseConfig";
 import { createChat, getChatBetweenUsers } from "@/services/chatService";
 import { getPlantById } from "@/services/plantService";
@@ -14,14 +8,7 @@ import { getUserProfile } from "@/services/userService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { GiveAwayPlant } from "../../../components/GiveAwayPlant";
 import { useAuth } from "../../../contexts/AuthContext";
 
@@ -206,22 +193,6 @@ export default function ViewPlantScreen() {
           </DefaultButton>
         )}
       </View>
-
-      {userId !== user?.uid ? (
-        <View style={styles.uploaderInfo}>
-          <Image
-            style={styles.profileImage}
-            source={
-              userProfileImageUrl
-                ? { uri: userProfileImageUrl }
-                : require("../../../assets/profilePicture.png")
-            }
-          />
-          <Pressable onPress={() => router.push(`/view-profile/${userId}`)}>
-            <Text style={styles.uploaderName}>{userProfileName}</Text>
-          </Pressable>
-        </View>
-      ) : null}
     </ScrollView>
   );
 }
@@ -229,34 +200,17 @@ export default function ViewPlantScreen() {
 const styles = StyleSheet.create({
   bgColor: {
     backgroundColor: Colors.secondary,
-    marginBottom: 60,
   },
   button: {
     width: 136,
   },
   buttonContainer: {
+    marginBottom: 100,
+    marginTop: 24,
     width: "100%",
     alignSelf: "flex-start",
     paddingHorizontal: Spacing.xl,
     justifyContent: "space-evenly",
     flexDirection: "row",
-  },
-  uploaderInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: Spacing.l,
-    marginVertical: Spacing.s,
-  },
-  uploaderName: {
-    fontSize: Typography.fontSize.l,
-    textDecorationLine: "underline",
-    fontWeight: Typography.fontWeight.semibold,
-  },
-  profileImage: {
-    width: 40,
-    aspectRatio: 1,
-    borderRadius: BorderRadius.full,
-    margin: Spacing.s,
-    alignSelf: "center",
   },
 });

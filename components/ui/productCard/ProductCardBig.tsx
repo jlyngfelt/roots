@@ -1,4 +1,7 @@
+import { db } from "@/firebaseConfig";
 import { Image } from "expo-image";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
   BorderRadius,
@@ -44,8 +47,38 @@ export const ProductCardBig = ({
     imageUrls,
   });
 
+  const [userProfileName, setUserProfileName] = useState("");
+  const [userProfileImageUrl, setUserProfileImageUrl] = useState("");
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const userRef = doc(db, "users", userId);
+    const unsubscribe = onSnapshot(userRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const userProfile = docSnap.data();
+        setUserProfileName(userProfile.username || "");
+        setUserProfileImageUrl(userProfile.profileImageUrl || "");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [userId]);
+
   return (
-    <View style={styles.card}>
+    <View>
+      <View style={styles.container}>
+        <Image
+          style={styles.profileImage}
+          source={
+            userProfileImageUrl
+              ? { uri: userProfileImageUrl }
+              : require("../../../assets/profilePicture.png")
+          }
+          cachePolicy="memory-disk"
+        />
+        <Text style={styles.username}>{userProfileName}</Text>
+      </View>
       {hasMultipleImages ? (
         <>
           <View style={styles.imageContainer}>
@@ -130,25 +163,32 @@ export const ProductCardBig = ({
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginVertical: Spacing.m,
-    marginHorizontal: Spacing.m,
-    borderRadius: BorderRadius.xl,
+  container: {
+    backgroundColor: "#d9dfc9",
+    height: 48,
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  username: {
+    ...Styles.actionL,
+    paddingLeft: Spacing.s,
+    textTransform: "lowercase",
+    color: Colors.text,
   },
   imageContainer: {
     position: "relative",
   },
   image: {
-    width: "95%",
+    width: "100%",
     aspectRatio: 4 / 5,
-    borderRadius: BorderRadius.xl,
-    margin: Spacing.s,
+    marginBottom: Spacing.s,
     alignSelf: "center",
   },
   categoryBadge: {
     position: "absolute",
     top: Spacing.l,
-    left: Spacing.l,
+    right: Spacing.l,
     backgroundColor: "#627146",
     paddingHorizontal: Spacing.m,
     paddingVertical: Spacing.xs,
@@ -162,7 +202,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   description: {
-    marginVertical: Spacing.xs,
+    marginBottom: Spacing.l,
+    marginTop: Spacing.s,
     paddingHorizontal: Spacing.m,
   },
   cardInfo: {
@@ -178,5 +219,11 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     gap: Spacing.s,
     alignItems: "center",
+  },
+  profileImage: {
+    width: 32,
+    height: 32,
+    borderRadius: BorderRadius.full,
+    marginLeft: Spacing.s,
   },
 });

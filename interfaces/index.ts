@@ -55,20 +55,23 @@ export interface ReadyToAdoptProps {
 }
 
 export interface ProductCardProps {
+  variant?: "big" | "small" | "view";
   userId: string;
   plantId: string;
   name: string;
   description?: string;
   image?: string;
+  imageUrls?: string[];
   readyToAdopt?: boolean;
-  variant?: "big" | "small" | "view";
   plantOwnerLat?: number;
   plantOwnerLon?: number;
   userLat?: number;
   userLon?: number;
-  imageUrls?: string[];
-  onPress?: () => void;
   categoryName?: string;
+  ownerUsername?: string;
+  ownerProfileImageUrl?: string;
+  onOwnerPress?: () => void;
+  onPress?: () => void;
 }
 
 export interface ImagePickerPreviewProps {

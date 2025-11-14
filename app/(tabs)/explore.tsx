@@ -266,6 +266,11 @@ export default function ExploreScreen() {
                 imageUrls={plant.imageUrls}
                 categoryName={plant.categoryName}
                 readyToAdopt={plant.readyToAdopt}
+                ownerUsername={plant.username}
+                ownerProfileImageUrl={plant.ownerProfileImageUrl}
+                onOwnerPress={() =>
+                  router.push(`/view-profile/${plant.userId}`)
+                }
                 onPress={() => router.push(`/view-plant/${plant.id}`)}
               />
             ))}

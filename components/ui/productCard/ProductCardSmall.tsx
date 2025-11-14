@@ -1,15 +1,13 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image } from "expo-image";
+import { Pressable, StyleSheet, View } from "react-native";
 import {
   BorderRadius,
-  Colors,
   Spacing,
   Styles,
 } from "../../../constants/design-system";
 import { ProductCardProps } from "../../../interfaces/index";
 import { CardActions, CardInfo } from "./ProductCardContent";
 import { useProductCardLogic } from "./useProductCardLogic";
-import { Image } from "expo-image";
-
 
 export const ProductCardSmall = ({
   userId,
@@ -65,15 +63,13 @@ export const ProductCardSmall = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.secondary,
     width: "48%",
-    borderRadius: BorderRadius.m,
     marginVertical: 5,
   },
   image: {
     width: "95%",
     aspectRatio: 4 / 5,
-    borderRadius: BorderRadius.xl,
+    borderRadius: BorderRadius.m,
     margin: Spacing.s,
     alignSelf: "center",
   },

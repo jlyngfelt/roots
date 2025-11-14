@@ -1,4 +1,7 @@
+import { db } from "@/firebaseConfig";
 import { Image } from "expo-image";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
   BorderRadius,
@@ -45,8 +48,38 @@ export const ProductCardView = ({
     imageUrls,
   });
 
+  const [userProfileName, setUserProfileName] = useState("");
+  const [userProfileImageUrl, setUserProfileImageUrl] = useState("");
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const userRef = doc(db, "users", userId);
+    const unsubscribe = onSnapshot(userRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const userProfile = docSnap.data();
+        setUserProfileName(userProfile.username || "");
+        setUserProfileImageUrl(userProfile.profileImageUrl || "");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [userId]);
+
   return (
-    <View style={styles.card}>
+    <View>
+      <View style={styles.container}>
+        <Image
+          style={styles.profileImage}
+          source={
+            userProfileImageUrl
+              ? { uri: userProfileImageUrl }
+              : require("../../../assets/profilePicture.png")
+          }
+          cachePolicy="memory-disk"
+        />
+        <Text style={styles.username}>{userProfileName}</Text>
+      </View>
       {hasMultipleImages ? (
         <>
           <View style={styles.imageContainer}>
@@ -136,25 +169,38 @@ export const ProductCardView = ({
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginVertical: Spacing.m,
-    marginHorizontal: Spacing.m,
-    borderRadius: BorderRadius.xl,
+  container: {
+    backgroundColor: "#d9dfc9",
+    height: 48,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  username: {
+    ...Styles.actionL,
+    paddingLeft: Spacing.s,
+    textTransform: "lowercase",
+    color: Colors.text,
+  },
+  profileImage: {
+    width: 32,
+    height: 32,
+    borderRadius: BorderRadius.full,
+    marginLeft: Spacing.s,
   },
   imageContainer: {
     position: "relative",
   },
   image: {
-    width: "95%",
+    width: "100%",
     aspectRatio: 4 / 5,
-    borderRadius: BorderRadius.xl,
-    margin: Spacing.s,
+    marginBottom: Spacing.s,
     alignSelf: "center",
   },
   categoryBadge: {
     position: "absolute",
     top: Spacing.l,
-    left: Spacing.l,
+    right: Spacing.l,
     backgroundColor: "#627146",
     paddingHorizontal: Spacing.m,
     paddingVertical: Spacing.xs,

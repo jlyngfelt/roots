@@ -1,10 +1,10 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Image } from "expo-image";
 import {
   CardActionsProps,
   CardInfoProps,
   ImageCarouselProps,
 } from "@/interfaces";
+import { Image } from "expo-image";
 import {
   Dimensions,
   Pressable,
@@ -13,14 +13,9 @@ import {
   Text,
   View,
 } from "react-native";
-import {
-  BorderRadius,
-  Colors,
-  Spacing,
-  Styles,
-} from "../../../constants/design-system";
-import { FavoriteButton } from "../buttons/FavouriteButton";
+import { Colors, Spacing, Styles } from "../../../constants/design-system";
 import { FavoriteCount } from "../buttons/FavoriteCount";
+import { FavoriteButton } from "../buttons/FavouriteButton";
 import { ReadyToAdopt } from "../buttons/ReadyToAdopt";
 
 const { width } = Dimensions.get("window");
@@ -84,7 +79,7 @@ export const CardActions = ({
     {showFavoriteButton ? (
       <FavoriteButton userId={userId!} plantId={plantId} />
     ) : (
-      <FavoriteCount userId={userId!} plantId={plantId}/>
+      <FavoriteCount userId={userId!} plantId={plantId} />
     )}
     <ReadyToAdopt readyToAdopt={readyToAdopt} />
   </View>
@@ -117,15 +112,15 @@ export const CardInfo = ({
 
 const styles = StyleSheet.create({
   imageWrapper: {
-    width: width - Spacing.m * 2,
+    width: width,
     alignItems: "center",
   },
   image: {
-    width: "95%",
+    width: "100%",
     aspectRatio: 4 / 5,
-    borderRadius: BorderRadius.xl,
-    margin: Spacing.s,
     alignSelf: "center",
+    marginBottom: Spacing.s,
+    marginHorizontal: Spacing.s,
   },
   texts: {
     flexDirection: "column",
@@ -152,7 +147,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.light,
     width: 10,
     height: 10,
     borderRadius: 5,

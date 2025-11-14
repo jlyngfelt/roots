@@ -126,7 +126,7 @@ export default function TabLayout() {
         name="favourites"
         options={{
           title: "Favourites",
-          header: () => <TopBar showBackButton={true} />,
+          header: () => <TopBar showBackButton={false} />,
           tabBarIcon: ({ color, focused }) => (
             <View
               style={{
@@ -151,7 +151,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           header: () => (
-            <TopBar showBackButton={true} showSettingsButton={true} />
+            <TopBar showBackButton={false} showSettingsButton={true} />
           ),
           tabBarIcon: ({ color, focused }) => (
             <View
