@@ -4,7 +4,11 @@ import {
   Spacing,
   Typography,
 } from "@/constants/design-system";
-import { chooseImageSource, uploadImage, OptimizationPresets } from "@/services/imageService";
+import {
+  chooseImageSource,
+  OptimizationPresets,
+  uploadImage,
+} from "@/services/imageService";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -37,7 +41,12 @@ export function MultiImagePicker({
       if (!imageUri) return;
 
       const fileName = `${fileNamePrefix}_${Date.now()}_${images.length}`;
-      const downloadURL = await uploadImage(imageUri, folder, fileName, OptimizationPresets.plant );
+      const downloadURL = await uploadImage(
+        imageUri,
+        folder,
+        fileName,
+        OptimizationPresets.plant
+      );
 
       if (downloadURL) {
         onImagesChange([...images, downloadURL]);
@@ -89,6 +98,7 @@ export function MultiImagePicker({
           showsHorizontalScrollIndicator={false}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
+          pagingEnabled={true}
         >
           {images.map((imageUrl, index) => (
             <View key={index} style={styles.imageContainer}>
