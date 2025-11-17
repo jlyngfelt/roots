@@ -1,11 +1,11 @@
 import { DefaultButton } from "@/components/ui/buttons/DefaultButton";
 import { FormLayout } from "@/components/ui/forms/FormLayoutComponent";
 import { Colors, Styles } from "@/constants/design-system";
+import { VerificationStepProps } from "@/interfaces";
+import { useRouter } from "expo-router";
 import { Alert, Image, Linking } from "react-native";
 import { Text } from "tamagui";
 import { checkEmailVerified } from "../../auth";
-import { VerificationStepProps } from "@/interfaces";
-
 
 export default function VerificationStep({
   email,
@@ -13,10 +13,12 @@ export default function VerificationStep({
   setCheckingVerification,
   setStep,
 }: VerificationStepProps) {
+  const router = useRouter();
   const handleManualVerificationCheck = async () => {
     setCheckingVerification(true);
     try {
       const isVerified = await checkEmailVerified();
+
       if (isVerified) {
         setStep("profile");
       } else {
@@ -38,9 +40,7 @@ export default function VerificationStep({
         resizeMode="contain"
       />
 
-      <Text
-      style={Styles.heading2}
-      >Verifiera din e-post</Text>
+      <Text style={Styles.heading2}>Verifiera din e-post</Text>
 
       <Text style={{ ...Styles.bodyM, textAlign: "center", marginBottom: 30 }}>
         Vi har skickat ett verifieringsmail till {email}. Klicka på länken i
@@ -68,6 +68,14 @@ export default function VerificationStep({
         borderBottomColor={Colors.primary}
       >
         Öppna e-post
+      </DefaultButton>
+      <DefaultButton
+        onPress={() => router.replace("/welcome")}
+        variant="tertiary"
+        textColor={Colors.grey}
+        borderBottomColor={Colors.grey}
+      >
+        Tillbaka
       </DefaultButton>
 
       <Text

@@ -37,7 +37,7 @@ export const ImageCarousel = ({
       onScroll={onScroll}
       scrollEventThrottle={16}
       decelerationRate="fast"
-      snapToInterval={width - Spacing.m * 2}
+      snapToInterval={width}
       snapToAlignment="center"
     >
       {images.map((imageUrl, index) => (
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
     aspectRatio: 4 / 5,
     alignSelf: "center",
     marginBottom: Spacing.s,
-    marginHorizontal: Spacing.s,
   },
   texts: {
     flexDirection: "column",
