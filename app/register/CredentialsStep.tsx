@@ -92,7 +92,7 @@ export default function CredentialsStep({
         autoCapitalize="none"
       />
 
-      <Text style={Styles.actionL}>{error}</Text>
+      <Text style={{ ...Styles.actionL, textAlign: "center" }}>{error}</Text>
 
       <DefaultButton onPress={handleSignUp} disabled={loading}>
         {loading ? "Registrerar.." : "Registrera"}
