@@ -22,10 +22,11 @@ export default function StartScreen() {
     let minLoadingComplete = false;
     let authResolved = false;
     let authResult: { user: User | null; profile: any } | null = null;
+    let hasNavigated = false;
 
     setTimeout(() => {
       minLoadingComplete = true;
-      if (authResolved) {
+      if (authResolved && !hasNavigated) {
         navigate(authResult);
       }
     }, 3000);
@@ -39,12 +40,15 @@ export default function StartScreen() {
       }
 
       authResolved = true;
-      if (minLoadingComplete) {
+      if (minLoadingComplete && !hasNavigated) {
         navigate(authResult);
       }
     });
 
     function navigate(result: { user: User | null; profile: any } | null) {
+      if (hasNavigated) return;
+      hasNavigated = true;
+
       if (result?.user) {
         if (result.profile) {
           router.replace("/(tabs)/explore");
