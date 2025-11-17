@@ -7,8 +7,9 @@ import { getTotalUnreadCount } from "@/services/chatService";
 import { Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { AuthProvider } from "@/contexts/AuthContext";
 
-export default function TabLayout() {
+function TabsContent() {
   const { user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -189,14 +190,6 @@ export default function TabLayout() {
           header: () => <TopBar showBackButton={true} />,
         }}
       />
-      {/* <Tabs.Screen
-        name="edit-plant/[plantId]"
-        options={{
-          title: "Edit Plant",
-          href: null,
-          header: () => <TopBar showBackButton={true} />,
-        }}
-      /> */}
       <Tabs.Screen
         name="view-plant/[plantId]"
         options={{
@@ -222,5 +215,13 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+  );
+}
+
+export default function TabLayout() {
+  return (
+    <AuthProvider>
+      <TabsContent />
+    </AuthProvider>
   );
 }

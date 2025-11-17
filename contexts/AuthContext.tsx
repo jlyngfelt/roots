@@ -22,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [initialCheckDone, setInitialCheckDone] = useState(false);
   const router = useRouter();
   const segments = useSegments();
 
@@ -34,22 +35,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
       }
       setLoading(false);
+      
+      if (!initialCheckDone) {
+        setInitialCheckDone(true);
+      }
     });
     return unsubscribe;
   }, []);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !initialCheckDone) return;
 
-    const inRegister = segments.some((segment) => segment === "register")
+    const inRegister = segments.some((segment) => segment === "register");
     const inWelcome = segments[0] === "welcome";
     const inLogin = segments[0] === "login";
+    const inTabs = segments[0] === "(tabs)";
 
-    if (!user) {
-      if (!inWelcome && !inRegister && !inLogin) {
-        router.replace("/welcome");
-      }
-    } else {
+    if (!user && inTabs) {
+      router.replace("/welcome");
+    }
+
+    if (user) {
       if (!user.emailVerified) {
         if (!inRegister) {
           router.replace({
@@ -58,12 +64,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           });
         }
       } else {
-        if ( inWelcome || inRegister || inLogin) {
+        if (inWelcome || inLogin) {
           router.replace("/(tabs)/explore");
         }
       }
     }
-  }, [user, loading, segments]);
+  }, [user, loading, segments, initialCheckDone]);
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
