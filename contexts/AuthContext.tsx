@@ -7,7 +7,7 @@ import {
 } from "react";
 import { User } from "firebase/auth";
 import { onAuthChange } from "../auth";
-import { useRouter, useSegments } from "expo-router";
+import { useRouter, useSegments, usePathname } from "expo-router";
 
 interface AuthContextType {
   user: User | null;
@@ -22,9 +22,10 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [initialCheckDone, setInitialCheckDone] = useState(false);
+  const [hasNavigatedFromIndex, setHasNavigatedFromIndex] = useState(false);
   const router = useRouter();
   const segments = useSegments();
+  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = onAuthChange(async (firebaseUser: User | null) => {
@@ -35,26 +36,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
       }
       setLoading(false);
-      
-      if (!initialCheckDone) {
-        setInitialCheckDone(true);
-      }
     });
     return unsubscribe;
   }, []);
 
   useEffect(() => {
-    if (loading || !initialCheckDone) return;
+    // KRITISKT: Vänta tills vi har lämnat index-skärmen
+    if (pathname === "/" || pathname === "/index") {
+      // Vi är på index, gör INGENTING
+      return;
+    }
+
+    // När vi väl lämnat index, markera att vi har navigerat
+    if (!hasNavigatedFromIndex) {
+      setHasNavigatedFromIndex(true);
+    }
+
+    // Vänta tills loading är klar OCH vi har lämnat index
+    if (loading || !hasNavigatedFromIndex) return;
 
     const inRegister = segments.some((segment) => segment === "register");
     const inWelcome = segments[0] === "welcome";
     const inLogin = segments[0] === "login";
     const inTabs = segments[0] === "(tabs)";
 
+    // Hantera utloggning från tabs
     if (!user && inTabs) {
       router.replace("/welcome");
+      return;
     }
 
+    // Hantera inloggade användare
     if (user) {
       if (!user.emailVerified) {
         if (!inRegister) {
@@ -69,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
     }
-  }, [user, loading, segments, initialCheckDone]);
+  }, [user, loading, segments, pathname, hasNavigatedFromIndex]);
 
   return (
     <AuthContext.Provider value={{ user, loading }}>

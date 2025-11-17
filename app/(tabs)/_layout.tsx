@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { AuthProvider } from "@/contexts/AuthContext";
 
-function TabsContent() {
+export default function TabLayout() {
   const { user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -218,10 +218,3 @@ function TabsContent() {
   );
 }
 
-export default function TabLayout() {
-  return (
-    <AuthProvider>
-      <TabsContent />
-    </AuthProvider>
-  );
-}

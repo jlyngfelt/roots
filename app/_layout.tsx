@@ -15,6 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { createTamagui, TamaguiProvider } from "tamagui";
+import { AuthProvider } from "../contexts/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,65 +43,67 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
       <TamaguiProvider config={config}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="welcome" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-           <Stack.Screen name="register" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", headerShown: false }}
-          />
-          <Stack.Screen
-            name="edit-plant/[plantId]"
-            options={{
-              headerShown: true,
-              header: () => <TopBar showBackButton={true} />,
-            }}
-          />
-          <Stack.Screen
-            name="update-email"
-            options={{
-              headerShown: true,
-              header: () => <TopBar showBackButton={true} />,
-            }}
-          />
-          <Stack.Screen
-            name="update-password"
-            options={{
-              headerShown: true,
-              header: () => <TopBar showBackButton={true} />,
-            }}
-          />
-          <Stack.Screen
-            name="conversation/[chatId]"
-            options={{
-              headerShown: true,
-              header: () => <TopBar showBackButton={true} />,
-            }}
-          />
-          <Stack.Screen
-            name="about"
-            options={{
-              headerShown: true,
-              header: () => <TopBar showBackButton={true} />,
-            }}
-          />
-          <Stack.Screen
-            name="scanner"
-            options={{
-              headerShown: true,
-              header: () => <TopBar showBackButton={true} />,
-            }}
-          />
-          <Stack.Screen
-            name="success"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack>
+        <AuthProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="welcome" options={{ headerShown: false }} />
+            <Stack.Screen name="login" options={{ headerShown: false }} />
+            <Stack.Screen name="register" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="modal"
+              options={{ presentation: "modal", headerShown: false }}
+            />
+            <Stack.Screen
+              name="edit-plant/[plantId]"
+              options={{
+                headerShown: true,
+                header: () => <TopBar showBackButton={true} />,
+              }}
+            />
+            <Stack.Screen
+              name="update-email"
+              options={{
+                headerShown: true,
+                header: () => <TopBar showBackButton={true} />,
+              }}
+            />
+            <Stack.Screen
+              name="update-password"
+              options={{
+                headerShown: true,
+                header: () => <TopBar showBackButton={true} />,
+              }}
+            />
+            <Stack.Screen
+              name="conversation/[chatId]"
+              options={{
+                headerShown: true,
+                header: () => <TopBar showBackButton={true} />,
+              }}
+            />
+            <Stack.Screen
+              name="about"
+              options={{
+                headerShown: true,
+                header: () => <TopBar showBackButton={true} />,
+              }}
+            />
+            <Stack.Screen
+              name="scanner"
+              options={{
+                headerShown: true,
+                header: () => <TopBar showBackButton={true} />,
+              }}
+            />
+            <Stack.Screen
+              name="success"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </AuthProvider>
         <StatusBar style="auto" />
       </TamaguiProvider>
     </ThemeProvider>
